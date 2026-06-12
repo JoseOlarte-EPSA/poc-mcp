@@ -1,0 +1,202 @@
+2026-05-12 07:48:52 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-12.txt'
+2026-05-12 07:48:59 [INFO] Citas semana actual: 203
+2026-05-12 07:48:59 [INFO] Obteniendo noticias para 50 cuentas únicas...
+2026-05-12 07:48:59 [INFO]   [1/50] ESPECIALIDADES ENERGETICAS SL
+2026-05-12 07:49:13 [INFO]   [2/50] EUROFRAGANCE, S.L.
+2026-05-12 07:49:26 [WARNING] No se pudo obtener contenido de https://www.equiposytalento.com/noticias/2025/07/21/estrategias-y-experiencias-para-avanzar-hacia-la-diversidad-real-en-las-empresas-talento-femenino-diversidad: HTTPSConnectionPool(host='www.equiposytalento.com', port=443): Max retries exceeded with url: /noticias/2025/07/21/estrategias-y-experiencias-para-avanzar-hacia-la-diversidad-real-en-las-empresas-talento-femenino-diversidad (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.equiposytalento.com', port=443) at 0x20f70935e50>, 'Connection to www.equiposytalento.com timed out. (connect timeout=10)'))
+2026-05-12 07:49:42 [WARNING] No se pudo obtener contenido de https://www.equiposytalento.com/noticias/2025/05/22/el-rol-de-la-diversidad-en-la-evolucion-de-las-marcas-corporativas-talento-femenino-diversidad: HTTPSConnectionPool(host='www.equiposytalento.com', port=443): Max retries exceeded with url: /noticias/2025/05/22/el-rol-de-la-diversidad-en-la-evolucion-de-las-marcas-corporativas-talento-femenino-diversidad (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.equiposytalento.com', port=443) at 0x20f70937b10>, 'Connection to www.equiposytalento.com timed out. (connect timeout=10)'))
+2026-05-12 07:49:42 [INFO]   [3/50] HUMAN-ROBOT SOLUTIONS, S.L.
+2026-05-12 07:49:51 [INFO]   [4/50] KAIZEN CONSULTING EUROPA SOCIEDAD LIMITADA.
+2026-05-12 07:50:10 [INFO]   [5/50] PANADERO AB, SL.
+2026-05-12 07:50:19 [INFO]   [6/50] INDUSTRIAS TEIXIDO S.A.U.
+2026-05-12 07:50:25 [INFO]   [7/50] WITZENMANN ESPANOLA SA
+2026-05-12 07:50:33 [INFO]   [8/50] SMRC AUTOMOTIVE INTERIORS SPAIN, S.L.
+2026-05-12 07:50:41 [INFO]   [9/50] FUNDACIÓN CENTRO GALLEGO DE INVESTIGACIONES DEL AGUA
+2026-05-12 07:50:49 [WARNING] No se pudo obtener contenido de https://www.xunta.gal/es/notas-de-prensa/-/nova/001688/roman-rodriguez-avanza-que-xunta-comienza-disenar-nuevo-plan-que-suponga-salto: 500 Server Error: Internal Server Error for url: https://www.xunta.gal/es/notas-de-prensa/-/nova/001688/roman-rodriguez-avanza-que-xunta-comienza-disenar-nuevo-plan-que-suponga-salto
+2026-05-12 07:50:53 [INFO]   [10/50] POWERBIM S.L.
+2026-05-12 07:51:02 [INFO]   [11/50] AUTO JUNTAS, S.A.
+2026-05-12 07:51:12 [INFO]   [12/50] MARTINEZ AYALA, S.A.
+2026-05-12 07:51:22 [INFO]   [13/50] HIELOS LA MORAGA SL.
+2026-05-12 07:51:29 [INFO]   [14/50] ORTIZ CONSTRUCCIONES Y PROYECTOS, S.A.
+2026-05-12 07:51:45 [INFO]   [15/50] MECANICA VILARO SL
+2026-05-12 07:51:53 [INFO]   [16/50] QUETTA DATA CENTERS SL.
+2026-05-12 07:52:04 [INFO]   [17/50] PRUEBA FIRMA ELECTRONICA S.A
+2026-05-12 07:52:12 [WARNING] No se pudo obtener contenido de https://laverdadnoticias.com/dinero-inteligente/finanzas-personales/sat-renovar-efirma-2026: 429 Client Error: Too Many Requests for url: https://laverdadnoticias.com/dinero-inteligente/finanzas-personales/sat-renovar-efirma-2026
+2026-05-12 07:52:14 [INFO]   [18/50] LANSOL SA
+2026-05-12 07:52:29 [INFO]   [19/50] DEFENSE VIRTUS, SOCIEDAD LIMITADA.
+2026-05-12 07:52:37 [INFO]   [20/50] ENERGY MANAGEMENT & INNOVATION, S.L.
+2026-05-12 07:52:42 [INFO]   [21/50] LISANPLAST, S.L.
+2026-05-12 07:52:50 [INFO]   [22/50] INDUSTRIAS QUIMICAS TAMAR SL
+2026-05-12 07:52:56 [INFO]   [23/50] INCOGENER SOCIEDAD LIMITADA.
+2026-05-12 07:53:07 [INFO]   [24/50] PLASTICOS CASTELLA, S.A.
+2026-05-12 07:53:12 [INFO]   [25/50] ORTHEM SERVICIOS Y ACTUACIONES AMBIENTALES, S.A.
+2026-05-12 07:53:18 [WARNING] No se pudo obtener contenido de https://torrevieja.es/es/noticias/2024-12-04-aprobada-licitacion-tres-obras-ejecutar-recinto-portuario-inversion-municipal-7: HTTPSConnectionPool(host='torrevieja.es', port=443): Max retries exceeded with url: /es/noticias/2024-12-04-aprobada-licitacion-tres-obras-ejecutar-recinto-portuario-inversion-municipal-7 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1077)')))
+2026-05-12 07:53:28 [WARNING] No se pudo obtener contenido de https://www.eleconomista.es/actualidad/noticias/13503469/08/25/la-comunidad-de-madrid-recurre-a-tragsa-ante-la-falta-de-personal-para-conservar-sus-montes.html: 403 Client Error: Forbidden for url: https://www.eleconomista.es/actualidad/noticias/13503469/08/25/la-comunidad-de-madrid-recurre-a-tragsa-ante-la-falta-de-personal-para-conservar-sus-montes.html
+2026-05-12 07:53:29 [INFO]   [26/50] Valux Medical
+2026-05-12 07:53:44 [INFO]   [27/50] ATIMOS CANARIA SOCIEDAD LIMITADA.
+2026-05-12 07:53:56 [INFO]   [28/50] LEAR EUROPEAN HOLDING, S.L.U.
+2026-05-12 07:53:59 [WARNING] No se pudo obtener contenido de https://www.eleconomista.es/ranking-empresas/noticias/9815427/04/19/Las-empresas-de-Tarragona-que-mas-facturan.html: 403 Client Error: Forbidden for url: https://www.eleconomista.es/ranking-empresas/noticias/9815427/04/19/Las-empresas-de-Tarragona-que-mas-facturan.html
+2026-05-12 07:53:59 [INFO]   [29/50] CAUCHOS ARNEDO SA
+2026-05-12 07:54:03 [WARNING] No se pudo obtener contenido de https://www.eleconomista.es/empresas-finanzas/noticias/10079819/09/19/Corpfin-analiza-la-venta-Elastorsa-su-participada-de-mezclas-de-caucho.html: 403 Client Error: Forbidden for url: https://www.eleconomista.es/empresas-finanzas/noticias/10079819/09/19/Corpfin-analiza-la-venta-Elastorsa-su-participada-de-mezclas-de-caucho.html
+2026-05-12 07:54:03 [INFO]   [30/50] CUBIERTAS ALIGERADAS TERMOACUSTICAS SL
+2026-05-12 07:54:22 [INFO]   [31/50] CT INGENIEROS AERONAUTICOS DE AUTOMOCION E INDUSTRIALES, S.L.U.
+2026-05-12 07:54:26 [INFO]   [32/50] CAFE CAPUCCHINO 1919 SL
+2026-05-12 07:54:35 [INFO]   [33/50] CASTINOX, S.A.
+2026-05-12 07:54:54 [INFO]   [34/50] REFRACTARIOS ESPECIALES, SOCIEDAD ANONIMA
+2026-05-12 07:54:59 [INFO]   [35/50] HOTEL VILLA MAGNA, SL - RLH PROPERTIES
+2026-05-12 07:55:09 [INFO]   [36/50] ASTURMADI DOORS SL.
+2026-05-12 07:55:27 [WARNING] No se pudo obtener contenido de https://empresaexterior.com/art/90227/ocho-empresas-asturianas-visitan-la-feria-made-expo-2023-en-milan-con-el-apoyo-de-asturex: HTTPSConnectionPool(host='empresaexterior.com', port=443): Read timed out. (read timeout=10)
+2026-05-12 07:55:28 [INFO]   [37/50] SPORT LIFESTYLE SL
+2026-05-12 07:55:37 [INFO]   [38/50] ATLANTICA AGRICOLA, S.A.
+2026-05-12 07:55:45 [WARNING] No se pudo obtener contenido de https://www.eleconomista.es/retail-consumo/noticias/13456214/07/25/los-duenos-de-atlantica-agricola-asumen-la-gestion-y-ponen-a-la-segunda-generacion-al-mando.html: 403 Client Error: Forbidden for url: https://www.eleconomista.es/retail-consumo/noticias/13456214/07/25/los-duenos-de-atlantica-agricola-asumen-la-gestion-y-ponen-a-la-segunda-generacion-al-mando.html
+2026-05-12 07:55:48 [INFO]   [39/50] BELL ESPANA ALIMENTACION SLU
+2026-05-12 07:56:05 [INFO]   [40/50] ACONDICIONAMIENTO TARRASENSE
+2026-05-12 07:56:12 [WARNING] No se pudo obtener contenido de https://www.terrassa.cat/es/noticia/-/asset_publisher/CXU7OrvEpI9Y/content/premsa_noticia_260507-el-teatre-principal-acull-la-desena-edicio-dels-premis-muncunill-a-la-innovacio?_101_INSTANCE_CXU7OrvEpI9Y_lang=es?terrassaseotitle=El%20Teatro%20Principal%20acoge%20la%20d%C3%A9cima%20edici%C3%B3n%20de%20los%20Premios%20Muncunill%20a%20la%20Innovaci%C3%B3n: 403 Client Error: Forbidden for url: https://www.terrassa.cat/es/noticia/-/asset_publisher/CXU7OrvEpI9Y/content/premsa_noticia_260507-el-teatre-principal-acull-la-desena-edicio-dels-premis-muncunill-a-la-innovacio?_101_INSTANCE_CXU7OrvEpI9Y_lang=es?terrassaseotitle=El%20Teatro%20Principal%20acoge%20la%20d%C3%A9cima%20edici%C3%B3n%20de%20los%20Premios%20Muncunill%20a%20la%20Innovaci%C3%B3n
+2026-05-12 07:56:12 [INFO]   [41/50] HOSPITAL POVISA, S.A.
+2026-05-12 07:56:29 [INFO]   [42/50] BOLD VALUABLE TECHNOLOGY SPAIN, S.L.
+2026-05-12 07:56:40 [INFO]   [43/50] DOROBE HOTELS SL.
+2026-05-12 07:56:55 [INFO]   [44/50] AVIS ALQUILE UN COCHE, S.A.
+2026-05-12 07:57:07 [INFO]   [45/50] SOCIEDAD DE CENTROS COMERCIALES DE ESPAÑA - SCCE
+2026-05-12 07:57:22 [INFO]   [46/50] NATIONALE-NEDERLANDEN GENERALES COMPANIA DE SEGUROS Y REASEGUROS SA
+2026-05-12 07:57:25 [INFO]   [47/50] HOTEL HISPANIA SA
+2026-05-12 07:57:42 [INFO]   [48/50] INERIA MANAGEMENT SL.
+2026-05-12 07:57:50 [INFO]   [49/50] JOSELITO GUIJUELO SL
+2026-05-12 07:58:01 [INFO]   [50/50] LALIGA GROUP INTERNATIONAL SL.
+2026-05-12 07:58:14 [INFO] Total noticias obtenidas: 115
+2026-05-12 07:58:14 [INFO] Generando resúmenes de noticias...
+2026-05-12 08:01:20 [ERROR] Proceso Noticias falló: 502 Server Error: Bad Gateway for url: https://apps.fi-group.com/api/openai/chat/completions
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\main.py", line 247, in run
+    df_resumenes["Resumen"] = df_resumenes.apply(
+                              ~~~~~~~~~~~~~~~~~~^
+        lambda row: summarize_news(row["Título"], row["Contenido"]), axis=1
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\.venv\Lib\site-packages\pandas\core\frame.py", line 12423, in apply
+    return op.apply().__finalize__(self, method="apply")
+           ~~~~~~~~^^
+  File "C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\.venv\Lib\site-packages\pandas\core\apply.py", line 1015, in apply
+    return self.apply_standard()
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\.venv\Lib\site-packages\pandas\core\apply.py", line 1167, in apply_standard
+    results, res_index = self.apply_series_generator()
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\.venv\Lib\site-packages\pandas\core\apply.py", line 1183, in apply_series_generator
+    results[i] = self.func(v, *self.args, **self.kwargs)
+                 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\main.py", line 248, in <lambda>
+    lambda row: summarize_news(row["Título"], row["Contenido"]), axis=1
+                ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\clients\llm_client.py", line 74, in summarize_news
+    return ask(prompt)
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\clients\llm_client.py", line 58, in ask
+    result = chat_completion(messages, model=model)
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\clients\llm_client.py", line 42, in chat_completion
+    response.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\.venv\Lib\site-packages\requests\models.py", line 1028, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 502 Server Error: Bad Gateway for url: https://apps.fi-group.com/api/openai/chat/completions
+2026-05-12 08:01:26 [INFO] Citas 12 semanas atrás:
+2026-05-12 08:01:26 [INFO] Haciendo peticiones de citas en 14 bloques...
+2026-05-12 08:01:26 [INFO] Bloque 1/14
+2026-05-12 08:01:30 [INFO] Citas obtenidos en bloque 1: 59
+2026-05-12 08:01:30 [INFO] Bloque 2/14
+2026-05-12 08:01:32 [INFO] Citas obtenidos en bloque 2: 45
+2026-05-12 08:01:32 [INFO] Bloque 3/14
+2026-05-12 08:01:35 [INFO] Citas obtenidos en bloque 3: 55
+2026-05-12 08:01:35 [INFO] Bloque 4/14
+2026-05-12 08:01:38 [INFO] Citas obtenidos en bloque 4: 37
+2026-05-12 08:01:38 [INFO] Bloque 5/14
+2026-05-12 08:01:40 [INFO] Citas obtenidos en bloque 5: 40
+2026-05-12 08:01:40 [INFO] Bloque 6/14
+2026-05-12 08:01:43 [INFO] Citas obtenidos en bloque 6: 38
+2026-05-12 08:01:43 [INFO] Bloque 7/14
+2026-05-12 08:01:46 [INFO] Citas obtenidos en bloque 7: 44
+2026-05-12 08:01:46 [INFO] Bloque 8/14
+2026-05-12 08:01:48 [INFO] Citas obtenidos en bloque 8: 40
+2026-05-12 08:01:48 [INFO] Bloque 9/14
+2026-05-12 08:01:51 [INFO] Citas obtenidos en bloque 9: 70
+2026-05-12 08:01:51 [INFO] Bloque 10/14
+2026-05-12 08:01:54 [INFO] Citas obtenidos en bloque 10: 40
+2026-05-12 08:01:54 [INFO] Bloque 11/14
+2026-05-12 08:01:57 [INFO] Citas obtenidos en bloque 11: 35
+2026-05-12 08:01:57 [INFO] Bloque 12/14
+2026-05-12 08:02:00 [INFO] Citas obtenidos en bloque 12: 52
+2026-05-12 08:02:00 [INFO] Bloque 13/14
+2026-05-12 08:02:05 [INFO] Citas obtenidos en bloque 13: 45
+2026-05-12 08:02:05 [INFO] Bloque 14/14
+2026-05-12 08:02:08 [INFO] Citas obtenidos en bloque 14: 6
+2026-05-12 08:02:08 [INFO] Total de citas históricos obtenidos: 606
+2026-05-12 08:02:08 [INFO] DataFrame histórico de citas total: 606 filas
+2026-05-12 08:02:08 [INFO] Haciendo peticiones de llamadas en 14 bloques...
+2026-05-12 08:02:08 [INFO] Bloque 1/14
+2026-05-12 08:02:13 [INFO] Llamadas obtenidos en bloque 1: 226
+2026-05-12 08:02:13 [INFO] Bloque 2/14
+2026-05-12 08:02:17 [INFO] Llamadas obtenidos en bloque 2: 189
+2026-05-12 08:02:17 [INFO] Bloque 3/14
+2026-05-12 08:02:21 [INFO] Llamadas obtenidos en bloque 3: 187
+2026-05-12 08:02:21 [INFO] Bloque 4/14
+2026-05-12 08:02:25 [INFO] Llamadas obtenidos en bloque 4: 175
+2026-05-12 08:02:25 [INFO] Bloque 5/14
+2026-05-12 08:02:29 [INFO] Llamadas obtenidos en bloque 5: 243
+2026-05-12 08:02:29 [INFO] Bloque 6/14
+2026-05-12 08:02:32 [INFO] Llamadas obtenidos en bloque 6: 178
+2026-05-12 08:02:32 [INFO] Bloque 7/14
+2026-05-12 08:02:36 [INFO] Llamadas obtenidos en bloque 7: 266
+2026-05-12 08:02:36 [INFO] Bloque 8/14
+2026-05-12 08:02:40 [INFO] Llamadas obtenidos en bloque 8: 197
+2026-05-12 08:02:40 [INFO] Bloque 9/14
+2026-05-12 08:02:44 [INFO] Llamadas obtenidos en bloque 9: 225
+2026-05-12 08:02:44 [INFO] Bloque 10/14
+2026-05-12 08:02:47 [INFO] Llamadas obtenidos en bloque 10: 138
+2026-05-12 08:02:47 [INFO] Bloque 11/14
+2026-05-12 08:02:55 [INFO] Llamadas obtenidos en bloque 11: 162
+2026-05-12 08:02:55 [INFO] Bloque 12/14
+2026-05-12 08:02:59 [INFO] Llamadas obtenidos en bloque 12: 202
+2026-05-12 08:02:59 [INFO] Bloque 13/14
+2026-05-12 08:03:02 [INFO] Llamadas obtenidos en bloque 13: 116
+2026-05-12 08:03:02 [INFO] Bloque 14/14
+2026-05-12 08:03:06 [INFO] Llamadas obtenidos en bloque 14: 25
+2026-05-12 08:03:06 [INFO] Total de llamadas históricos obtenidos: 2529
+2026-05-12 08:03:06 [INFO] DataFrame histórico de llamadas total: 2529 filas
+2026-05-12 08:03:06 [INFO] Haciendo peticiones de servicios en 14 bloques...
+2026-05-12 08:03:06 [INFO] Bloque 1/14
+2026-05-12 08:03:10 [INFO] Servicios obtenidos en bloque 1: 38
+2026-05-12 08:03:10 [INFO] Bloque 2/14
+2026-05-12 08:03:13 [INFO] Servicios obtenidos en bloque 2: 27
+2026-05-12 08:03:13 [INFO] Bloque 3/14
+2026-05-12 08:03:16 [INFO] Servicios obtenidos en bloque 3: 32
+2026-05-12 08:03:16 [INFO] Bloque 4/14
+2026-05-12 08:03:18 [INFO] Servicios obtenidos en bloque 4: 26
+2026-05-12 08:03:18 [INFO] Bloque 5/14
+2026-05-12 08:03:23 [INFO] Servicios obtenidos en bloque 5: 31
+2026-05-12 08:03:23 [INFO] Bloque 6/14
+2026-05-12 08:03:25 [INFO] Servicios obtenidos en bloque 6: 20
+2026-05-12 08:03:25 [INFO] Bloque 7/14
+2026-05-12 08:03:27 [INFO] Servicios obtenidos en bloque 7: 28
+2026-05-12 08:03:27 [INFO] Bloque 8/14
+2026-05-12 08:03:29 [INFO] Servicios obtenidos en bloque 8: 14
+2026-05-12 08:03:29 [INFO] Bloque 9/14
+2026-05-12 08:03:31 [INFO] Servicios obtenidos en bloque 9: 28
+2026-05-12 08:03:31 [INFO] Bloque 10/14
+2026-05-12 08:03:34 [INFO] Servicios obtenidos en bloque 10: 25
+2026-05-12 08:03:34 [INFO] Bloque 11/14
+2026-05-12 08:03:37 [INFO] Servicios obtenidos en bloque 11: 19
+2026-05-12 08:03:37 [INFO] Bloque 12/14
+2026-05-12 08:03:39 [INFO] Servicios obtenidos en bloque 12: 11
+2026-05-12 08:03:39 [INFO] Bloque 13/14
+2026-05-12 08:03:42 [INFO] Servicios obtenidos en bloque 13: 28
+2026-05-12 08:03:42 [INFO] Bloque 14/14
+2026-05-12 08:03:44 [INFO] Servicios obtenidos en bloque 14: 0
+2026-05-12 08:03:44 [INFO] Total de servicios históricos obtenidos: 327
+2026-05-12 08:03:44 [INFO] DataFrame histórico de servicios total: 327 filas
+2026-05-12 08:03:44 [INFO] Llamadas abiertas con estado caliente:
+2026-05-12 08:04:26 [INFO] Leads abiertos:
+2026-05-12 08:04:57 [INFO] Oportunidades abiertas:
+2026-05-12 08:05:20 [INFO] Ofertas pendientes:
+2026-05-12 08:05:37 [INFO] Llamadas en el año:
+2026-05-12 08:05:59 [INFO] Cuentas sin llamada en el año: 320
+2026-05-12 08:05:59 [WARNING] Procesos con fallos (1/11): ['Noticias']
+2026-05-12 08:06:01 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'

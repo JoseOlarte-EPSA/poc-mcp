@@ -1,0 +1,81 @@
+2026-05-19 12:55:52 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-19.txt'
+2026-05-19 12:55:59 [INFO] Citas semana actual: 196
+2026-05-19 12:55:59 [ERROR] Proceso Llamadas Estado Caliente falló: 'fechaFin'
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\script_main.py", line 397, in run
+    result_citas_canceladas = client.send_request("appointments", QUERIES["Citas Canceladas entre Fechas"].format(fechaInicio=year, fecha_fin=start_current))
+                                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'fechaFin'
+2026-05-19 12:55:59 [WARNING] Procesos con fallos (1/2): ['Llamadas Estado Caliente']
+2026-05-19 12:55:59 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-05-19 12:58:35 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-19.txt'
+2026-05-19 12:58:39 [INFO] Citas semana actual: 196
+2026-05-19 12:58:39 [ERROR] Proceso Citas canceladas en el año actual falló: 'fechaFin'
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\script_main.py", line 398, in run
+    result_citas_canceladas = client.send_request("appointments", QUERIES["Citas Canceladas entre Fechas"].format(fechaInicio=year, fecha_fin=start_current))
+                                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'fechaFin'
+2026-05-19 12:58:39 [WARNING] Procesos con fallos (1/2): ['Citas canceladas en el año actual']
+2026-05-19 12:58:40 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-05-19 12:59:21 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-19.txt'
+2026-05-19 12:59:24 [INFO] Citas semana actual: 196
+2026-05-19 12:59:26 [ERROR] Proceso Citas canceladas en el año actual falló: Error al enviar la solicitud a Dataverse [appointments]: 400 Client Error: Bad Request for url: https://eca951ba31304863a6aba911e554e7.42.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/214dff7a0b2e46e6b1a726b3d7948fa6/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=AH0ScRpUUzx-XjWKd_c0417ijjTOTrLotghBSvjG_34
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\clients\dataverse.py", line 59, in send_request
+    response.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\.venv\Lib\site-packages\requests\models.py", line 1167, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://eca951ba31304863a6aba911e554e7.42.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/214dff7a0b2e46e6b1a726b3d7948fa6/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=AH0ScRpUUzx-XjWKd_c0417ijjTOTrLotghBSvjG_34
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\script_main.py", line 397, in run
+    result_citas_canceladas = client.send_request("appointments", QUERIES["Citas Canceladas entre Fechas"].format(fechaInicio=year, fechaFin=start_current))
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\clients\dataverse.py", line 62, in send_request
+    raise RuntimeError(f"Error al enviar la solicitud a Dataverse [{entity_name}]: {e}") from e
+RuntimeError: Error al enviar la solicitud a Dataverse [appointments]: 400 Client Error: Bad Request for url: https://eca951ba31304863a6aba911e554e7.42.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/214dff7a0b2e46e6b1a726b3d7948fa6/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=AH0ScRpUUzx-XjWKd_c0417ijjTOTrLotghBSvjG_34
+2026-05-19 12:59:26 [WARNING] Procesos con fallos (1/2): ['Citas canceladas en el año actual']
+2026-05-19 12:59:27 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-05-19 13:02:19 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-19.txt'
+2026-05-19 13:02:25 [INFO] Citas semana actual: 196
+2026-05-19 13:02:38 [INFO] Citas canceladas en el año actual: 292
+2026-05-19 13:02:38 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-05-19 13:03:53 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-19.txt'
+2026-05-19 13:03:57 [INFO] Citas semana actual: 196
+2026-05-19 13:04:04 [INFO] Citas canceladas en el año actual: 292
+2026-05-19 13:04:05 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-05-19 17:18:07 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-19.txt'
+2026-05-19 17:18:18 [INFO] Citas semana actual: 196
+2026-05-19 17:18:43 [INFO] Citas canceladas en el año actual: 292
+2026-05-19 17:19:03 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-05-19 17:21:38 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-19.txt'
+2026-05-19 17:21:45 [INFO] Citas semana actual: 196
+2026-05-19 17:21:55 [INFO] Citas canceladas en el año actual: 292
+2026-05-19 17:22:09 [ERROR] Citas de Cuentas con último contacto hace 6 meses falló: cannot access local variable 'df_12_weeks_processed' where it is not associated with a value
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\script_main.py", line 412, in run
+    logger.info("Citas completadas 6 meses atrás: %d", len(df_12_weeks_processed))
+                                                           ^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'df_12_weeks_processed' where it is not associated with a value
+2026-05-19 17:22:09 [WARNING] Procesos con fallos (1/3): ['Citas de Cuentas con último contacto hace 6 meses Atras']
+2026-05-19 17:22:10 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-05-19 17:22:40 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-19.txt'
+2026-05-19 17:22:43 [INFO] Citas semana actual: 196
+2026-05-19 17:22:51 [INFO] Citas canceladas en el año actual: 292
+2026-05-19 17:23:00 [ERROR] Citas de Cuentas con último contacto hace 6 meses falló: cannot access local variable 'df_12_weeks_processed' where it is not associated with a value
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\script_main.py", line 412, in run
+    logger.info("Citas completadas 6 meses atrás: %d", len(df_12_weeks_processed))
+                                                           ^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'df_12_weeks_processed' where it is not associated with a value
+2026-05-19 17:23:00 [WARNING] Procesos con fallos (1/3): ['Citas de Cuentas con último contacto hace 6 meses Atras']
+2026-05-19 17:23:00 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-05-19 17:23:12 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-19.txt'
+2026-05-19 17:23:18 [INFO] Citas semana actual: 196
+2026-05-19 17:23:26 [INFO] Citas canceladas en el año actual: 292
+2026-05-19 17:23:34 [INFO] Citas completadas 6 meses atrás: 533
+2026-05-19 17:23:35 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'

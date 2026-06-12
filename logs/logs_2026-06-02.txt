@@ -1,0 +1,297 @@
+2026-06-02 09:24:49 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-06-02.txt'
+2026-06-02 09:24:54 [INFO] Citas semana actual: 151
+2026-06-02 09:25:02 [INFO] Citas canceladas en el año actual: 328
+2026-06-02 09:25:05 [INFO] Citas completadas 6 meses atrás: 0
+2026-06-02 09:25:06 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-06-02 09:26:35 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-06-02.txt'
+2026-06-02 09:26:38 [INFO] Citas semana actual: 151
+2026-06-02 09:26:43 [INFO] Citas canceladas en el año actual: 328
+2026-06-02 09:26:45 [INFO] Citas completadas 6 meses atrás: 0
+2026-06-02 09:26:46 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-06-02 12:19:15 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-06-02.txt'
+2026-06-02 12:19:17 [ERROR] Proceso GRANTS falló: ('42000', "[42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Cannot open server 'mssql-global-prod' requested by the login. Client with IP address '181.51.34.61' is not allowed to access the server.  To enable access, use the Azure Management Portal or run sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may take up to five minutes for this change to take effect. (40615) (SQLDriverConnect); [42000] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0); [42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Cannot open server 'mssql-global-prod' requested by the login. Client with IP address '181.51.34.61' is not allowed to access the server.  To enable access, use the Azure Management Portal or run sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may take up to five minutes for this change to take effect. (40615); [42000] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0)")
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\script_main.py", line 210, in run
+    with GRANTSClient() as grants_client:
+         ~~~~~~~~~~~~^^
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\clients\sql_client.py", line 24, in __enter__
+    self._conn = pyodbc.connect(self.connection_string)
+                 ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+pyodbc.ProgrammingError: ('42000', "[42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Cannot open server 'mssql-global-prod' requested by the login. Client with IP address '181.51.34.61' is not allowed to access the server.  To enable access, use the Azure Management Portal or run sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may take up to five minutes for this change to take effect. (40615) (SQLDriverConnect); [42000] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0); [42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Cannot open server 'mssql-global-prod' requested by the login. Client with IP address '181.51.34.61' is not allowed to access the server.  To enable access, use the Azure Management Portal or run sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may take up to five minutes for this change to take effect. (40615); [42000] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0)")
+2026-06-02 12:19:24 [INFO] Citas semana actual: 158
+2026-06-02 12:19:32 [INFO] Citas agendadas 12 semanas atrás: 256
+2026-06-02 12:19:32 [INFO] Haciendo peticiones de citas en 11 bloques...
+2026-06-02 12:19:32 [INFO] Bloque 1/11
+2026-06-02 12:19:36 [INFO] Citas obtenidos en bloque 1: 44
+2026-06-02 12:19:36 [INFO] Bloque 2/11
+2026-06-02 12:19:40 [INFO] Citas obtenidos en bloque 2: 33
+2026-06-02 12:19:40 [INFO] Bloque 3/11
+2026-06-02 12:19:43 [INFO] Citas obtenidos en bloque 3: 60
+2026-06-02 12:19:43 [INFO] Bloque 4/11
+2026-06-02 12:19:45 [INFO] Citas obtenidos en bloque 4: 34
+2026-06-02 12:19:45 [INFO] Bloque 5/11
+2026-06-02 12:19:48 [INFO] Citas obtenidos en bloque 5: 34
+2026-06-02 12:19:48 [INFO] Bloque 6/11
+2026-06-02 12:19:52 [INFO] Citas obtenidos en bloque 6: 30
+2026-06-02 12:19:52 [INFO] Bloque 7/11
+2026-06-02 12:19:55 [INFO] Citas obtenidos en bloque 7: 26
+2026-06-02 12:19:55 [INFO] Bloque 8/11
+2026-06-02 12:19:58 [INFO] Citas obtenidos en bloque 8: 32
+2026-06-02 12:19:58 [INFO] Bloque 9/11
+2026-06-02 12:20:01 [INFO] Citas obtenidos en bloque 9: 30
+2026-06-02 12:20:01 [INFO] Bloque 10/11
+2026-06-02 12:20:09 [INFO] Citas obtenidos en bloque 10: 24
+2026-06-02 12:20:09 [INFO] Bloque 11/11
+2026-06-02 12:20:11 [INFO] Citas obtenidos en bloque 11: 11
+2026-06-02 12:20:11 [INFO] Total de citas históricos obtenidos: 358
+2026-06-02 12:20:11 [INFO] DataFrame histórico de citas total: 358 filas
+2026-06-02 12:20:11 [INFO] Haciendo peticiones de llamadas en 11 bloques...
+2026-06-02 12:20:11 [INFO] Bloque 1/11
+2026-06-02 12:20:16 [INFO] Llamadas obtenidos en bloque 1: 197
+2026-06-02 12:20:16 [INFO] Bloque 2/11
+2026-06-02 12:20:19 [INFO] Llamadas obtenidos en bloque 2: 96
+2026-06-02 12:20:19 [INFO] Bloque 3/11
+2026-06-02 12:20:25 [INFO] Llamadas obtenidos en bloque 3: 134
+2026-06-02 12:20:25 [INFO] Bloque 4/11
+2026-06-02 12:20:29 [INFO] Llamadas obtenidos en bloque 4: 120
+2026-06-02 12:20:29 [INFO] Bloque 5/11
+2026-06-02 12:20:34 [INFO] Llamadas obtenidos en bloque 5: 67
+2026-06-02 12:20:34 [INFO] Bloque 6/11
+2026-06-02 12:20:37 [INFO] Llamadas obtenidos en bloque 6: 98
+2026-06-02 12:20:37 [INFO] Bloque 7/11
+2026-06-02 12:20:42 [INFO] Llamadas obtenidos en bloque 7: 80
+2026-06-02 12:20:42 [INFO] Bloque 8/11
+2026-06-02 12:20:45 [INFO] Llamadas obtenidos en bloque 8: 96
+2026-06-02 12:20:45 [INFO] Bloque 9/11
+2026-06-02 12:20:50 [INFO] Llamadas obtenidos en bloque 9: 179
+2026-06-02 12:20:50 [INFO] Bloque 10/11
+2026-06-02 12:20:54 [INFO] Llamadas obtenidos en bloque 10: 103
+2026-06-02 12:20:54 [INFO] Bloque 11/11
+2026-06-02 12:20:57 [INFO] Llamadas obtenidos en bloque 11: 5
+2026-06-02 12:20:57 [INFO] Total de llamadas históricos obtenidos: 1175
+2026-06-02 12:20:57 [INFO] DataFrame histórico de llamadas total: 1175 filas
+2026-06-02 12:20:57 [INFO] Haciendo peticiones de servicios en 11 bloques...
+2026-06-02 12:20:57 [INFO] Bloque 1/11
+2026-06-02 12:21:00 [INFO] Servicios obtenidos en bloque 1: 7
+2026-06-02 12:21:00 [INFO] Bloque 2/11
+2026-06-02 12:21:03 [INFO] Servicios obtenidos en bloque 2: 5
+2026-06-02 12:21:03 [INFO] Bloque 3/11
+2026-06-02 12:21:06 [INFO] Servicios obtenidos en bloque 3: 27
+2026-06-02 12:21:06 [INFO] Bloque 4/11
+2026-06-02 12:21:08 [INFO] Servicios obtenidos en bloque 4: 9
+2026-06-02 12:21:08 [INFO] Bloque 5/11
+2026-06-02 12:21:11 [INFO] Servicios obtenidos en bloque 5: 30
+2026-06-02 12:21:11 [INFO] Bloque 6/11
+2026-06-02 12:21:14 [INFO] Servicios obtenidos en bloque 6: 5
+2026-06-02 12:21:14 [INFO] Bloque 7/11
+2026-06-02 12:21:16 [INFO] Servicios obtenidos en bloque 7: 3
+2026-06-02 12:21:16 [INFO] Bloque 8/11
+2026-06-02 12:21:19 [INFO] Servicios obtenidos en bloque 8: 6
+2026-06-02 12:21:19 [INFO] Bloque 9/11
+2026-06-02 12:21:22 [INFO] Servicios obtenidos en bloque 9: 4
+2026-06-02 12:21:22 [INFO] Bloque 10/11
+2026-06-02 12:21:24 [INFO] Servicios obtenidos en bloque 10: 5
+2026-06-02 12:21:24 [INFO] Bloque 11/11
+2026-06-02 12:21:27 [INFO] Servicios obtenidos en bloque 11: 1
+2026-06-02 12:21:27 [INFO] Total de servicios históricos obtenidos: 102
+2026-06-02 12:21:27 [INFO] DataFrame histórico de servicios total: 102 filas
+2026-06-02 12:22:14 [INFO] Llamadas abiertas con estado caliente: 2
+2026-06-02 12:22:54 [INFO] Leads abiertos: 4346
+2026-06-02 12:23:05 [INFO] Oportunidades abiertas: 562
+2026-06-02 12:23:21 [INFO] Oportunidades abiertas: 562
+2026-06-02 12:23:51 [INFO] Cuentas sin llamada en el año: 322
+2026-06-02 12:24:02 [INFO] Citas canceladas en el año actual: 234
+2026-06-02 12:24:07 [INFO] Citas completadas 6 meses atrás: 0
+2026-06-02 12:24:07 [WARNING] Procesos con fallos (1/13): ['GRANTS']
+2026-06-02 12:24:36 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-06-02.txt'
+2026-06-02 12:24:37 [ERROR] Proceso GRANTS falló: ('42000', "[42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Cannot open server 'mssql-global-prod' requested by the login. Client with IP address '181.51.34.61' is not allowed to access the server.  To enable access, use the Azure Management Portal or run sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may take up to five minutes for this change to take effect. (40615) (SQLDriverConnect); [42000] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0); [42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Cannot open server 'mssql-global-prod' requested by the login. Client with IP address '181.51.34.61' is not allowed to access the server.  To enable access, use the Azure Management Portal or run sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may take up to five minutes for this change to take effect. (40615); [42000] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0)")
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\script_main.py", line 210, in run
+    with GRANTSClient() as grants_client:
+         ~~~~~~~~~~~~^^
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\clients\sql_client.py", line 24, in __enter__
+    self._conn = pyodbc.connect(self.connection_string)
+                 ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+pyodbc.ProgrammingError: ('42000', "[42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Cannot open server 'mssql-global-prod' requested by the login. Client with IP address '181.51.34.61' is not allowed to access the server.  To enable access, use the Azure Management Portal or run sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may take up to five minutes for this change to take effect. (40615) (SQLDriverConnect); [42000] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0); [42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Cannot open server 'mssql-global-prod' requested by the login. Client with IP address '181.51.34.61' is not allowed to access the server.  To enable access, use the Azure Management Portal or run sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may take up to five minutes for this change to take effect. (40615); [42000] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0)")
+2026-06-02 12:24:42 [INFO] Citas semana actual: 158
+2026-06-02 12:24:48 [INFO] Citas agendadas 12 semanas atrás: 256
+2026-06-02 12:24:48 [INFO] Haciendo peticiones de citas en 11 bloques...
+2026-06-02 12:24:48 [INFO] Bloque 1/11
+2026-06-02 12:24:51 [INFO] Citas obtenidos en bloque 1: 44
+2026-06-02 12:24:51 [INFO] Bloque 2/11
+2026-06-02 12:24:54 [INFO] Citas obtenidos en bloque 2: 33
+2026-06-02 12:24:54 [INFO] Bloque 3/11
+2026-06-02 12:24:58 [INFO] Citas obtenidos en bloque 3: 60
+2026-06-02 12:24:58 [INFO] Bloque 4/11
+2026-06-02 12:25:01 [INFO] Citas obtenidos en bloque 4: 34
+2026-06-02 12:25:01 [INFO] Bloque 5/11
+2026-06-02 12:25:03 [INFO] Citas obtenidos en bloque 5: 34
+2026-06-02 12:25:03 [INFO] Bloque 6/11
+2026-06-02 12:25:06 [INFO] Citas obtenidos en bloque 6: 30
+2026-06-02 12:25:06 [INFO] Bloque 7/11
+2026-06-02 12:25:10 [INFO] Citas obtenidos en bloque 7: 26
+2026-06-02 12:25:10 [INFO] Bloque 8/11
+2026-06-02 12:25:12 [INFO] Citas obtenidos en bloque 8: 32
+2026-06-02 12:25:12 [INFO] Bloque 9/11
+2026-06-02 12:25:15 [INFO] Citas obtenidos en bloque 9: 30
+2026-06-02 12:25:15 [INFO] Bloque 10/11
+2026-06-02 12:25:18 [INFO] Citas obtenidos en bloque 10: 24
+2026-06-02 12:25:18 [INFO] Bloque 11/11
+2026-06-02 12:25:20 [INFO] Citas obtenidos en bloque 11: 11
+2026-06-02 12:25:20 [INFO] Total de citas históricos obtenidos: 358
+2026-06-02 12:25:20 [INFO] DataFrame histórico de citas total: 358 filas
+2026-06-02 12:25:20 [INFO] Haciendo peticiones de llamadas en 11 bloques...
+2026-06-02 12:25:20 [INFO] Bloque 1/11
+2026-06-02 12:25:25 [INFO] Llamadas obtenidos en bloque 1: 197
+2026-06-02 12:25:25 [INFO] Bloque 2/11
+2026-06-02 12:25:29 [INFO] Llamadas obtenidos en bloque 2: 96
+2026-06-02 12:25:29 [INFO] Bloque 3/11
+2026-06-02 12:25:33 [INFO] Llamadas obtenidos en bloque 3: 134
+2026-06-02 12:25:33 [INFO] Bloque 4/11
+2026-06-02 12:25:36 [INFO] Llamadas obtenidos en bloque 4: 120
+2026-06-02 12:25:36 [INFO] Bloque 5/11
+2026-06-02 12:25:40 [INFO] Llamadas obtenidos en bloque 5: 67
+2026-06-02 12:25:40 [INFO] Bloque 6/11
+2026-06-02 12:25:43 [INFO] Llamadas obtenidos en bloque 6: 98
+2026-06-02 12:25:43 [INFO] Bloque 7/11
+2026-06-02 12:25:47 [INFO] Llamadas obtenidos en bloque 7: 80
+2026-06-02 12:25:47 [INFO] Bloque 8/11
+2026-06-02 12:25:50 [INFO] Llamadas obtenidos en bloque 8: 96
+2026-06-02 12:25:50 [INFO] Bloque 9/11
+2026-06-02 12:25:53 [INFO] Llamadas obtenidos en bloque 9: 179
+2026-06-02 12:25:53 [INFO] Bloque 10/11
+2026-06-02 12:25:57 [INFO] Llamadas obtenidos en bloque 10: 103
+2026-06-02 12:25:57 [INFO] Bloque 11/11
+2026-06-02 12:25:59 [INFO] Llamadas obtenidos en bloque 11: 5
+2026-06-02 12:25:59 [INFO] Total de llamadas históricos obtenidos: 1175
+2026-06-02 12:25:59 [INFO] DataFrame histórico de llamadas total: 1175 filas
+2026-06-02 12:25:59 [INFO] Haciendo peticiones de servicios en 11 bloques...
+2026-06-02 12:25:59 [INFO] Bloque 1/11
+2026-06-02 12:26:02 [INFO] Servicios obtenidos en bloque 1: 7
+2026-06-02 12:26:02 [INFO] Bloque 2/11
+2026-06-02 12:26:04 [INFO] Servicios obtenidos en bloque 2: 5
+2026-06-02 12:26:04 [INFO] Bloque 3/11
+2026-06-02 12:26:07 [INFO] Servicios obtenidos en bloque 3: 27
+2026-06-02 12:26:07 [INFO] Bloque 4/11
+2026-06-02 12:26:09 [INFO] Servicios obtenidos en bloque 4: 9
+2026-06-02 12:26:09 [INFO] Bloque 5/11
+2026-06-02 12:26:12 [INFO] Servicios obtenidos en bloque 5: 30
+2026-06-02 12:26:12 [INFO] Bloque 6/11
+2026-06-02 12:26:14 [INFO] Servicios obtenidos en bloque 6: 5
+2026-06-02 12:26:14 [INFO] Bloque 7/11
+2026-06-02 12:26:17 [INFO] Servicios obtenidos en bloque 7: 3
+2026-06-02 12:26:17 [INFO] Bloque 8/11
+2026-06-02 12:26:19 [INFO] Servicios obtenidos en bloque 8: 6
+2026-06-02 12:26:19 [INFO] Bloque 9/11
+2026-06-02 12:26:21 [INFO] Servicios obtenidos en bloque 9: 4
+2026-06-02 12:26:21 [INFO] Bloque 10/11
+2026-06-02 12:26:24 [INFO] Servicios obtenidos en bloque 10: 5
+2026-06-02 12:26:24 [INFO] Bloque 11/11
+2026-06-02 12:26:26 [INFO] Servicios obtenidos en bloque 11: 1
+2026-06-02 12:26:26 [INFO] Total de servicios históricos obtenidos: 102
+2026-06-02 12:26:26 [INFO] DataFrame histórico de servicios total: 102 filas
+2026-06-02 12:26:31 [INFO] Llamadas abiertas con estado caliente: 2
+2026-06-02 12:27:14 [INFO] Leads abiertos: 4346
+2026-06-02 12:27:24 [INFO] Oportunidades abiertas: 562
+2026-06-02 12:27:34 [INFO] Oportunidades abiertas: 562
+2026-06-02 12:27:53 [INFO] Cuentas sin llamada en el año: 322
+2026-06-02 12:28:00 [INFO] Citas canceladas en el año actual: 234
+2026-06-02 12:28:03 [INFO] Citas completadas 6 meses atrás: 0
+2026-06-02 12:28:03 [WARNING] Procesos con fallos (1/13): ['GRANTS']
+2026-06-02 12:28:06 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-06-02 12:30:27 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-06-02.txt'
+2026-06-02 12:30:29 [ERROR] Proceso GRANTS falló: ('42000', "[42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Cannot open server 'mssql-global-prod' requested by the login. Client with IP address '181.51.34.61' is not allowed to access the server.  To enable access, use the Azure Management Portal or run sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may take up to five minutes for this change to take effect. (40615) (SQLDriverConnect); [42000] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0); [42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Cannot open server 'mssql-global-prod' requested by the login. Client with IP address '181.51.34.61' is not allowed to access the server.  To enable access, use the Azure Management Portal or run sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may take up to five minutes for this change to take effect. (40615); [42000] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0)")
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\script_main.py", line 210, in run
+    with GRANTSClient() as grants_client:
+         ~~~~~~~~~~~~^^
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\clients\sql_client.py", line 24, in __enter__
+    self._conn = pyodbc.connect(self.connection_string)
+                 ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+pyodbc.ProgrammingError: ('42000', "[42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Cannot open server 'mssql-global-prod' requested by the login. Client with IP address '181.51.34.61' is not allowed to access the server.  To enable access, use the Azure Management Portal or run sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may take up to five minutes for this change to take effect. (40615) (SQLDriverConnect); [42000] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0); [42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Cannot open server 'mssql-global-prod' requested by the login. Client with IP address '181.51.34.61' is not allowed to access the server.  To enable access, use the Azure Management Portal or run sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may take up to five minutes for this change to take effect. (40615); [42000] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0)")
+2026-06-02 12:30:34 [INFO] Citas semana actual: 158
+2026-06-02 12:30:39 [INFO] Citas agendadas 12 semanas atrás: 256
+2026-06-02 12:30:39 [INFO] Haciendo peticiones de citas en 11 bloques...
+2026-06-02 12:30:39 [INFO] Bloque 1/11
+2026-06-02 12:30:43 [INFO] Citas obtenidos en bloque 1: 44
+2026-06-02 12:30:43 [INFO] Bloque 2/11
+2026-06-02 12:30:45 [INFO] Citas obtenidos en bloque 2: 33
+2026-06-02 12:30:45 [INFO] Bloque 3/11
+2026-06-02 12:30:48 [INFO] Citas obtenidos en bloque 3: 60
+2026-06-02 12:30:48 [INFO] Bloque 4/11
+2026-06-02 12:30:52 [INFO] Citas obtenidos en bloque 4: 34
+2026-06-02 12:30:52 [INFO] Bloque 5/11
+2026-06-02 12:30:55 [INFO] Citas obtenidos en bloque 5: 34
+2026-06-02 12:30:55 [INFO] Bloque 6/11
+2026-06-02 12:30:58 [INFO] Citas obtenidos en bloque 6: 30
+2026-06-02 12:30:58 [INFO] Bloque 7/11
+2026-06-02 12:31:00 [INFO] Citas obtenidos en bloque 7: 26
+2026-06-02 12:31:00 [INFO] Bloque 8/11
+2026-06-02 12:31:03 [INFO] Citas obtenidos en bloque 8: 32
+2026-06-02 12:31:03 [INFO] Bloque 9/11
+2026-06-02 12:31:06 [INFO] Citas obtenidos en bloque 9: 30
+2026-06-02 12:31:06 [INFO] Bloque 10/11
+2026-06-02 12:31:09 [INFO] Citas obtenidos en bloque 10: 24
+2026-06-02 12:31:09 [INFO] Bloque 11/11
+2026-06-02 12:31:11 [INFO] Citas obtenidos en bloque 11: 11
+2026-06-02 12:31:11 [INFO] Total de citas históricos obtenidos: 358
+2026-06-02 12:31:11 [INFO] DataFrame histórico de citas total: 358 filas
+2026-06-02 12:31:11 [INFO] Haciendo peticiones de llamadas en 11 bloques...
+2026-06-02 12:31:11 [INFO] Bloque 1/11
+2026-06-02 12:31:16 [INFO] Llamadas obtenidos en bloque 1: 197
+2026-06-02 12:31:16 [INFO] Bloque 2/11
+2026-06-02 12:31:19 [INFO] Llamadas obtenidos en bloque 2: 96
+2026-06-02 12:31:19 [INFO] Bloque 3/11
+2026-06-02 12:31:22 [INFO] Llamadas obtenidos en bloque 3: 134
+2026-06-02 12:31:22 [INFO] Bloque 4/11
+2026-06-02 12:31:26 [INFO] Llamadas obtenidos en bloque 4: 120
+2026-06-02 12:31:26 [INFO] Bloque 5/11
+2026-06-02 12:31:28 [INFO] Llamadas obtenidos en bloque 5: 67
+2026-06-02 12:31:28 [INFO] Bloque 6/11
+2026-06-02 12:31:32 [INFO] Llamadas obtenidos en bloque 6: 98
+2026-06-02 12:31:32 [INFO] Bloque 7/11
+2026-06-02 12:31:35 [INFO] Llamadas obtenidos en bloque 7: 80
+2026-06-02 12:31:35 [INFO] Bloque 8/11
+2026-06-02 12:31:38 [INFO] Llamadas obtenidos en bloque 8: 96
+2026-06-02 12:31:38 [INFO] Bloque 9/11
+2026-06-02 12:31:41 [INFO] Llamadas obtenidos en bloque 9: 179
+2026-06-02 12:31:41 [INFO] Bloque 10/11
+2026-06-02 12:31:44 [INFO] Llamadas obtenidos en bloque 10: 103
+2026-06-02 12:31:45 [INFO] Bloque 11/11
+2026-06-02 12:31:47 [INFO] Llamadas obtenidos en bloque 11: 5
+2026-06-02 12:31:47 [INFO] Total de llamadas históricos obtenidos: 1175
+2026-06-02 12:31:47 [INFO] DataFrame histórico de llamadas total: 1175 filas
+2026-06-02 12:31:47 [INFO] Haciendo peticiones de servicios en 11 bloques...
+2026-06-02 12:31:47 [INFO] Bloque 1/11
+2026-06-02 12:31:49 [INFO] Servicios obtenidos en bloque 1: 7
+2026-06-02 12:31:49 [INFO] Bloque 2/11
+2026-06-02 12:31:51 [INFO] Servicios obtenidos en bloque 2: 5
+2026-06-02 12:31:51 [INFO] Bloque 3/11
+2026-06-02 12:31:55 [INFO] Servicios obtenidos en bloque 3: 27
+2026-06-02 12:31:55 [INFO] Bloque 4/11
+2026-06-02 12:31:58 [INFO] Servicios obtenidos en bloque 4: 9
+2026-06-02 12:31:58 [INFO] Bloque 5/11
+2026-06-02 12:32:01 [INFO] Servicios obtenidos en bloque 5: 30
+2026-06-02 12:32:01 [INFO] Bloque 6/11
+2026-06-02 12:32:03 [INFO] Servicios obtenidos en bloque 6: 5
+2026-06-02 12:32:03 [INFO] Bloque 7/11
+2026-06-02 12:32:05 [INFO] Servicios obtenidos en bloque 7: 3
+2026-06-02 12:32:05 [INFO] Bloque 8/11
+2026-06-02 12:32:08 [INFO] Servicios obtenidos en bloque 8: 6
+2026-06-02 12:32:08 [INFO] Bloque 9/11
+2026-06-02 12:32:10 [INFO] Servicios obtenidos en bloque 9: 4
+2026-06-02 12:32:10 [INFO] Bloque 10/11
+2026-06-02 12:32:13 [INFO] Servicios obtenidos en bloque 10: 5
+2026-06-02 12:32:13 [INFO] Bloque 11/11
+2026-06-02 12:32:15 [INFO] Servicios obtenidos en bloque 11: 1
+2026-06-02 12:32:15 [INFO] Total de servicios históricos obtenidos: 102
+2026-06-02 12:32:15 [INFO] DataFrame histórico de servicios total: 102 filas
+2026-06-02 12:32:19 [INFO] Llamadas abiertas con estado caliente: 2
+2026-06-02 12:33:01 [INFO] Leads abiertos: 4346
+2026-06-02 12:33:12 [INFO] Oportunidades abiertas: 562
+2026-06-02 12:33:20 [INFO] Oportunidades abiertas: 562
+2026-06-02 12:33:41 [INFO] Cuentas sin llamada en el año: 322
+2026-06-02 12:33:48 [INFO] Citas canceladas en el año actual: 234
+2026-06-02 12:33:51 [INFO] Citas completadas 6 meses atrás: 0
+2026-06-02 12:33:51 [WARNING] Procesos con fallos (1/13): ['GRANTS']
+2026-06-02 12:33:54 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'

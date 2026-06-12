@@ -1,0 +1,35 @@
+2026-05-25 10:29:00 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-25.txt'
+2026-05-25 10:29:06 [INFO] Citas semana actual: 142
+2026-05-25 10:29:09 [INFO] Citas canceladas en el año actual: 0
+2026-05-25 10:29:11 [INFO] Citas completadas 6 meses atrás: 0
+2026-05-25 10:29:12 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-05-25 10:33:16 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-25.txt'
+2026-05-25 10:33:21 [INFO] Citas semana actual: 142
+2026-05-25 10:33:40 [INFO] Citas canceladas en el año actual: 308
+2026-05-25 10:33:42 [INFO] Citas completadas 6 meses atrás: 0
+2026-05-25 10:33:43 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-05-25 10:37:03 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-25.txt'
+2026-05-25 10:37:10 [INFO] Citas semana actual: 142
+2026-05-25 10:37:22 [INFO] Citas canceladas en el año actual: 308
+2026-05-25 10:37:24 [INFO] Citas completadas 6 meses atrás: 0
+2026-05-25 10:37:25 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-05-25 10:45:53 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-25.txt'
+2026-05-25 10:45:58 [INFO] Citas semana actual: 143
+2026-05-25 10:46:02 [INFO] Citas canceladas en el año actual: 2
+2026-05-25 10:46:07 [INFO] Citas completadas 6 meses atrás: 0
+2026-05-25 10:46:08 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-05-25 10:49:50 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-25.txt'
+2026-05-25 10:49:56 [INFO] Citas semana actual: 143
+2026-05-25 10:50:17 [INFO] Citas canceladas en el año actual: 308
+2026-05-25 10:50:20 [INFO] Citas completadas 6 meses atrás: 0
+2026-05-25 10:50:21 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-05-25 10:52:35 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-25.txt'
+2026-05-25 10:52:39 [INFO] Citas semana actual: 143
+2026-05-25 10:52:46 [INFO] Citas canceladas en el año actual: 308
+2026-05-25 10:52:48 [INFO] Citas completadas 6 meses atrás: 0
+2026-05-25 10:52:49 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-05-25 10:55:21 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-25.txt'
+2026-05-25 10:55:24 [INFO] Citas semana actual: 143
+2026-05-25 10:55:31 [INFO] Citas canceladas en el año actual: 308
+2026-05-25 10:55:34 [INFO] Citas completadas 6 meses atrás: 0
+2026-05-25 10:55:35 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'

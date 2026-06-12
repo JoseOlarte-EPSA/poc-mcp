@@ -1,0 +1,31 @@
+<fetch>
+    <entity name="phonecall">
+        <attribute name="actualend" />
+        <attribute name="subject" />
+        <attribute name="iav_result" />
+        <attribute name="regardingobjectid" />
+        <attribute name="iav_type" />
+        <attribute name="phonenumber" />
+        <order attribute="actualend" descending="true" />   
+        <filter type="and">
+            <condition attribute="actualend" operator="this-week" />
+        </filter>
+        <link-entity name="account" from="accountid" to="iav_accountid" alias="account" link-type="inner">
+            <attribute name="name" />
+        </link-entity>
+        <link-entity name="systemuser" from="systemuserid" to="fin_accountmanagerid" alias="user" link-type="inner">
+            <attribute name="domainname" />
+            <filter type="and">               
+                <condition attribute="domainname" operator="eq" value="{{ismael.olmedo@fi-group.com}}" />  
+                <condition attribute="businessunitid" operator="eq" value="2bf0da8a-6fbc-e611-80ea-c4346badc0e4" />                
+                <condition attribute="isdisabled" operator="eq" value="0" />                
+                <condition attribute="fig_managementunitid" operator="in">                    
+                    <value>10b7dd31-74b6-f011-bbd3-7c1e5211af47</value>                    
+                    <value>2d40813e-74b6-f011-bbd3-7c1e5211af47</value>                
+                </condition>
+            </link-entity>        
+            <link-entity name="systemuser" from="systemuserid" to="owner" alias="owner" link-type="inner">
+                <attribute name="domainname" />
+            </link-entity>
+        </entity>
+    </fetch>

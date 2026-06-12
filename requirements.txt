@@ -1,0 +1,10 @@
+requests
+pandas
+python-dotenv
+pyodbc
+beautifulsoup4
+fastmcp
+openpyxl
+fastapi
+uvicorn[standard]
+psutil

@@ -1,0 +1,40 @@
+2026-05-07 14:40:46 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\logs\logs_2026-05-07.txt'
+2026-05-07 14:40:50 [INFO] Haciendo petición GRANTS...
+2026-05-07 14:40:54 [INFO] Registros GRANTS obtenidos: 3733
+2026-05-07 14:40:54 [INFO] DataFrame GRANTS total: 3733 filas
+2026-05-07 14:41:03 [INFO] Citas semana actual: 224
+2026-05-07 14:41:12 [INFO] Citas 12 semanas atrás:
+2026-05-07 14:41:12 [INFO] Haciendo peticiones de citas en 15 bloques...
+2026-05-07 14:41:12 [INFO] Bloque 1/15
+2026-05-07 14:41:16 [INFO] Citas obtenidos en bloque 1: 71
+2026-05-07 14:41:16 [INFO] Bloque 2/15
+2026-05-07 14:41:19 [INFO] Citas obtenidos en bloque 2: 29
+2026-05-07 14:41:19 [INFO] Bloque 3/15
+2026-05-07 14:41:22 [INFO] Citas obtenidos en bloque 3: 40
+2026-05-07 14:41:22 [INFO] Bloque 4/15
+2026-05-07 14:41:27 [INFO] Citas obtenidos en bloque 4: 42
+2026-05-07 14:41:27 [INFO] Bloque 5/15
+2026-05-07 14:41:31 [INFO] Citas obtenidos en bloque 5: 30
+2026-05-07 14:41:31 [INFO] Bloque 6/15
+2026-05-07 14:41:35 [INFO] Citas obtenidos en bloque 6: 57
+2026-05-07 14:41:35 [INFO] Bloque 7/15
+2026-05-07 14:41:38 [INFO] Citas obtenidos en bloque 7: 48
+2026-05-07 14:41:38 [INFO] Bloque 8/15
+2026-05-07 14:41:41 [INFO] Citas obtenidos en bloque 8: 50
+2026-05-07 14:41:41 [INFO] Bloque 9/15
+2026-05-07 14:41:44 [INFO] Citas obtenidos en bloque 9: 34
+2026-05-07 14:41:44 [INFO] Bloque 10/15
+2026-05-07 14:41:47 [INFO] Citas obtenidos en bloque 10: 30
+2026-05-07 14:41:47 [INFO] Bloque 11/15
+2026-05-07 14:41:50 [INFO] Citas obtenidos en bloque 11: 27
+2026-05-07 14:41:50 [INFO] Bloque 12/15
+2026-05-07 14:41:54 [INFO] Citas obtenidos en bloque 12: 63
+2026-05-07 14:41:54 [INFO] Bloque 13/15
+2026-05-07 14:41:57 [INFO] Citas obtenidos en bloque 13: 46
+2026-05-07 14:41:57 [INFO] Bloque 14/15
+2026-05-07 14:42:01 [INFO] Citas obtenidos en bloque 14: 38
+2026-05-07 14:42:01 [INFO] Bloque 15/15
+2026-05-07 14:42:04 [INFO] Citas obtenidos en bloque 15: 10
+2026-05-07 14:42:04 [INFO] Total de citas históricos obtenidos: 615
+2026-05-07 14:42:04 [INFO] DataFrame histórico de citas total: 615 filas
+2026-05-07 14:42:05 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\output\citas.xlsx'

@@ -1,0 +1,256 @@
+2026-05-13 12:38:28 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-13.txt'
+2026-05-13 12:39:06 [ERROR] Proceso GRANTS falló: ('08001', '[08001] [Microsoft][ODBC Driver 18 for SQL Server]Named Pipes Provider: Could not open a connection to SQL Server [64].  (64) (SQLDriverConnect); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Login timeout expired (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]A network-related or instance-specific error has occurred while establishing a connection to mssql-global-prod.database.windows.net. Server is not found or not accessible. Check if instance name is correct and if SQL Server is configured to allow remote connections. For more information see SQL Server Books Online. (64)')
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\script_main.py", line 209, in run
+    with GRANTSClient() as grants_client:
+         ~~~~~~~~~~~~^^
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\clients\sql_client.py", line 24, in __enter__
+    self._conn = pyodbc.connect(self.connection_string)
+                 ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+pyodbc.OperationalError: ('08001', '[08001] [Microsoft][ODBC Driver 18 for SQL Server]Named Pipes Provider: Could not open a connection to SQL Server [64].  (64) (SQLDriverConnect); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Login timeout expired (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]A network-related or instance-specific error has occurred while establishing a connection to mssql-global-prod.database.windows.net. Server is not found or not accessible. Check if instance name is correct and if SQL Server is configured to allow remote connections. For more information see SQL Server Books Online. (64)')
+2026-05-13 12:39:17 [INFO] Citas semana actual: 217
+2026-05-13 12:39:17 [INFO] Obteniendo noticias para 10 cuentas únicas...
+2026-05-13 12:39:17 [INFO]   [1/10] ESPECIALIDADES ENERGETICAS SL
+2026-05-13 12:39:29 [INFO]   [2/10] EUROFRAGANCE, S.L.
+2026-05-13 12:39:50 [WARNING] No se pudo obtener contenido de https://www.equiposytalento.com/noticias/2025/05/22/el-rol-de-la-diversidad-en-la-evolucion-de-las-marcas-corporativas-talento-femenino-diversidad: HTTPSConnectionPool(host='www.equiposytalento.com', port=443): Max retries exceeded with url: /noticias/2025/05/22/el-rol-de-la-diversidad-en-la-evolucion-de-las-marcas-corporativas-talento-femenino-diversidad (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.equiposytalento.com', port=443) at 0x18b4646e210>, 'Connection to www.equiposytalento.com timed out. (connect timeout=10)'))
+2026-05-13 12:40:02 [WARNING] No se pudo obtener contenido de https://www.equiposytalento.com/noticias/2024/12/09/la-comunicacion-inclusiva-eje-estrategico-de-las-empresas-talento-femenino-diversidad: HTTPSConnectionPool(host='www.equiposytalento.com', port=443): Max retries exceeded with url: /noticias/2024/12/09/la-comunicacion-inclusiva-eje-estrategico-de-las-empresas-talento-femenino-diversidad (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.equiposytalento.com', port=443) at 0x18b4646e210>, 'Connection to www.equiposytalento.com timed out. (connect timeout=10)'))
+2026-05-13 12:40:02 [INFO]   [3/10] HUMAN-ROBOT SOLUTIONS, S.L.
+2026-05-13 12:40:14 [INFO]   [4/10] KAIZEN CONSULTING EUROPA SOCIEDAD LIMITADA.
+2026-05-13 12:40:24 [INFO]   [5/10] PANADERO AB, SL.
+2026-05-13 12:40:30 [INFO]   [6/10] INDUSTRIAS TEIXIDO S.A.U.
+2026-05-13 12:40:41 [INFO]   [7/10] WITZENMANN ESPANOLA SA
+2026-05-13 12:40:51 [INFO]   [8/10] SMRC AUTOMOTIVE INTERIORS SPAIN, S.L.
+2026-05-13 12:41:00 [INFO]   [9/10] POWERBIM S.L.
+2026-05-13 12:41:07 [INFO]   [10/10] AUTO JUNTAS, S.A.
+2026-05-13 12:41:21 [INFO] Total noticias obtenidas: 16
+2026-05-13 12:41:21 [INFO] Generando resúmenes de noticias...
+2026-05-13 12:42:12 [INFO] Citas 12 semanas atrás:
+2026-05-13 12:42:12 [INFO] Haciendo peticiones de citas en 14 bloques...
+2026-05-13 12:42:12 [INFO] Bloque 1/14
+2026-05-13 12:42:16 [INFO] Citas obtenidos en bloque 1: 61
+2026-05-13 12:42:16 [INFO] Bloque 2/14
+2026-05-13 12:42:18 [INFO] Citas obtenidos en bloque 2: 44
+2026-05-13 12:42:18 [INFO] Bloque 3/14
+2026-05-13 12:42:22 [INFO] Citas obtenidos en bloque 3: 55
+2026-05-13 12:42:22 [INFO] Bloque 4/14
+2026-05-13 12:42:25 [INFO] Citas obtenidos en bloque 4: 40
+2026-05-13 12:42:25 [INFO] Bloque 5/14
+2026-05-13 12:42:28 [INFO] Citas obtenidos en bloque 5: 45
+2026-05-13 12:42:28 [INFO] Bloque 6/14
+2026-05-13 12:42:31 [INFO] Citas obtenidos en bloque 6: 45
+2026-05-13 12:42:31 [INFO] Bloque 7/14
+2026-05-13 12:42:34 [INFO] Citas obtenidos en bloque 7: 31
+2026-05-13 12:42:34 [INFO] Bloque 8/14
+2026-05-13 12:42:38 [INFO] Citas obtenidos en bloque 8: 54
+2026-05-13 12:42:38 [INFO] Bloque 9/14
+2026-05-13 12:42:41 [INFO] Citas obtenidos en bloque 9: 67
+2026-05-13 12:42:41 [INFO] Bloque 10/14
+2026-05-13 12:42:45 [INFO] Citas obtenidos en bloque 10: 53
+2026-05-13 12:42:45 [INFO] Bloque 11/14
+2026-05-13 12:42:48 [INFO] Citas obtenidos en bloque 11: 32
+2026-05-13 12:42:48 [INFO] Bloque 12/14
+2026-05-13 12:42:51 [INFO] Citas obtenidos en bloque 12: 48
+2026-05-13 12:42:51 [INFO] Bloque 13/14
+2026-05-13 12:42:54 [INFO] Citas obtenidos en bloque 13: 66
+2026-05-13 12:42:54 [INFO] Bloque 14/14
+2026-05-13 12:42:57 [INFO] Citas obtenidos en bloque 14: 24
+2026-05-13 12:42:57 [INFO] Total de citas históricos obtenidos: 665
+2026-05-13 12:42:57 [INFO] DataFrame histórico de citas total: 665 filas
+2026-05-13 12:42:57 [INFO] Haciendo peticiones de llamadas en 14 bloques...
+2026-05-13 12:42:57 [INFO] Bloque 1/14
+2026-05-13 12:43:01 [INFO] Llamadas obtenidos en bloque 1: 231
+2026-05-13 12:43:01 [INFO] Bloque 2/14
+2026-05-13 12:43:05 [INFO] Llamadas obtenidos en bloque 2: 171
+2026-05-13 12:43:05 [INFO] Bloque 3/14
+2026-05-13 12:43:09 [INFO] Llamadas obtenidos en bloque 3: 189
+2026-05-13 12:43:09 [INFO] Bloque 4/14
+2026-05-13 12:43:19 [INFO] Llamadas obtenidos en bloque 4: 196
+2026-05-13 12:43:19 [INFO] Bloque 5/14
+2026-05-13 12:43:23 [INFO] Llamadas obtenidos en bloque 5: 256
+2026-05-13 12:43:23 [INFO] Bloque 6/14
+2026-05-13 12:43:27 [INFO] Llamadas obtenidos en bloque 6: 239
+2026-05-13 12:43:27 [INFO] Bloque 7/14
+2026-05-13 12:43:32 [INFO] Llamadas obtenidos en bloque 7: 205
+2026-05-13 12:43:32 [INFO] Bloque 8/14
+2026-05-13 12:43:36 [INFO] Llamadas obtenidos en bloque 8: 252
+2026-05-13 12:43:36 [INFO] Bloque 9/14
+2026-05-13 12:43:39 [INFO] Llamadas obtenidos en bloque 9: 236
+2026-05-13 12:43:39 [INFO] Bloque 10/14
+2026-05-13 12:43:43 [INFO] Llamadas obtenidos en bloque 10: 159
+2026-05-13 12:43:43 [INFO] Bloque 11/14
+2026-05-13 12:43:46 [INFO] Llamadas obtenidos en bloque 11: 120
+2026-05-13 12:43:46 [INFO] Bloque 12/14
+2026-05-13 12:43:50 [INFO] Llamadas obtenidos en bloque 12: 219
+2026-05-13 12:43:50 [INFO] Bloque 13/14
+2026-05-13 12:43:54 [INFO] Llamadas obtenidos en bloque 13: 174
+2026-05-13 12:43:54 [INFO] Bloque 14/14
+2026-05-13 12:43:58 [INFO] Llamadas obtenidos en bloque 14: 94
+2026-05-13 12:43:58 [INFO] Total de llamadas históricos obtenidos: 2741
+2026-05-13 12:43:58 [INFO] DataFrame histórico de llamadas total: 2741 filas
+2026-05-13 12:43:58 [INFO] Haciendo peticiones de servicios en 14 bloques...
+2026-05-13 12:43:58 [INFO] Bloque 1/14
+2026-05-13 12:44:02 [INFO] Servicios obtenidos en bloque 1: 37
+2026-05-13 12:44:02 [INFO] Bloque 2/14
+2026-05-13 12:44:05 [INFO] Servicios obtenidos en bloque 2: 18
+2026-05-13 12:44:05 [INFO] Bloque 3/14
+2026-05-13 12:44:08 [INFO] Servicios obtenidos en bloque 3: 32
+2026-05-13 12:44:08 [INFO] Bloque 4/14
+2026-05-13 12:44:11 [INFO] Servicios obtenidos en bloque 4: 31
+2026-05-13 12:44:11 [INFO] Bloque 5/14
+2026-05-13 12:44:14 [INFO] Servicios obtenidos en bloque 5: 28
+2026-05-13 12:44:14 [INFO] Bloque 6/14
+2026-05-13 12:44:16 [INFO] Servicios obtenidos en bloque 6: 33
+2026-05-13 12:44:16 [INFO] Bloque 7/14
+2026-05-13 12:44:19 [INFO] Servicios obtenidos en bloque 7: 17
+2026-05-13 12:44:19 [INFO] Bloque 8/14
+2026-05-13 12:44:22 [INFO] Servicios obtenidos en bloque 8: 30
+2026-05-13 12:44:22 [INFO] Bloque 9/14
+2026-05-13 12:44:25 [INFO] Servicios obtenidos en bloque 9: 33
+2026-05-13 12:44:25 [INFO] Bloque 10/14
+2026-05-13 12:44:27 [INFO] Servicios obtenidos en bloque 10: 24
+2026-05-13 12:44:27 [INFO] Bloque 11/14
+2026-05-13 12:44:30 [INFO] Servicios obtenidos en bloque 11: 26
+2026-05-13 12:44:30 [INFO] Bloque 12/14
+2026-05-13 12:44:33 [INFO] Servicios obtenidos en bloque 12: 18
+2026-05-13 12:44:33 [INFO] Bloque 13/14
+2026-05-13 12:44:35 [INFO] Servicios obtenidos en bloque 13: 29
+2026-05-13 12:44:35 [INFO] Bloque 14/14
+2026-05-13 12:44:38 [INFO] Servicios obtenidos en bloque 14: 15
+2026-05-13 12:44:38 [INFO] Total de servicios históricos obtenidos: 371
+2026-05-13 12:44:38 [INFO] DataFrame histórico de servicios total: 371 filas
+2026-05-13 12:44:38 [INFO] Llamadas abiertas con estado caliente:
+2026-05-13 12:45:09 [INFO] Leads abiertos:
+2026-05-13 12:45:59 [INFO] Oportunidades abiertas:
+2026-05-13 12:46:20 [INFO] Ofertas pendientes:
+2026-05-13 12:46:34 [INFO] Llamadas en el año:
+2026-05-13 12:46:58 [INFO] Cuentas sin llamada en el año: 320
+2026-05-13 12:46:58 [WARNING] Procesos con fallos (1/12): ['GRANTS']
+2026-05-13 12:47:01 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
+2026-05-13 13:18:51 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-13.txt'
+2026-05-13 13:19:37 [ERROR] Proceso GRANTS falló: ('08001', '[08001] [Microsoft][ODBC Driver 18 for SQL Server]Named Pipes Provider: Could not open a connection to SQL Server [64].  (64) (SQLDriverConnect); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Login timeout expired (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]A network-related or instance-specific error has occurred while establishing a connection to mssql-global-prod.database.windows.net. Server is not found or not accessible. Check if instance name is correct and if SQL Server is configured to allow remote connections. For more information see SQL Server Books Online. (64)')
+Traceback (most recent call last):
+  File "C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\script_main.py", line 209, in run
+    with GRANTSClient() as grants_client:
+         ~~~~~~~~~~~~^^
+  File "C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\scripts\clients\sql_client.py", line 24, in __enter__
+    self._conn = pyodbc.connect(self.connection_string)
+                 ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+pyodbc.OperationalError: ('08001', '[08001] [Microsoft][ODBC Driver 18 for SQL Server]Named Pipes Provider: Could not open a connection to SQL Server [64].  (64) (SQLDriverConnect); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Login timeout expired (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]A network-related or instance-specific error has occurred while establishing a connection to mssql-global-prod.database.windows.net. Server is not found or not accessible. Check if instance name is correct and if SQL Server is configured to allow remote connections. For more information see SQL Server Books Online. (64)')
+2026-05-13 13:19:46 [INFO] Citas semana actual: 217
+2026-05-13 13:19:46 [INFO] Obteniendo noticias para 10 cuentas únicas...
+2026-05-13 13:19:46 [INFO]   [1/10] ESPECIALIDADES ENERGETICAS SL
+2026-05-13 13:19:52 [INFO]   [2/10] EUROFRAGANCE, S.L.
+2026-05-13 13:20:07 [WARNING] No se pudo obtener contenido de https://www.equiposytalento.com/noticias/2025/05/22/el-rol-de-la-diversidad-en-la-evolucion-de-las-marcas-corporativas-talento-femenino-diversidad: HTTPSConnectionPool(host='www.equiposytalento.com', port=443): Max retries exceeded with url: /noticias/2025/05/22/el-rol-de-la-diversidad-en-la-evolucion-de-las-marcas-corporativas-talento-femenino-diversidad (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.equiposytalento.com', port=443) at 0x2034af5e0d0>, 'Connection to www.equiposytalento.com timed out. (connect timeout=10)'))
+2026-05-13 13:20:20 [WARNING] No se pudo obtener contenido de https://www.equiposytalento.com/noticias/2024/12/09/la-comunicacion-inclusiva-eje-estrategico-de-las-empresas-talento-femenino-diversidad: HTTPSConnectionPool(host='www.equiposytalento.com', port=443): Max retries exceeded with url: /noticias/2024/12/09/la-comunicacion-inclusiva-eje-estrategico-de-las-empresas-talento-femenino-diversidad (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.equiposytalento.com', port=443) at 0x2034af5e0d0>, 'Connection to www.equiposytalento.com timed out. (connect timeout=10)'))
+2026-05-13 13:20:20 [INFO]   [3/10] HUMAN-ROBOT SOLUTIONS, S.L.
+2026-05-13 13:20:21 [INFO]   [4/10] KAIZEN CONSULTING EUROPA SOCIEDAD LIMITADA.
+2026-05-13 13:20:25 [INFO]   [5/10] PANADERO AB, SL.
+2026-05-13 13:20:29 [INFO]   [6/10] INDUSTRIAS TEIXIDO S.A.U.
+2026-05-13 13:20:30 [INFO]   [7/10] WITZENMANN ESPANOLA SA
+2026-05-13 13:20:37 [INFO]   [8/10] SMRC AUTOMOTIVE INTERIORS SPAIN, S.L.
+2026-05-13 13:20:43 [INFO]   [9/10] POWERBIM S.L.
+2026-05-13 13:20:44 [INFO]   [10/10] AUTO JUNTAS, S.A.
+2026-05-13 13:20:57 [INFO] Total noticias obtenidas: 16
+2026-05-13 13:20:57 [INFO] Generando resúmenes de noticias...
+2026-05-13 13:21:42 [INFO] Citas 12 semanas atrás:
+2026-05-13 13:21:42 [INFO] Haciendo peticiones de citas en 14 bloques...
+2026-05-13 13:21:42 [INFO] Bloque 1/14
+2026-05-13 13:21:46 [INFO] Citas obtenidos en bloque 1: 61
+2026-05-13 13:21:46 [INFO] Bloque 2/14
+2026-05-13 13:21:49 [INFO] Citas obtenidos en bloque 2: 44
+2026-05-13 13:21:49 [INFO] Bloque 3/14
+2026-05-13 13:21:53 [INFO] Citas obtenidos en bloque 3: 55
+2026-05-13 13:21:53 [INFO] Bloque 4/14
+2026-05-13 13:21:57 [INFO] Citas obtenidos en bloque 4: 40
+2026-05-13 13:21:57 [INFO] Bloque 5/14
+2026-05-13 13:22:00 [INFO] Citas obtenidos en bloque 5: 45
+2026-05-13 13:22:00 [INFO] Bloque 6/14
+2026-05-13 13:22:03 [INFO] Citas obtenidos en bloque 6: 45
+2026-05-13 13:22:03 [INFO] Bloque 7/14
+2026-05-13 13:22:06 [INFO] Citas obtenidos en bloque 7: 31
+2026-05-13 13:22:06 [INFO] Bloque 8/14
+2026-05-13 13:22:10 [INFO] Citas obtenidos en bloque 8: 54
+2026-05-13 13:22:10 [INFO] Bloque 9/14
+2026-05-13 13:22:13 [INFO] Citas obtenidos en bloque 9: 67
+2026-05-13 13:22:13 [INFO] Bloque 10/14
+2026-05-13 13:22:17 [INFO] Citas obtenidos en bloque 10: 53
+2026-05-13 13:22:17 [INFO] Bloque 11/14
+2026-05-13 13:22:20 [INFO] Citas obtenidos en bloque 11: 32
+2026-05-13 13:22:20 [INFO] Bloque 12/14
+2026-05-13 13:22:23 [INFO] Citas obtenidos en bloque 12: 48
+2026-05-13 13:22:23 [INFO] Bloque 13/14
+2026-05-13 13:22:27 [INFO] Citas obtenidos en bloque 13: 66
+2026-05-13 13:22:27 [INFO] Bloque 14/14
+2026-05-13 13:22:29 [INFO] Citas obtenidos en bloque 14: 24
+2026-05-13 13:22:29 [INFO] Total de citas históricos obtenidos: 665
+2026-05-13 13:22:29 [INFO] DataFrame histórico de citas total: 665 filas
+2026-05-13 13:22:29 [INFO] Haciendo peticiones de llamadas en 14 bloques...
+2026-05-13 13:22:29 [INFO] Bloque 1/14
+2026-05-13 13:22:34 [INFO] Llamadas obtenidos en bloque 1: 231
+2026-05-13 13:22:34 [INFO] Bloque 2/14
+2026-05-13 13:22:38 [INFO] Llamadas obtenidos en bloque 2: 171
+2026-05-13 13:22:38 [INFO] Bloque 3/14
+2026-05-13 13:22:43 [INFO] Llamadas obtenidos en bloque 3: 189
+2026-05-13 13:22:43 [INFO] Bloque 4/14
+2026-05-13 13:22:49 [INFO] Llamadas obtenidos en bloque 4: 196
+2026-05-13 13:22:49 [INFO] Bloque 5/14
+2026-05-13 13:22:55 [INFO] Llamadas obtenidos en bloque 5: 256
+2026-05-13 13:22:55 [INFO] Bloque 6/14
+2026-05-13 13:22:59 [INFO] Llamadas obtenidos en bloque 6: 239
+2026-05-13 13:22:59 [INFO] Bloque 7/14
+2026-05-13 13:23:03 [INFO] Llamadas obtenidos en bloque 7: 205
+2026-05-13 13:23:03 [INFO] Bloque 8/14
+2026-05-13 13:23:06 [INFO] Llamadas obtenidos en bloque 8: 252
+2026-05-13 13:23:06 [INFO] Bloque 9/14
+2026-05-13 13:23:10 [INFO] Llamadas obtenidos en bloque 9: 236
+2026-05-13 13:23:10 [INFO] Bloque 10/14
+2026-05-13 13:23:14 [INFO] Llamadas obtenidos en bloque 10: 159
+2026-05-13 13:23:14 [INFO] Bloque 11/14
+2026-05-13 13:23:17 [INFO] Llamadas obtenidos en bloque 11: 120
+2026-05-13 13:23:17 [INFO] Bloque 12/14
+2026-05-13 13:23:21 [INFO] Llamadas obtenidos en bloque 12: 219
+2026-05-13 13:23:21 [INFO] Bloque 13/14
+2026-05-13 13:23:24 [INFO] Llamadas obtenidos en bloque 13: 174
+2026-05-13 13:23:24 [INFO] Bloque 14/14
+2026-05-13 13:23:27 [INFO] Llamadas obtenidos en bloque 14: 94
+2026-05-13 13:23:27 [INFO] Total de llamadas históricos obtenidos: 2741
+2026-05-13 13:23:27 [INFO] DataFrame histórico de llamadas total: 2741 filas
+2026-05-13 13:23:27 [INFO] Haciendo peticiones de servicios en 14 bloques...
+2026-05-13 13:23:27 [INFO] Bloque 1/14
+2026-05-13 13:23:31 [INFO] Servicios obtenidos en bloque 1: 37
+2026-05-13 13:23:31 [INFO] Bloque 2/14
+2026-05-13 13:23:33 [INFO] Servicios obtenidos en bloque 2: 18
+2026-05-13 13:23:33 [INFO] Bloque 3/14
+2026-05-13 13:23:36 [INFO] Servicios obtenidos en bloque 3: 32
+2026-05-13 13:23:36 [INFO] Bloque 4/14
+2026-05-13 13:23:39 [INFO] Servicios obtenidos en bloque 4: 31
+2026-05-13 13:23:39 [INFO] Bloque 5/14
+2026-05-13 13:23:43 [INFO] Servicios obtenidos en bloque 5: 28
+2026-05-13 13:23:43 [INFO] Bloque 6/14
+2026-05-13 13:23:46 [INFO] Servicios obtenidos en bloque 6: 33
+2026-05-13 13:23:46 [INFO] Bloque 7/14
+2026-05-13 13:23:48 [INFO] Servicios obtenidos en bloque 7: 17
+2026-05-13 13:23:48 [INFO] Bloque 8/14
+2026-05-13 13:23:51 [INFO] Servicios obtenidos en bloque 8: 30
+2026-05-13 13:23:51 [INFO] Bloque 9/14
+2026-05-13 13:23:53 [INFO] Servicios obtenidos en bloque 9: 33
+2026-05-13 13:23:53 [INFO] Bloque 10/14
+2026-05-13 13:23:56 [INFO] Servicios obtenidos en bloque 10: 24
+2026-05-13 13:23:56 [INFO] Bloque 11/14
+2026-05-13 13:24:00 [INFO] Servicios obtenidos en bloque 11: 26
+2026-05-13 13:24:00 [INFO] Bloque 12/14
+2026-05-13 13:24:03 [INFO] Servicios obtenidos en bloque 12: 18
+2026-05-13 13:24:03 [INFO] Bloque 13/14
+2026-05-13 13:24:05 [INFO] Servicios obtenidos en bloque 13: 29
+2026-05-13 13:24:05 [INFO] Bloque 14/14
+2026-05-13 13:24:08 [INFO] Servicios obtenidos en bloque 14: 15
+2026-05-13 13:24:08 [INFO] Total de servicios históricos obtenidos: 371
+2026-05-13 13:24:08 [INFO] DataFrame histórico de servicios total: 371 filas
+2026-05-13 13:24:08 [INFO] Llamadas abiertas con estado caliente:
+2026-05-13 13:24:46 [INFO] Leads abiertos:
+2026-05-13 13:25:37 [INFO] Oportunidades abiertas:
+2026-05-13 13:26:02 [INFO] Ofertas pendientes:
+2026-05-13 13:26:15 [INFO] Llamadas en el año:
+2026-05-13 13:26:39 [INFO] Cuentas sin llamada en el año: 320
+2026-05-13 13:26:39 [WARNING] Procesos con fallos (1/12): ['GRANTS']
+2026-05-13 13:26:42 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'

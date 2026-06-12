@@ -1,0 +1,463 @@
+2026-05-11 06:50:00 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\logs\logs_2026-05-11.txt'
+2026-05-11 06:50:03 [INFO] Haciendo petición GRANTS...
+2026-05-11 06:50:12 [INFO] Registros GRANTS obtenidos: 3711
+2026-05-11 06:50:12 [INFO] DataFrame GRANTS total: 3711 filas
+2026-05-11 06:50:13 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\output\citas.xlsx'
+2026-05-11 06:50:32 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\logs\logs_2026-05-11.txt'
+2026-05-11 06:51:17 [ERROR] Proceso GRANTS falló: ('08001', '[08001] [Microsoft][ODBC Driver 18 for SQL Server]Named Pipes Provider: Could not open a connection to SQL Server [64].  (64) (SQLDriverConnect); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Login timeout expired (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]A network-related or instance-specific error has occurred while establishing a connection to mssql-global-prod.database.windows.net. Server is not found or not accessible. Check if instance name is correct and if SQL Server is configured to allow remote connections. For more information see SQL Server Books Online. (64)')
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\scripts\main.py", line 209, in run
+    with GRANTSClient() as grants_client:
+         ~~~~~~~~~~~~^^
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\scripts\clients\sql_client.py", line 24, in __enter__
+    self._conn = pyodbc.connect(self.connection_string)
+                 ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+pyodbc.OperationalError: ('08001', '[08001] [Microsoft][ODBC Driver 18 for SQL Server]Named Pipes Provider: Could not open a connection to SQL Server [64].  (64) (SQLDriverConnect); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Login timeout expired (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]A network-related or instance-specific error has occurred while establishing a connection to mssql-global-prod.database.windows.net. Server is not found or not accessible. Check if instance name is correct and if SQL Server is configured to allow remote connections. For more information see SQL Server Books Online. (64)')
+2026-05-11 06:51:24 [INFO] Citas semana actual: 198
+2026-05-11 06:51:24 [INFO] Obteniendo noticias para 50 cuentas únicas...
+2026-05-11 06:51:24 [INFO]   [1/50] STRATEGOS BIO TECH, SOCIEDAD LIMITADA.
+2026-05-11 06:51:32 [INFO]   [2/50] ESPECIALIDADES ENERGETICAS SL
+2026-05-11 06:51:48 [INFO]   [3/50] EUROFRAGANCE, S.L.
+2026-05-11 06:52:01 [WARNING] No se pudo obtener contenido de https://www.equiposytalento.com/noticias/2025/05/22/el-rol-de-la-diversidad-en-la-evolucion-de-las-marcas-corporativas-talento-femenino-diversidad: HTTPSConnectionPool(host='www.equiposytalento.com', port=443): Max retries exceeded with url: /noticias/2025/05/22/el-rol-de-la-diversidad-en-la-evolucion-de-las-marcas-corporativas-talento-femenino-diversidad (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.equiposytalento.com', port=443) at 0x20abc04a0d0>, 'Connection to www.equiposytalento.com timed out. (connect timeout=10)'))
+2026-05-11 06:52:17 [WARNING] No se pudo obtener contenido de https://www.equiposytalento.com/noticias/2023/03/20/como-transformar-la-brecha-generacional-en-un-activo-para-la-empresa-talento-femenino-diversidad: HTTPSConnectionPool(host='www.equiposytalento.com', port=443): Max retries exceeded with url: /noticias/2023/03/20/como-transformar-la-brecha-generacional-en-un-activo-para-la-empresa-talento-femenino-diversidad (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.equiposytalento.com', port=443) at 0x20abc04b4d0>, 'Connection to www.equiposytalento.com timed out. (connect timeout=10)'))
+2026-05-11 06:52:17 [INFO]   [4/50] HUMAN-ROBOT SOLUTIONS, S.L.
+2026-05-11 06:52:25 [INFO]   [5/50] KAIZEN CONSULTING EUROPA SOCIEDAD LIMITADA.
+2026-05-11 06:52:31 [INFO]   [6/50] PANADERO AB, SL.
+2026-05-11 06:52:36 [INFO]   [7/50] INDUSTRIAS TEIXIDO S.A.U.
+2026-05-11 06:52:45 [INFO]   [8/50] WITZENMANN ESPANOLA SA
+2026-05-11 06:53:01 [INFO]   [9/50] SMRC AUTOMOTIVE INTERIORS SPAIN, S.L.
+2026-05-11 06:53:11 [INFO]   [10/50] FUNDACIÓN CENTRO GALLEGO DE INVESTIGACIONES DEL AGUA
+2026-05-11 06:53:30 [INFO]   [11/50] POWERBIM S.L.
+2026-05-11 06:53:38 [INFO]   [12/50] AUTO JUNTAS, S.A.
+2026-05-11 06:53:57 [INFO]   [13/50] MARTINEZ AYALA, S.A.
+2026-05-11 06:54:16 [INFO]   [14/50] HIELOS LA MORAGA SL.
+2026-05-11 06:54:36 [INFO]   [15/50] ORTIZ CONSTRUCCIONES Y PROYECTOS, S.A.
+2026-05-11 06:55:02 [INFO]   [16/50] MECANICA VILARO SL
+2026-05-11 06:55:13 [INFO]   [17/50] QUETTA DATA CENTERS SL.
+2026-05-11 06:55:32 [INFO]   [18/50] LANSOL SA
+2026-05-11 06:55:41 [INFO]   [19/50] DEFENSE VIRTUS, SOCIEDAD LIMITADA.
+2026-05-11 06:56:02 [INFO]   [20/50] ENERGY MANAGEMENT & INNOVATION, S.L.
+2026-05-11 06:56:08 [INFO]   [21/50] LISANPLAST, S.L.
+2026-05-11 06:56:23 [INFO]   [22/50] INDUSTRIAS QUIMICAS TAMAR SL
+2026-05-11 06:56:29 [INFO]   [23/50] INCOGENER SOCIEDAD LIMITADA.
+2026-05-11 06:56:39 [INFO]   [24/50] PLASTICOS CASTELLA, S.A.
+2026-05-11 06:56:46 [INFO]   [25/50] ORTHEM SERVICIOS Y ACTUACIONES AMBIENTALES, S.A.
+2026-05-11 06:56:53 [WARNING] No se pudo obtener contenido de https://www.eleconomista.es/actualidad/noticias/13503469/08/25/la-comunidad-de-madrid-recurre-a-tragsa-ante-la-falta-de-personal-para-conservar-sus-montes.html: 403 Client Error: Forbidden for url: https://www.eleconomista.es/actualidad/noticias/13503469/08/25/la-comunidad-de-madrid-recurre-a-tragsa-ante-la-falta-de-personal-para-conservar-sus-montes.html
+2026-05-11 06:56:54 [WARNING] No se pudo obtener contenido de https://torrevieja.es/es/noticias/2024-12-04-aprobada-licitacion-tres-obras-ejecutar-recinto-portuario-inversion-municipal-7: HTTPSConnectionPool(host='torrevieja.es', port=443): Max retries exceeded with url: /es/noticias/2024-12-04-aprobada-licitacion-tres-obras-ejecutar-recinto-portuario-inversion-municipal-7 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1077)')))
+2026-05-11 06:56:58 [INFO]   [26/50] Valux Medical
+2026-05-11 06:57:16 [WARNING] No se pudo obtener contenido de https://www.phmk.es/tecnologia/valux-medical-del-pcumh-disena-un-dispositivo-con-ia-que-elimina-el-error-humano-en-operaciones-de-angioplastia: HTTPSConnectionPool(host='www.phmk.es', port=443): Read timed out.
+2026-05-11 06:57:20 [INFO]   [27/50] INROBICS SOCIAL ROBOTICS SOCIEDAD LIMITADA LABORAL.
+2026-05-11 06:57:29 [INFO]   [28/50] ATIMOS CANARIA SOCIEDAD LIMITADA.
+2026-05-11 06:57:41 [INFO]   [29/50] QBIND PLATAFORMAS S.L.
+2026-05-11 06:57:54 [INFO]   [30/50] CAUCHOS ARNEDO SA
+2026-05-11 06:58:01 [WARNING] No se pudo obtener contenido de https://www.eleconomista.es/empresas-finanzas/noticias/10079819/09/19/Corpfin-analiza-la-venta-Elastorsa-su-participada-de-mezclas-de-caucho.html: 403 Client Error: Forbidden for url: https://www.eleconomista.es/empresas-finanzas/noticias/10079819/09/19/Corpfin-analiza-la-venta-Elastorsa-su-participada-de-mezclas-de-caucho.html
+2026-05-11 06:58:01 [INFO]   [31/50] CUBIERTAS ALIGERADAS TERMOACUSTICAS SL
+2026-05-11 06:58:10 [INFO]   [32/50] CT INGENIEROS AERONAUTICOS DE AUTOMOCION E INDUSTRIALES, S.L.U.
+2026-05-11 06:58:17 [INFO]   [33/50] CAFE CAPUCCHINO 1919 SL
+2026-05-11 06:58:26 [INFO]   [34/50] CASTINOX, S.A.
+2026-05-11 06:58:44 [INFO]   [35/50] REFRACTARIOS ESPECIALES, SOCIEDAD ANONIMA
+2026-05-11 06:58:47 [WARNING] No se pudo obtener contenido de https://cincodias.elpais.com/extras/exportar-para-crecer/2025-06-30/ceramica-del-nalon-la-llama-que-no-se-apaga.html: 403 Client Error: Forbidden for url: https://cincodias.elpais.com/extras/exportar-para-crecer/2025-06-30/ceramica-del-nalon-la-llama-que-no-se-apaga.html
+2026-05-11 06:58:47 [INFO]   [36/50] HOTEL VILLA MAGNA, SL - RLH PROPERTIES
+2026-05-11 06:59:02 [INFO]   [37/50] ASTURMADI DOORS SL.
+2026-05-11 06:59:14 [INFO]   [38/50] SPORT LIFESTYLE SL
+2026-05-11 06:59:25 [INFO]   [39/50] ATLANTICA AGRICOLA, S.A.
+2026-05-11 06:59:30 [WARNING] No se pudo obtener contenido de https://www.eleconomista.es/retail-consumo/noticias/13456214/07/25/los-duenos-de-atlantica-agricola-asumen-la-gestion-y-ponen-a-la-segunda-generacion-al-mando.html: 403 Client Error: Forbidden for url: https://www.eleconomista.es/retail-consumo/noticias/13456214/07/25/los-duenos-de-atlantica-agricola-asumen-la-gestion-y-ponen-a-la-segunda-generacion-al-mando.html
+2026-05-11 06:59:37 [WARNING] No se pudo obtener contenido de https://www.eleconomista.es/industria/noticias/13004554/09/24/grupo-atlantica-crece-un-18-con-nuevas-filiales-en-brasil-y-marruecos-para-sus-biofertilizantes.html: 403 Client Error: Forbidden for url: https://www.eleconomista.es/industria/noticias/13004554/09/24/grupo-atlantica-crece-un-18-con-nuevas-filiales-en-brasil-y-marruecos-para-sus-biofertilizantes.html
+2026-05-11 06:59:37 [INFO]   [40/50] BELL ESPANA ALIMENTACION SLU
+2026-05-11 06:59:49 [WARNING] No se pudo obtener contenido de https://as.com/tikitakas/virales/una-americana-que-vive-en-espana-prueba-una-cadena-de-comida-rapida-tipica-estadounidense-y-alucina-con-su-sabor-mucho-mas-fresco-n/: 403 Client Error: Forbidden for url: https://as.com/tikitakas/virales/una-americana-que-vive-en-espana-prueba-una-cadena-de-comida-rapida-tipica-estadounidense-y-alucina-con-su-sabor-mucho-mas-fresco-n/
+2026-05-11 06:59:56 [INFO]   [41/50] HOSPITAL POVISA, S.A.
+2026-05-11 07:00:17 [INFO]   [42/50] BOLD VALUABLE TECHNOLOGY SPAIN, S.L.
+2026-05-11 07:00:34 [INFO]   [43/50] DOROBE HOTELS SL.
+2026-05-11 07:00:44 [INFO]   [44/50] NEATSIGHT
+2026-05-11 07:00:51 [INFO]   [45/50] NATIONALE-NEDERLANDEN GENERALES COMPANIA DE SEGUROS Y REASEGUROS SA
+2026-05-11 07:00:57 [WARNING] No se pudo obtener contenido de https://www.coches.net/lancia-ypsilon-13-jtd-platino-90cv-3p-diesel-2009-en-barcelona-70582269-covo.aspx: 405 Client Error: Not Allowed for url: https://www.coches.net/lancia-ypsilon-13-jtd-platino-90cv-3p-diesel-2009-en-barcelona-70582269-covo.aspx
+2026-05-11 07:00:59 [INFO]   [46/50] HOTEL HISPANIA SA
+2026-05-11 07:01:20 [INFO]   [47/50] INERIA MANAGEMENT SL.
+2026-05-11 07:01:27 [WARNING] No se pudo obtener contenido de https://www.madrid.es/portales/munimadrid/es/Inicio/Actualidad/Noticias/El-Ayuntamiento-presenta-los-ganadores-del-2-Reinventing-Cities-para-regenerar-espacios-como-la-fabrica-de-Clesa/?vgnextfmt=default&vgnextoid=c2a87a13a2f0a710VgnVCM2000001f4a900aRCRD&vgnextchannel=a12149fa40ec9410VgnVCM100000171f5a0aRCRD: 403 Client Error: Forbidden for url: https://www.madrid.es/portales/munimadrid/es/Inicio/Actualidad/Noticias/El-Ayuntamiento-presenta-los-ganadores-del-2-Reinventing-Cities-para-regenerar-espacios-como-la-fabrica-de-Clesa/?vgnextfmt=default&vgnextoid=c2a87a13a2f0a710VgnVCM2000001f4a900aRCRD&vgnextchannel=a12149fa40ec9410VgnVCM100000171f5a0aRCRD
+2026-05-11 07:01:29 [INFO]   [48/50] JOSELITO GUIJUELO SL
+2026-05-11 07:01:46 [INFO]   [49/50] LALIGA GROUP INTERNATIONAL SL.
+2026-05-11 07:02:03 [INFO]   [50/50] SON GALTA, S.L.
+2026-05-11 07:02:11 [INFO] Total noticias obtenidas: 100
+2026-05-11 07:02:11 [INFO] Generando resúmenes de noticias...
+2026-05-11 07:06:42 [INFO] Citas 12 semanas atrás:
+2026-05-11 07:06:42 [INFO] Haciendo peticiones de citas en 14 bloques...
+2026-05-11 07:06:42 [INFO] Bloque 1/14
+2026-05-11 07:06:46 [INFO] Citas obtenidos en bloque 1: 61
+2026-05-11 07:06:46 [INFO] Bloque 2/14
+2026-05-11 07:06:49 [INFO] Citas obtenidos en bloque 2: 39
+2026-05-11 07:06:49 [INFO] Bloque 3/14
+2026-05-11 07:06:53 [INFO] Citas obtenidos en bloque 3: 54
+2026-05-11 07:06:53 [INFO] Bloque 4/14
+2026-05-11 07:06:56 [INFO] Citas obtenidos en bloque 4: 35
+2026-05-11 07:06:56 [INFO] Bloque 5/14
+2026-05-11 07:07:01 [INFO] Citas obtenidos en bloque 5: 47
+2026-05-11 07:07:01 [INFO] Bloque 6/14
+2026-05-11 07:07:04 [INFO] Citas obtenidos en bloque 6: 35
+2026-05-11 07:07:04 [INFO] Bloque 7/14
+2026-05-11 07:07:09 [INFO] Citas obtenidos en bloque 7: 54
+2026-05-11 07:07:09 [INFO] Bloque 8/14
+2026-05-11 07:07:12 [INFO] Citas obtenidos en bloque 8: 64
+2026-05-11 07:07:12 [INFO] Bloque 9/14
+2026-05-11 07:07:15 [INFO] Citas obtenidos en bloque 9: 45
+2026-05-11 07:07:15 [INFO] Bloque 10/14
+2026-05-11 07:07:18 [INFO] Citas obtenidos en bloque 10: 32
+2026-05-11 07:07:18 [INFO] Bloque 11/14
+2026-05-11 07:07:21 [INFO] Citas obtenidos en bloque 11: 39
+2026-05-11 07:07:21 [INFO] Bloque 12/14
+2026-05-11 07:07:24 [INFO] Citas obtenidos en bloque 12: 54
+2026-05-11 07:07:24 [INFO] Bloque 13/14
+2026-05-11 07:07:28 [INFO] Citas obtenidos en bloque 13: 44
+2026-05-11 07:07:28 [INFO] Bloque 14/14
+2026-05-11 07:07:32 [INFO] Citas obtenidos en bloque 14: 2
+2026-05-11 07:07:32 [INFO] Total de citas históricos obtenidos: 605
+2026-05-11 07:07:32 [INFO] DataFrame histórico de citas total: 605 filas
+2026-05-11 07:07:32 [INFO] Haciendo peticiones de llamadas en 14 bloques...
+2026-05-11 07:07:32 [INFO] Bloque 1/14
+2026-05-11 07:07:37 [INFO] Llamadas obtenidos en bloque 1: 231
+2026-05-11 07:07:37 [INFO] Bloque 2/14
+2026-05-11 07:07:41 [INFO] Llamadas obtenidos en bloque 2: 226
+2026-05-11 07:07:41 [INFO] Bloque 3/14
+2026-05-11 07:07:45 [INFO] Llamadas obtenidos en bloque 3: 187
+2026-05-11 07:07:45 [INFO] Bloque 4/14
+2026-05-11 07:07:48 [INFO] Llamadas obtenidos en bloque 4: 158
+2026-05-11 07:07:48 [INFO] Bloque 5/14
+2026-05-11 07:07:52 [INFO] Llamadas obtenidos en bloque 5: 247
+2026-05-11 07:07:52 [INFO] Bloque 6/14
+2026-05-11 07:07:55 [INFO] Llamadas obtenidos en bloque 6: 159
+2026-05-11 07:07:55 [INFO] Bloque 7/14
+2026-05-11 07:07:58 [INFO] Llamadas obtenidos en bloque 7: 233
+2026-05-11 07:07:58 [INFO] Bloque 8/14
+2026-05-11 07:08:02 [INFO] Llamadas obtenidos en bloque 8: 223
+2026-05-11 07:08:02 [INFO] Bloque 9/14
+2026-05-11 07:08:05 [INFO] Llamadas obtenidos en bloque 9: 185
+2026-05-11 07:08:05 [INFO] Bloque 10/14
+2026-05-11 07:08:39 [INFO] Llamadas obtenidos en bloque 10: 159
+2026-05-11 07:08:39 [INFO] Bloque 11/14
+2026-05-11 07:08:43 [INFO] Llamadas obtenidos en bloque 11: 156
+2026-05-11 07:08:43 [INFO] Bloque 12/14
+2026-05-11 07:08:46 [INFO] Llamadas obtenidos en bloque 12: 153
+2026-05-11 07:08:46 [INFO] Bloque 13/14
+2026-05-11 07:08:49 [INFO] Llamadas obtenidos en bloque 13: 118
+2026-05-11 07:08:49 [INFO] Bloque 14/14
+2026-05-11 07:08:51 [INFO] Llamadas obtenidos en bloque 14: 11
+2026-05-11 07:08:51 [INFO] Total de llamadas históricos obtenidos: 2446
+2026-05-11 07:08:51 [INFO] DataFrame histórico de llamadas total: 2446 filas
+2026-05-11 07:08:51 [INFO] Haciendo peticiones de servicios en 14 bloques...
+2026-05-11 07:08:51 [INFO] Bloque 1/14
+2026-05-11 07:08:56 [INFO] Servicios obtenidos en bloque 1: 38
+2026-05-11 07:08:56 [INFO] Bloque 2/14
+2026-05-11 07:09:07 [INFO] Servicios obtenidos en bloque 2: 16
+2026-05-11 07:09:07 [INFO] Bloque 3/14
+2026-05-11 07:09:10 [INFO] Servicios obtenidos en bloque 3: 30
+2026-05-11 07:09:10 [INFO] Bloque 4/14
+2026-05-11 07:09:13 [INFO] Servicios obtenidos en bloque 4: 24
+2026-05-11 07:09:13 [INFO] Bloque 5/14
+2026-05-11 07:09:16 [INFO] Servicios obtenidos en bloque 5: 31
+2026-05-11 07:09:16 [INFO] Bloque 6/14
+2026-05-11 07:09:19 [INFO] Servicios obtenidos en bloque 6: 7
+2026-05-11 07:09:19 [INFO] Bloque 7/14
+2026-05-11 07:09:21 [INFO] Servicios obtenidos en bloque 7: 34
+2026-05-11 07:09:21 [INFO] Bloque 8/14
+2026-05-11 07:09:24 [INFO] Servicios obtenidos en bloque 8: 30
+2026-05-11 07:09:24 [INFO] Bloque 9/14
+2026-05-11 07:09:27 [INFO] Servicios obtenidos en bloque 9: 20
+2026-05-11 07:09:27 [INFO] Bloque 10/14
+2026-05-11 07:09:29 [INFO] Servicios obtenidos en bloque 10: 22
+2026-05-11 07:09:29 [INFO] Bloque 11/14
+2026-05-11 07:09:32 [INFO] Servicios obtenidos en bloque 11: 13
+2026-05-11 07:09:32 [INFO] Bloque 12/14
+2026-05-11 07:09:35 [INFO] Servicios obtenidos en bloque 12: 5
+2026-05-11 07:09:35 [INFO] Bloque 13/14
+2026-05-11 07:09:38 [INFO] Servicios obtenidos en bloque 13: 27
+2026-05-11 07:09:38 [INFO] Bloque 14/14
+2026-05-11 07:09:40 [INFO] Servicios obtenidos en bloque 14: 0
+2026-05-11 07:09:40 [INFO] Total de servicios históricos obtenidos: 297
+2026-05-11 07:09:40 [INFO] DataFrame histórico de servicios total: 297 filas
+2026-05-11 07:09:40 [INFO] Llamadas abiertas con estado caliente:
+2026-05-11 07:11:42 [ERROR] Proceso Llamadas Estado Caliente falló: Error al enviar la solicitud a Dataverse [phonecalls]: 504 Server Error: Gateway Timeout for url: https://eca951ba31304863a6aba911e554e7.42.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/214dff7a0b2e46e6b1a726b3d7948fa6/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=AH0ScRpUUzx-XjWKd_c0417ijjTOTrLotghBSvjG_34
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\scripts\clients\dataverse.py", line 59, in send_request
+    response.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\.venv\Lib\site-packages\requests\models.py", line 1028, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://eca951ba31304863a6aba911e554e7.42.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/214dff7a0b2e46e6b1a726b3d7948fa6/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=AH0ScRpUUzx-XjWKd_c0417ijjTOTrLotghBSvjG_34
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\scripts\main.py", line 312, in run
+    result_oportunidades = client.send_request("phonecalls", QUERIES["llamadasConDescripcionCaliente"].format(currentDate=datetime.now().strftime("%Y-%m-%d")))
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\scripts\clients\dataverse.py", line 62, in send_request
+    raise RuntimeError(f"Error al enviar la solicitud a Dataverse [{entity_name}]: {e}") from e
+RuntimeError: Error al enviar la solicitud a Dataverse [phonecalls]: 504 Server Error: Gateway Timeout for url: https://eca951ba31304863a6aba911e554e7.42.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/214dff7a0b2e46e6b1a726b3d7948fa6/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=AH0ScRpUUzx-XjWKd_c0417ijjTOTrLotghBSvjG_34
+2026-05-11 07:11:42 [INFO] Leads abiertos:
+2026-05-11 07:12:51 [INFO] Oportunidades abiertas:
+2026-05-11 07:13:19 [INFO] Ofertas pendientes:
+2026-05-11 07:13:42 [INFO] Haciendo peticiones BDNS en 13 bloques...
+2026-05-11 07:13:42 [INFO] Bloque 1/13
+2026-05-11 07:13:46 [INFO] Registros BDNS obtenidos en bloque 1: 20
+2026-05-11 07:13:46 [INFO] Bloque 2/13
+2026-05-11 07:13:47 [INFO] Registros BDNS obtenidos en bloque 2: 18
+2026-05-11 07:13:47 [INFO] Bloque 3/13
+2026-05-11 07:13:48 [INFO] Registros BDNS obtenidos en bloque 3: 12
+2026-05-11 07:13:48 [INFO] Bloque 4/13
+2026-05-11 07:13:49 [INFO] Registros BDNS obtenidos en bloque 4: 26
+2026-05-11 07:13:49 [INFO] Bloque 5/13
+2026-05-11 07:13:50 [INFO] Registros BDNS obtenidos en bloque 5: 9
+2026-05-11 07:13:50 [INFO] Bloque 6/13
+2026-05-11 07:13:51 [INFO] Registros BDNS obtenidos en bloque 6: 15
+2026-05-11 07:13:51 [INFO] Bloque 7/13
+2026-05-11 07:13:52 [INFO] Registros BDNS obtenidos en bloque 7: 34
+2026-05-11 07:13:52 [INFO] Bloque 8/13
+2026-05-11 07:13:53 [INFO] Registros BDNS obtenidos en bloque 8: 23
+2026-05-11 07:13:53 [INFO] Bloque 9/13
+2026-05-11 07:13:53 [INFO] Registros BDNS obtenidos en bloque 9: 36
+2026-05-11 07:13:53 [INFO] Bloque 10/13
+2026-05-11 07:13:54 [INFO] Registros BDNS obtenidos en bloque 10: 14
+2026-05-11 07:13:54 [INFO] Bloque 11/13
+2026-05-11 07:13:55 [INFO] Registros BDNS obtenidos en bloque 11: 25
+2026-05-11 07:13:55 [INFO] Bloque 12/13
+2026-05-11 07:13:56 [INFO] Registros BDNS obtenidos en bloque 12: 15
+2026-05-11 07:13:56 [INFO] Bloque 13/13
+2026-05-11 07:13:57 [INFO] Registros BDNS obtenidos en bloque 13: 10
+2026-05-11 07:13:57 [INFO] Total de registros BDNS obtenidos: 257
+2026-05-11 07:13:57 [INFO] DataFrame BDNS total: 257 filas
+2026-05-11 07:13:57 [INFO] Llamadas en el año:
+2026-05-11 07:14:25 [INFO] Cuentas sin llamada en el año: 320
+2026-05-11 07:14:25 [WARNING] Procesos con fallos (2/13): ['GRANTS', 'Llamadas Estado Caliente']
+2026-05-11 07:14:28 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\output\citas.xlsx'
+2026-05-11 07:35:58 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\logs\logs_2026-05-11.txt'
+2026-05-11 07:35:58 [INFO] Llamadas abiertas con estado caliente:
+2026-05-11 07:37:59 [ERROR] Proceso Llamadas Estado Caliente falló: Error al enviar la solicitud a Dataverse [phonecalls]: 504 Server Error: Gateway Timeout for url: https://eca951ba31304863a6aba911e554e7.42.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/214dff7a0b2e46e6b1a726b3d7948fa6/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=AH0ScRpUUzx-XjWKd_c0417ijjTOTrLotghBSvjG_34
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\scripts\clients\dataverse.py", line 59, in send_request
+    response.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\.venv\Lib\site-packages\requests\models.py", line 1028, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://eca951ba31304863a6aba911e554e7.42.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/214dff7a0b2e46e6b1a726b3d7948fa6/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=AH0ScRpUUzx-XjWKd_c0417ijjTOTrLotghBSvjG_34
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\scripts\main.py", line 312, in run
+    result_oportunidades = client.send_request("phonecalls", QUERIES["llamadasConDescripcionCaliente"].format(currentDate=datetime.now().strftime("%Y-%m-%d")))
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\scripts\clients\dataverse.py", line 62, in send_request
+    raise RuntimeError(f"Error al enviar la solicitud a Dataverse [{entity_name}]: {e}") from e
+RuntimeError: Error al enviar la solicitud a Dataverse [phonecalls]: 504 Server Error: Gateway Timeout for url: https://eca951ba31304863a6aba911e554e7.42.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/214dff7a0b2e46e6b1a726b3d7948fa6/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=AH0ScRpUUzx-XjWKd_c0417ijjTOTrLotghBSvjG_34
+2026-05-11 07:37:59 [WARNING] Procesos con fallos (1/1): ['Llamadas Estado Caliente']
+2026-05-11 07:37:59 [WARNING] No hay procesos activos. Activa al menos uno en la sección CONFIGURACIÓN.
+2026-05-11 07:38:54 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\logs\logs_2026-05-11.txt'
+2026-05-11 07:38:54 [INFO] Llamadas abiertas con estado caliente:
+2026-05-11 07:39:19 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\output\citas.xlsx'
+2026-05-11 07:41:54 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\logs\logs_2026-05-11.txt'
+2026-05-11 07:42:36 [ERROR] Proceso GRANTS falló: ('08001', '[08001] [Microsoft][ODBC Driver 18 for SQL Server]Named Pipes Provider: Could not open a connection to SQL Server [64].  (64) (SQLDriverConnect); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Login timeout expired (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]A network-related or instance-specific error has occurred while establishing a connection to mssql-global-prod.database.windows.net. Server is not found or not accessible. Check if instance name is correct and if SQL Server is configured to allow remote connections. For more information see SQL Server Books Online. (64)')
+Traceback (most recent call last):
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\scripts\main.py", line 209, in run
+    with GRANTSClient() as grants_client:
+         ~~~~~~~~~~~~^^
+  File "c:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\scripts\clients\sql_client.py", line 24, in __enter__
+    self._conn = pyodbc.connect(self.connection_string)
+                 ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+pyodbc.OperationalError: ('08001', '[08001] [Microsoft][ODBC Driver 18 for SQL Server]Named Pipes Provider: Could not open a connection to SQL Server [64].  (64) (SQLDriverConnect); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Login timeout expired (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]Invalid connection string attribute (0); [08001] [Microsoft][ODBC Driver 18 for SQL Server]A network-related or instance-specific error has occurred while establishing a connection to mssql-global-prod.database.windows.net. Server is not found or not accessible. Check if instance name is correct and if SQL Server is configured to allow remote connections. For more information see SQL Server Books Online. (64)')
+2026-05-11 07:42:43 [INFO] Citas semana actual: 199
+2026-05-11 07:42:43 [INFO] Obteniendo noticias para 50 cuentas únicas...
+2026-05-11 07:42:43 [INFO]   [1/50] STRATEGOS BIO TECH, SOCIEDAD LIMITADA.
+2026-05-11 07:42:44 [INFO]   [2/50] ESPECIALIDADES ENERGETICAS SL
+2026-05-11 07:42:50 [INFO]   [3/50] EUROFRAGANCE, S.L.
+2026-05-11 07:43:01 [WARNING] No se pudo obtener contenido de https://www.equiposytalento.com/noticias/2025/05/22/el-rol-de-la-diversidad-en-la-evolucion-de-las-marcas-corporativas-talento-femenino-diversidad: HTTPSConnectionPool(host='www.equiposytalento.com', port=443): Max retries exceeded with url: /noticias/2025/05/22/el-rol-de-la-diversidad-en-la-evolucion-de-las-marcas-corporativas-talento-femenino-diversidad (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.equiposytalento.com', port=443) at 0x146a3e6a0d0>, 'Connection to www.equiposytalento.com timed out. (connect timeout=10)'))
+2026-05-11 07:43:17 [WARNING] No se pudo obtener contenido de https://www.equiposytalento.com/noticias/2023/03/20/como-transformar-la-brecha-generacional-en-un-activo-para-la-empresa-talento-femenino-diversidad: HTTPSConnectionPool(host='www.equiposytalento.com', port=443): Max retries exceeded with url: /noticias/2023/03/20/como-transformar-la-brecha-generacional-en-un-activo-para-la-empresa-talento-femenino-diversidad (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.equiposytalento.com', port=443) at 0x146a3e6b4d0>, 'Connection to www.equiposytalento.com timed out. (connect timeout=10)'))
+2026-05-11 07:43:17 [INFO]   [4/50] HUMAN-ROBOT SOLUTIONS, S.L.
+2026-05-11 07:43:19 [INFO]   [5/50] KAIZEN CONSULTING EUROPA SOCIEDAD LIMITADA.
+2026-05-11 07:43:21 [INFO]   [6/50] PANADERO AB, SL.
+2026-05-11 07:43:25 [INFO]   [7/50] INDUSTRIAS TEIXIDO S.A.U.
+2026-05-11 07:43:26 [INFO]   [8/50] WITZENMANN ESPANOLA SA
+2026-05-11 07:43:33 [INFO]   [9/50] SMRC AUTOMOTIVE INTERIORS SPAIN, S.L.
+2026-05-11 07:43:40 [INFO]   [10/50] FUNDACIÓN CENTRO GALLEGO DE INVESTIGACIONES DEL AGUA
+2026-05-11 07:43:55 [INFO]   [11/50] POWERBIM S.L.
+2026-05-11 07:43:56 [INFO]   [12/50] AUTO JUNTAS, S.A.
+2026-05-11 07:44:04 [INFO]   [13/50] MARTINEZ AYALA, S.A.
+2026-05-11 07:44:16 [INFO]   [14/50] HIELOS LA MORAGA SL.
+2026-05-11 07:44:17 [INFO]   [15/50] ORTIZ CONSTRUCCIONES Y PROYECTOS, S.A.
+2026-05-11 07:44:32 [INFO]   [16/50] MECANICA VILARO SL
+2026-05-11 07:44:35 [INFO]   [17/50] QUETTA DATA CENTERS SL.
+2026-05-11 07:44:49 [INFO]   [18/50] LANSOL SA
+2026-05-11 07:44:51 [INFO]   [19/50] DEFENSE VIRTUS, SOCIEDAD LIMITADA.
+2026-05-11 07:44:53 [INFO]   [20/50] ENERGY MANAGEMENT & INNOVATION, S.L.
+2026-05-11 07:44:54 [INFO]   [21/50] LISANPLAST, S.L.
+2026-05-11 07:44:56 [INFO]   [22/50] INDUSTRIAS QUIMICAS TAMAR SL
+2026-05-11 07:45:02 [INFO]   [23/50] INCOGENER SOCIEDAD LIMITADA.
+2026-05-11 07:45:04 [INFO]   [24/50] PLASTICOS CASTELLA, S.A.
+2026-05-11 07:45:10 [INFO]   [25/50] ORTHEM SERVICIOS Y ACTUACIONES AMBIENTALES, S.A.
+2026-05-11 07:45:22 [WARNING] No se pudo obtener contenido de https://www.eleconomista.es/actualidad/noticias/13503469/08/25/la-comunidad-de-madrid-recurre-a-tragsa-ante-la-falta-de-personal-para-conservar-sus-montes.html: 403 Client Error: Forbidden for url: https://www.eleconomista.es/actualidad/noticias/13503469/08/25/la-comunidad-de-madrid-recurre-a-tragsa-ante-la-falta-de-personal-para-conservar-sus-montes.html
+2026-05-11 07:45:24 [WARNING] No se pudo obtener contenido de https://torrevieja.es/es/noticias/2024-12-04-aprobada-licitacion-tres-obras-ejecutar-recinto-portuario-inversion-municipal-7: HTTPSConnectionPool(host='torrevieja.es', port=443): Max retries exceeded with url: /es/noticias/2024-12-04-aprobada-licitacion-tres-obras-ejecutar-recinto-portuario-inversion-municipal-7 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1077)')))
+2026-05-11 07:45:35 [INFO]   [26/50] Valux Medical
+2026-05-11 07:45:45 [INFO]   [27/50] INROBICS SOCIAL ROBOTICS SOCIEDAD LIMITADA LABORAL.
+2026-05-11 07:45:51 [INFO]   [28/50] ATIMOS CANARIA SOCIEDAD LIMITADA.
+2026-05-11 07:45:52 [INFO]   [29/50] QBIND PLATAFORMAS S.L.
+2026-05-11 07:45:53 [INFO]   [30/50] CAUCHOS ARNEDO SA
+2026-05-11 07:46:00 [WARNING] No se pudo obtener contenido de https://www.eleconomista.es/empresas-finanzas/noticias/10079819/09/19/Corpfin-analiza-la-venta-Elastorsa-su-participada-de-mezclas-de-caucho.html: 403 Client Error: Forbidden for url: https://www.eleconomista.es/empresas-finanzas/noticias/10079819/09/19/Corpfin-analiza-la-venta-Elastorsa-su-participada-de-mezclas-de-caucho.html
+2026-05-11 07:46:00 [INFO]   [31/50] CUBIERTAS ALIGERADAS TERMOACUSTICAS SL
+2026-05-11 07:46:01 [INFO]   [32/50] CT INGENIEROS AERONAUTICOS DE AUTOMOCION E INDUSTRIALES, S.L.U.
+2026-05-11 07:46:05 [INFO]   [33/50] CAFE CAPUCCHINO 1919 SL
+2026-05-11 07:46:06 [INFO]   [34/50] CASTINOX, S.A.
+2026-05-11 07:46:08 [INFO]   [35/50] REFRACTARIOS ESPECIALES, SOCIEDAD ANONIMA
+2026-05-11 07:46:11 [WARNING] No se pudo obtener contenido de https://cincodias.elpais.com/extras/exportar-para-crecer/2025-06-30/ceramica-del-nalon-la-llama-que-no-se-apaga.html: 403 Client Error: Forbidden for url: https://cincodias.elpais.com/extras/exportar-para-crecer/2025-06-30/ceramica-del-nalon-la-llama-que-no-se-apaga.html
+2026-05-11 07:46:11 [INFO]   [36/50] HOTEL VILLA MAGNA, SL - RLH PROPERTIES
+2026-05-11 07:46:24 [INFO]   [37/50] ASTURMADI DOORS SL.
+2026-05-11 07:46:38 [INFO]   [38/50] SPORT LIFESTYLE SL
+2026-05-11 07:46:45 [INFO]   [39/50] ATLANTICA AGRICOLA, S.A.
+2026-05-11 07:46:54 [WARNING] No se pudo obtener contenido de https://www.eleconomista.es/retail-consumo/noticias/13456214/07/25/los-duenos-de-atlantica-agricola-asumen-la-gestion-y-ponen-a-la-segunda-generacion-al-mando.html: 403 Client Error: Forbidden for url: https://www.eleconomista.es/retail-consumo/noticias/13456214/07/25/los-duenos-de-atlantica-agricola-asumen-la-gestion-y-ponen-a-la-segunda-generacion-al-mando.html
+2026-05-11 07:47:07 [WARNING] No se pudo obtener contenido de https://www.eleconomista.es/industria/noticias/13004554/09/24/grupo-atlantica-crece-un-18-con-nuevas-filiales-en-brasil-y-marruecos-para-sus-biofertilizantes.html: 403 Client Error: Forbidden for url: https://www.eleconomista.es/industria/noticias/13004554/09/24/grupo-atlantica-crece-un-18-con-nuevas-filiales-en-brasil-y-marruecos-para-sus-biofertilizantes.html
+2026-05-11 07:47:07 [INFO]   [40/50] BELL ESPANA ALIMENTACION SLU
+2026-05-11 07:47:21 [WARNING] No se pudo obtener contenido de https://as.com/tikitakas/virales/una-americana-que-vive-en-espana-prueba-una-cadena-de-comida-rapida-tipica-estadounidense-y-alucina-con-su-sabor-mucho-mas-fresco-n/: 403 Client Error: Forbidden for url: https://as.com/tikitakas/virales/una-americana-que-vive-en-espana-prueba-una-cadena-de-comida-rapida-tipica-estadounidense-y-alucina-con-su-sabor-mucho-mas-fresco-n/
+2026-05-11 07:47:31 [INFO]   [41/50] HOSPITAL POVISA, S.A.
+2026-05-11 07:47:44 [WARNING] No se pudo obtener contenido de https://elpais.com/sociedad/2025-12-03/la-empresa-gestora-del-hospital-publico-de-torrejon-ordena-rechazar-pacientes-para-ganar-mas-hacemos-actividad-que-nos-perjudica.html: 403 Client Error: Forbidden for url: https://elpais.com/sociedad/2025-12-03/la-empresa-gestora-del-hospital-publico-de-torrejon-ordena-rechazar-pacientes-para-ganar-mas-hacemos-actividad-que-nos-perjudica.html
+2026-05-11 07:47:51 [INFO]   [42/50] BOLD VALUABLE TECHNOLOGY SPAIN, S.L.
+2026-05-11 07:47:53 [INFO]   [43/50] DOROBE HOTELS SL.
+2026-05-11 07:47:59 [INFO]   [44/50] NEATSIGHT
+2026-05-11 07:48:01 [INFO]   [45/50] NATIONALE-NEDERLANDEN GENERALES COMPANIA DE SEGUROS Y REASEGUROS SA
+2026-05-11 07:48:06 [WARNING] No se pudo obtener contenido de https://www.coches.net/lancia-ypsilon-13-jtd-platino-90cv-3p-diesel-2009-en-barcelona-70582269-covo.aspx: 405 Client Error: Not Allowed for url: https://www.coches.net/lancia-ypsilon-13-jtd-platino-90cv-3p-diesel-2009-en-barcelona-70582269-covo.aspx
+2026-05-11 07:48:09 [INFO]   [46/50] HOTEL HISPANIA SA
+2026-05-11 07:48:29 [INFO]   [47/50] INERIA MANAGEMENT SL.
+2026-05-11 07:48:38 [WARNING] No se pudo obtener contenido de https://www.madrid.es/portales/munimadrid/es/Inicio/Actualidad/Noticias/El-Ayuntamiento-presenta-los-ganadores-del-2-Reinventing-Cities-para-regenerar-espacios-como-la-fabrica-de-Clesa/?vgnextfmt=default&vgnextoid=c2a87a13a2f0a710VgnVCM2000001f4a900aRCRD&vgnextchannel=a12149fa40ec9410VgnVCM100000171f5a0aRCRD: 403 Client Error: Forbidden for url: https://www.madrid.es/portales/munimadrid/es/Inicio/Actualidad/Noticias/El-Ayuntamiento-presenta-los-ganadores-del-2-Reinventing-Cities-para-regenerar-espacios-como-la-fabrica-de-Clesa/?vgnextfmt=default&vgnextoid=c2a87a13a2f0a710VgnVCM2000001f4a900aRCRD&vgnextchannel=a12149fa40ec9410VgnVCM100000171f5a0aRCRD
+2026-05-11 07:48:41 [INFO]   [48/50] JOSELITO GUIJUELO SL
+2026-05-11 07:49:03 [INFO]   [49/50] LALIGA GROUP INTERNATIONAL SL.
+2026-05-11 07:49:23 [INFO]   [50/50] SON GALTA, S.L.
+2026-05-11 07:49:26 [INFO] Total noticias obtenidas: 100
+2026-05-11 07:49:26 [INFO] Generando resúmenes de noticias...
+2026-05-11 07:55:18 [INFO] Citas 12 semanas atrás:
+2026-05-11 07:55:18 [INFO] Haciendo peticiones de citas en 14 bloques...
+2026-05-11 07:55:18 [INFO] Bloque 1/14
+2026-05-11 07:55:22 [INFO] Citas obtenidos en bloque 1: 61
+2026-05-11 07:55:22 [INFO] Bloque 2/14
+2026-05-11 07:55:26 [INFO] Citas obtenidos en bloque 2: 39
+2026-05-11 07:55:26 [INFO] Bloque 3/14
+2026-05-11 07:55:32 [INFO] Citas obtenidos en bloque 3: 54
+2026-05-11 07:55:32 [INFO] Bloque 4/14
+2026-05-11 07:55:36 [INFO] Citas obtenidos en bloque 4: 35
+2026-05-11 07:55:36 [INFO] Bloque 5/14
+2026-05-11 07:55:39 [INFO] Citas obtenidos en bloque 5: 47
+2026-05-11 07:55:39 [INFO] Bloque 6/14
+2026-05-11 07:55:43 [INFO] Citas obtenidos en bloque 6: 34
+2026-05-11 07:55:43 [INFO] Bloque 7/14
+2026-05-11 07:55:47 [INFO] Citas obtenidos en bloque 7: 52
+2026-05-11 07:55:47 [INFO] Bloque 8/14
+2026-05-11 07:55:50 [INFO] Citas obtenidos en bloque 8: 60
+2026-05-11 07:55:50 [INFO] Bloque 9/14
+2026-05-11 07:55:54 [INFO] Citas obtenidos en bloque 9: 52
+2026-05-11 07:55:54 [INFO] Bloque 10/14
+2026-05-11 07:55:58 [INFO] Citas obtenidos en bloque 10: 32
+2026-05-11 07:55:58 [INFO] Bloque 11/14
+2026-05-11 07:56:02 [INFO] Citas obtenidos en bloque 11: 39
+2026-05-11 07:56:02 [INFO] Bloque 12/14
+2026-05-11 07:56:07 [INFO] Citas obtenidos en bloque 12: 54
+2026-05-11 07:56:07 [INFO] Bloque 13/14
+2026-05-11 07:56:11 [INFO] Citas obtenidos en bloque 13: 44
+2026-05-11 07:56:11 [INFO] Bloque 14/14
+2026-05-11 07:56:14 [INFO] Citas obtenidos en bloque 14: 3
+2026-05-11 07:56:14 [INFO] Total de citas históricos obtenidos: 606
+2026-05-11 07:56:14 [INFO] DataFrame histórico de citas total: 606 filas
+2026-05-11 07:56:14 [INFO] Haciendo peticiones de llamadas en 14 bloques...
+2026-05-11 07:56:14 [INFO] Bloque 1/14
+2026-05-11 07:56:19 [INFO] Llamadas obtenidos en bloque 1: 231
+2026-05-11 07:56:19 [INFO] Bloque 2/14
+2026-05-11 07:56:23 [INFO] Llamadas obtenidos en bloque 2: 226
+2026-05-11 07:56:23 [INFO] Bloque 3/14
+2026-05-11 07:56:28 [INFO] Llamadas obtenidos en bloque 3: 187
+2026-05-11 07:56:28 [INFO] Bloque 4/14
+2026-05-11 07:56:33 [INFO] Llamadas obtenidos en bloque 4: 158
+2026-05-11 07:56:33 [INFO] Bloque 5/14
+2026-05-11 07:56:38 [INFO] Llamadas obtenidos en bloque 5: 247
+2026-05-11 07:56:38 [INFO] Bloque 6/14
+2026-05-11 07:56:42 [INFO] Llamadas obtenidos en bloque 6: 143
+2026-05-11 07:56:42 [INFO] Bloque 7/14
+2026-05-11 07:56:46 [INFO] Llamadas obtenidos en bloque 7: 220
+2026-05-11 07:56:46 [INFO] Bloque 8/14
+2026-05-11 07:56:51 [INFO] Llamadas obtenidos en bloque 8: 237
+2026-05-11 07:56:51 [INFO] Bloque 9/14
+2026-05-11 07:56:56 [INFO] Llamadas obtenidos en bloque 9: 200
+2026-05-11 07:56:56 [INFO] Bloque 10/14
+2026-05-11 07:57:01 [INFO] Llamadas obtenidos en bloque 10: 159
+2026-05-11 07:57:01 [INFO] Bloque 11/14
+2026-05-11 07:57:05 [INFO] Llamadas obtenidos en bloque 11: 155
+2026-05-11 07:57:05 [INFO] Bloque 12/14
+2026-05-11 07:57:09 [INFO] Llamadas obtenidos en bloque 12: 154
+2026-05-11 07:57:09 [INFO] Bloque 13/14
+2026-05-11 07:57:14 [INFO] Llamadas obtenidos en bloque 13: 118
+2026-05-11 07:57:14 [INFO] Bloque 14/14
+2026-05-11 07:57:18 [INFO] Llamadas obtenidos en bloque 14: 11
+2026-05-11 07:57:18 [INFO] Total de llamadas históricos obtenidos: 2446
+2026-05-11 07:57:18 [INFO] DataFrame histórico de llamadas total: 2446 filas
+2026-05-11 07:57:18 [INFO] Haciendo peticiones de servicios en 14 bloques...
+2026-05-11 07:57:18 [INFO] Bloque 1/14
+2026-05-11 07:57:24 [INFO] Servicios obtenidos en bloque 1: 38
+2026-05-11 07:57:24 [INFO] Bloque 2/14
+2026-05-11 07:57:29 [INFO] Servicios obtenidos en bloque 2: 16
+2026-05-11 07:57:29 [INFO] Bloque 3/14
+2026-05-11 07:57:32 [INFO] Servicios obtenidos en bloque 3: 30
+2026-05-11 07:57:32 [INFO] Bloque 4/14
+2026-05-11 07:57:36 [INFO] Servicios obtenidos en bloque 4: 24
+2026-05-11 07:57:36 [INFO] Bloque 5/14
+2026-05-11 07:57:39 [INFO] Servicios obtenidos en bloque 5: 31
+2026-05-11 07:57:39 [INFO] Bloque 6/14
+2026-05-11 07:57:43 [INFO] Servicios obtenidos en bloque 6: 10
+2026-05-11 07:57:43 [INFO] Bloque 7/14
+2026-05-11 07:57:46 [INFO] Servicios obtenidos en bloque 7: 34
+2026-05-11 07:57:46 [INFO] Bloque 8/14
+2026-05-11 07:57:50 [INFO] Servicios obtenidos en bloque 8: 25
+2026-05-11 07:57:50 [INFO] Bloque 9/14
+2026-05-11 07:57:54 [INFO] Servicios obtenidos en bloque 9: 25
+2026-05-11 07:57:54 [INFO] Bloque 10/14
+2026-05-11 07:57:58 [INFO] Servicios obtenidos en bloque 10: 9
+2026-05-11 07:57:58 [INFO] Bloque 11/14
+2026-05-11 07:58:01 [INFO] Servicios obtenidos en bloque 11: 26
+2026-05-11 07:58:01 [INFO] Bloque 12/14
+2026-05-11 07:58:05 [INFO] Servicios obtenidos en bloque 12: 5
+2026-05-11 07:58:05 [INFO] Bloque 13/14
+2026-05-11 07:58:09 [INFO] Servicios obtenidos en bloque 13: 27
+2026-05-11 07:58:09 [INFO] Bloque 14/14
+2026-05-11 07:58:13 [INFO] Servicios obtenidos en bloque 14: 0
+2026-05-11 07:58:13 [INFO] Total de servicios históricos obtenidos: 300
+2026-05-11 07:58:13 [INFO] DataFrame histórico de servicios total: 300 filas
+2026-05-11 07:58:13 [INFO] Llamadas abiertas con estado caliente:
+2026-05-11 07:58:49 [INFO] Leads abiertos:
+2026-05-11 07:59:08 [INFO] Oportunidades abiertas:
+2026-05-11 07:59:34 [INFO] Ofertas pendientes:
+2026-05-11 07:59:57 [INFO] Haciendo peticiones BDNS en 13 bloques...
+2026-05-11 07:59:57 [INFO] Bloque 1/13
+2026-05-11 08:00:00 [INFO] Registros BDNS obtenidos en bloque 1: 20
+2026-05-11 08:00:00 [INFO] Bloque 2/13
+2026-05-11 08:00:00 [INFO] Registros BDNS obtenidos en bloque 2: 18
+2026-05-11 08:00:00 [INFO] Bloque 3/13
+2026-05-11 08:00:01 [INFO] Registros BDNS obtenidos en bloque 3: 12
+2026-05-11 08:00:01 [INFO] Bloque 4/13
+2026-05-11 08:00:02 [INFO] Registros BDNS obtenidos en bloque 4: 26
+2026-05-11 08:00:02 [INFO] Bloque 5/13
+2026-05-11 08:00:03 [INFO] Registros BDNS obtenidos en bloque 5: 9
+2026-05-11 08:00:03 [INFO] Bloque 6/13
+2026-05-11 08:00:04 [INFO] Registros BDNS obtenidos en bloque 6: 15
+2026-05-11 08:00:04 [INFO] Bloque 7/13
+2026-05-11 08:00:05 [INFO] Registros BDNS obtenidos en bloque 7: 31
+2026-05-11 08:00:05 [INFO] Bloque 8/13
+2026-05-11 08:00:06 [INFO] Registros BDNS obtenidos en bloque 8: 25
+2026-05-11 08:00:06 [INFO] Bloque 9/13
+2026-05-11 08:00:07 [INFO] Registros BDNS obtenidos en bloque 9: 36
+2026-05-11 08:00:07 [INFO] Bloque 10/13
+2026-05-11 08:00:07 [INFO] Registros BDNS obtenidos en bloque 10: 15
+2026-05-11 08:00:07 [INFO] Bloque 11/13
+2026-05-11 08:00:08 [INFO] Registros BDNS obtenidos en bloque 11: 21
+2026-05-11 08:00:08 [INFO] Bloque 12/13
+2026-05-11 08:00:09 [INFO] Registros BDNS obtenidos en bloque 12: 17
+2026-05-11 08:00:09 [INFO] Bloque 13/13
+2026-05-11 08:00:10 [INFO] Registros BDNS obtenidos en bloque 13: 12
+2026-05-11 08:00:10 [INFO] Total de registros BDNS obtenidos: 257
+2026-05-11 08:00:10 [INFO] DataFrame BDNS total: 257 filas
+2026-05-11 08:00:10 [INFO] Llamadas en el año:
+2026-05-11 08:00:35 [INFO] Cuentas sin llamada en el año: 320
+2026-05-11 08:00:35 [WARNING] Procesos con fallos (1/13): ['GRANTS']
+2026-05-11 08:00:38 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\Scripts\POC\output\citas.xlsx'
+2026-05-11 10:42:56 [INFO] Log iniciado en 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\logs\logs_2026-05-11.txt'
+2026-05-11 10:43:00 [INFO] Citas semana actual: 203
+2026-05-11 10:43:01 [INFO] Datos exportados a 'C:\Users\JoseOLARTE\OneDrive - FI Group\Documentos\PoC - MCP\output\citas.xlsx'
