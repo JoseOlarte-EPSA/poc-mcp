@@ -3,8 +3,8 @@ import re
 from datetime import datetime, timedelta
 
 import pandas as pd
-from config.columns import COLUMNS
-from config.dictionary import SECTORES
+from scripts.config.columns import COLUMNS
+from scripts.config.dictionary import SECTORES
 
 
 def json_to_dataframe(json_str: str) -> pd.DataFrame:

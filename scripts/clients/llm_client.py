@@ -5,7 +5,7 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 
-from config.queries import PROMPTS
+from scripts.config.queries import PROMPTS
 
 load_dotenv(Path(__file__).resolve().parent.parent.parent / ".env")
 

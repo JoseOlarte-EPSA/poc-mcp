@@ -1,24 +1,23 @@
 from __future__ import annotations
 
+import asyncio
+import logging
+import sys
+import uuid
 from pathlib import Path
 from typing import Any
 
 
 from fastmcp import FastMCP
+from fastapi import HTTPException
 from starlette.middleware import Middleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse
-import uuid
-from pathlib import Path
 
 from auth import BearerTokenMiddleware
 from config import load_settings
 from service import ExcelService
-
-import sys
-import asyncio
-import logging
-from fastapi import Request, HTTPException
+from scripts.realtime_query_service import DataverseRealtimeService
 
 from scripts.config.dictionary import SECTORES
 
@@ -32,6 +31,7 @@ _EXCEL_PATH = (
 )
 
 SERVICE = ExcelService(_EXCEL_PATH)
+REALTIME_SERVICE = DataverseRealtimeService(Path(__file__).resolve().parent / "xml_queries")
 
 # --- Extracción asíncrona ---
 TASK_LOGS_DIR = Path("logs/tasks")
@@ -45,9 +45,9 @@ mcp = FastMCP(name=settings.app_name, version=settings.server_version)
 # --- Endpoint: Lanzar extracción en background ---
 logger = logging.getLogger(settings.app_name)
 
-TASK_LOGS_DIR = Path("logs/tasks")
-TASK_LOGS_DIR.mkdir(parents=True, exist_ok=True)
-tasks = {}
+
+def _normalize_email(email: str) -> str:
+    return email.strip().replace("@epsa.com", "@fi-group.com")
 
 async def monitor_process(task_id: str, process: asyncio.subprocess.Process, log_file):
     """Espera a que el proceso termine para evitar zombies y cierra el archivo."""
@@ -79,6 +79,21 @@ def _capabilities() -> dict[str, Any]:
             "get_convocatorias_abiertas",
             "get_subvenciones_bdns",
             "get_resumen_noticias",
+            "get_cuentas_sin_llamar",
+            "get_citas_semanales_realtime",
+            "get_citas_por_comercial_semana_en_curso_realtime",
+            "get_citas_por_gestor_semana_en_curso_realtime",
+            "get_citas_por_comercial_realtime",
+            "get_citas_por_gestor_realtime",
+            "get_citas_por_cuenta_realtime",
+            "get_llamadas_semanales_realtime",
+            "get_llamadas_por_comercial_semana_en_curso_realtime",
+            "get_llamadas_por_gestor_semana_en_curso_realtime",
+            "get_llamadas_por_comercial_realtime",
+            "get_llamadas_por_gestor_realtime",
+            "get_llamadas_por_cuenta_realtime",
+            "get_xml_queries_realtime",
+            "run_xml_query_realtime",
         ],
     }
 
@@ -194,7 +209,7 @@ def get_citas_semanales(email: str, userType: str) -> list[dict]:
     Returns:
         Lista de registros de citas de la semana en curso del usuario.
     """
-    return SERVICE.read_by_email("CITAS SEMANALES", email= email.replace("@epsa.com", "@fi-group.com"), column_name= userType)
+    return SERVICE.read_by_email("CITAS SEMANALES", email=_normalize_email(email), column_name=userType)
 
 
 @mcp.tool
@@ -231,7 +246,7 @@ def get_citas_12_semanas(email: str,  userType: str) -> list[dict]:
     Returns:
         Lista de citas de la doceava semana anterior del usuario.
     """
-    return SERVICE.read_by_email("CITAS 12 SEMANAS ATRAS", email= email.replace("@epsa.com", "@fi-group.com"), column_name= userType)
+    return SERVICE.read_by_email("CITAS 12 SEMANAS ATRAS", email=_normalize_email(email), column_name=userType)
 
 
 @mcp.tool
@@ -256,7 +271,7 @@ def get_historico_citas(email: str, userType: str) -> list[dict]:
     Returns:
         Lista de registros históricos de citas del usuario.
     """
-    return SERVICE.read_by_email("HISTORICO DE CITAS", email= email.replace("@epsa.com", "@fi-group.com"), column_name= userType)
+    return SERVICE.read_by_email("HISTORICO DE CITAS", email=_normalize_email(email), column_name=userType)
 
 
 @mcp.tool
@@ -277,7 +292,7 @@ def get_historico_llamadas(email: str, userType: str) -> list[dict]:
     Returns:
         Lista de registros históricos de llamadas del usuario.
     """
-    return SERVICE.read_by_email("HISTORICO DE LLAMADAS", email= email.replace("@epsa.com", "@fi-group.com"), column_name= userType)
+    return SERVICE.read_by_email("HISTORICO DE LLAMADAS", email=_normalize_email(email), column_name=userType)
 
 
 @mcp.tool
@@ -301,7 +316,7 @@ def get_historico_opps(email: str, userType: str) -> list[dict]:
     Returns:
         Lista de registros históricos de oportunidades del usuario.          
     """
-    return SERVICE.read_by_email("HISTORICO DE OPPS", email= email.replace("@epsa.com", "@fi-group.com"), column_name= userType)
+    return SERVICE.read_by_email("HISTORICO DE OPPS", email=_normalize_email(email), column_name=userType)
 
 
 @mcp.tool
@@ -321,7 +336,7 @@ def get_llamadas_abiertas(email: str, userType: str) -> list[dict]:
     Returns:
         Lista de registros de llamadas abiertas del usuario.          
     """
-    return SERVICE.read_by_email("LLAMADAS ABIERTAS", email= email.replace("@epsa.com", "@fi-group.com"), column_name= userType)
+    return SERVICE.read_by_email("LLAMADAS ABIERTAS", email=_normalize_email(email), column_name=userType)
 
 
 @mcp.tool
@@ -353,7 +368,7 @@ def get_leads_abiertos(email: str, userType: str) -> list[dict]:
     Returns:
         Lista de registros de leads abiertos del usuario.      
     """
-    return SERVICE.read_by_email("LEADS ABIERTOS", email= email.replace("@epsa.com", "@fi-group.com"), column_name= userType)
+    return SERVICE.read_by_email("LEADS ABIERTOS", email=_normalize_email(email), column_name=userType)
 
 
 @mcp.tool
@@ -379,7 +394,7 @@ def get_oportunidades_abiertas(email: str, userType: str) -> list[dict]:
     Returns:
         Lista de servicios de oportunidades abiertas del usuario.
     """
-    return SERVICE.read_by_email("OPORTUNIDADES ABIERTAS", email= email.replace("@epsa.com", "@fi-group.com"), column_name= userType)
+    return SERVICE.read_by_email("OPORTUNIDADES ABIERTAS", email=_normalize_email(email), column_name=userType)
 
 
 @mcp.tool
@@ -402,7 +417,7 @@ def get_ofertas_pendientes(email: str, userType: str) -> list[dict]:
     Returns:
         Lista de registros de ofertas pendientes del usuario.          
     """
-    return SERVICE.read_by_email("OFERTAS PENDIENTES", email= email.replace("@epsa.com", "@fi-group.com"), column_name= userType)
+    return SERVICE.read_by_email("OFERTAS PENDIENTES", email=_normalize_email(email), column_name=userType)
 
 
 @mcp.tool
@@ -488,6 +503,100 @@ def get_cuentas_sin_llamar(nombre_usuario: str) -> list[dict]:
         Lista de registros de cuentas sin llamar.          
     """
     return SERVICE.read_by_cuenta_without_calls(nombre_usuario)
+
+
+@mcp.tool
+def get_citas_semanales_realtime() -> list[dict]:
+    """Consulta en tiempo real las citas de la semana en curso."""
+    return REALTIME_SERVICE.get_citas_semana_en_curso()
+
+
+@mcp.tool
+def get_citas_por_comercial_semana_en_curso_realtime(email: str) -> list[dict]:
+    """Consulta en tiempo real las citas de semana en curso por comercial."""
+    return REALTIME_SERVICE.get_citas_por_comercial_semana_en_curso(_normalize_email(email))
+
+
+@mcp.tool
+def get_citas_por_gestor_semana_en_curso_realtime(email: str) -> list[dict]:
+    """Consulta en tiempo real las citas de semana en curso por gestor."""
+    return REALTIME_SERVICE.get_citas_por_gestor_semana_en_curso(_normalize_email(email))
+
+
+@mcp.tool
+def get_citas_por_comercial_realtime(email: str) -> list[dict]:
+    """Consulta en tiempo real las citas por comercial."""
+    return REALTIME_SERVICE.get_citas_por_comercial(_normalize_email(email))
+
+
+@mcp.tool
+def get_citas_por_gestor_realtime(email: str) -> list[dict]:
+    """Consulta en tiempo real las citas por gestor."""
+    return REALTIME_SERVICE.get_citas_por_gestor(_normalize_email(email))
+
+
+@mcp.tool
+def get_citas_por_cuenta_realtime(nombre_cuenta: str) -> list[dict]:
+    """Consulta en tiempo real las citas por nombre de cuenta."""
+    return REALTIME_SERVICE.get_citas_por_cuenta(nombre_cuenta)
+
+
+@mcp.tool
+def get_llamadas_semanales_realtime() -> list[dict]:
+    """Consulta en tiempo real las llamadas de la semana en curso."""
+    return REALTIME_SERVICE.get_llamadas_semana_en_curso()
+
+
+@mcp.tool
+def get_llamadas_por_comercial_semana_en_curso_realtime(email: str) -> list[dict]:
+    """Consulta en tiempo real las llamadas de semana en curso por comercial."""
+    return REALTIME_SERVICE.get_llamadas_por_comercial_semana_en_curso(_normalize_email(email))
+
+
+@mcp.tool
+def get_llamadas_por_gestor_semana_en_curso_realtime(email: str) -> list[dict]:
+    """Consulta en tiempo real las llamadas de semana en curso por gestor."""
+    return REALTIME_SERVICE.get_llamadas_por_gestor_semana_en_curso(_normalize_email(email))
+
+
+@mcp.tool
+def get_llamadas_por_comercial_realtime(email: str) -> list[dict]:
+    """Consulta en tiempo real las llamadas por comercial."""
+    return REALTIME_SERVICE.get_llamadas_por_comercial(_normalize_email(email))
+
+
+@mcp.tool
+def get_llamadas_por_gestor_realtime(email: str) -> list[dict]:
+    """Consulta en tiempo real las llamadas por gestor."""
+    return REALTIME_SERVICE.get_llamadas_por_gestor(_normalize_email(email))
+
+
+@mcp.tool
+def get_llamadas_por_cuenta_realtime(nombre_cuenta: str) -> list[dict]:
+    """Consulta en tiempo real las llamadas por nombre de cuenta."""
+    return REALTIME_SERVICE.get_llamadas_por_cuenta(nombre_cuenta)
+
+
+@mcp.tool
+def get_xml_queries_realtime() -> list[str]:
+    """Devuelve el listado de query keys XML disponibles para ejecución realtime."""
+    return sorted(REALTIME_SERVICE.catalog.keys())
+
+
+@mcp.tool
+def run_xml_query_realtime(
+    query_key: str,
+    email: str | None = None,
+    nombre_cuenta: str | None = None,
+) -> list[dict]:
+    """Ejecuta una query XML realtime por clave con parámetros opcionales."""
+    params: dict[str, str] = {}
+    if email:
+        params["email"] = _normalize_email(email)
+    if nombre_cuenta:
+        params["nombre_cuenta"] = nombre_cuenta
+    return REALTIME_SERVICE.execute_query(query_key, **params)
+
 # ── App con middleware opcional ───────────────────────────────────────────────
 
 middleware = []
