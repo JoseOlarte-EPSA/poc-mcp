@@ -23,9 +23,10 @@
                     <value>10b7dd31-74b6-f011-bbd3-7c1e5211af47</value>                    
                     <value>2d40813e-74b6-f011-bbd3-7c1e5211af47</value>                
                 </condition>
-            </link-entity>        
-            <link-entity name="systemuser" from="systemuserid" to="owner" alias="owner" link-type="inner">
-                <attribute name="domainname" />
-            </link-entity>
-        </entity>
-    </fetch>
+            </filter>
+        </link-entity>
+        <link-entity name="systemuser" from="systemuserid" to="owner" alias="owner" link-type="inner">
+            <attribute name="domainname" />
+        </link-entity>
+    </entity>
+</fetch>
