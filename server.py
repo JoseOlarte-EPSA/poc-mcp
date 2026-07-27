@@ -17,7 +17,10 @@ from starlette.responses import JSONResponse
 from auth import BearerTokenMiddleware
 from config import load_settings
 from service import ExcelService
-from scripts.realtime_query_service import DataverseRealtimeService
+from scripts.realtime_query_service import DataverseRealtimeService, SQLRealtimeService, PlanCuentasService
+from scripts.clients.news_client import fetch_news_for_account
+
+from scripts.utils import get_current_date, get_week_range
 
 from scripts.config.dictionary import SECTORES
 
@@ -31,7 +34,9 @@ _EXCEL_PATH = (
 )
 
 SERVICE = ExcelService(_EXCEL_PATH)
-REALTIME_SERVICE = DataverseRealtimeService(Path(__file__).resolve().parent / "xml_queries")
+REALTIME_SERVICE = DataverseRealtimeService(Path(__file__).resolve().parent / "py_queries")
+SQL_SERVICE = SQLRealtimeService()
+PLAN_CUENTAS_SERVICE = PlanCuentasService()
 
 # --- Extracción asíncrona ---
 TASK_LOGS_DIR = Path("logs/tasks")
@@ -45,9 +50,6 @@ mcp = FastMCP(name=settings.app_name, version=settings.server_version)
 # --- Endpoint: Lanzar extracción en background ---
 logger = logging.getLogger(settings.app_name)
 
-
-def _normalize_email(email: str) -> str:
-    return email.strip().replace("@epsa.com", "@fi-group.com")
 
 async def monitor_process(task_id: str, process: asyncio.subprocess.Process, log_file):
     """Espera a que el proceso termine para evitar zombies y cierra el archivo."""
@@ -67,22 +69,18 @@ def _capabilities() -> dict[str, Any]:
         "transport": settings.transport,
         "auth_mode": settings.auth_mode,
         "tools": [
-            "get_citas_semanales",
-            "get_citas_12_semanas",
-            "get_historico_citas",
-            "get_historico_llamadas",
-            "get_historico_opps",
-            "get_llamadas_abiertas",
-            "get_leads_abiertos",
-            "get_oportunidades_abiertas",
             "get_ofertas_pendientes",
             "get_convocatorias_abiertas",
             "get_subvenciones_bdns",
             "get_resumen_noticias",
             "get_cuentas_sin_llamar",
+            "get_cuentas_pendientes_de_llamar",
             "get_citas_semanales_realtime",
+            "get_citas_12va_semana_atras_realtime",
             "get_citas_por_comercial_semana_en_curso_realtime",
+            "get_citas_por_comercial_12va_semana_atras_realtime",
             "get_citas_por_gestor_semana_en_curso_realtime",
+            "get_citas_por_gestor_12va_semana_atras_realtime",
             "get_citas_por_comercial_realtime",
             "get_citas_por_gestor_realtime",
             "get_citas_por_cuenta_realtime",
@@ -91,7 +89,24 @@ def _capabilities() -> dict[str, Any]:
             "get_llamadas_por_gestor_semana_en_curso_realtime",
             "get_llamadas_por_comercial_realtime",
             "get_llamadas_por_gestor_realtime",
-            "get_llamadas_por_cuenta_realtime",
+            "get_llamadas_por_cuenta_realtime",            
+            "get_servicios_de_oportunidad_por_comercial_realtime",            
+            "get_servicios_de_oportunidad_por_gestor_realtime",
+            "get_servicios_de_oportunidad_por_cuenta_realtime",            
+            "get_llamadas_abiertas_realtime",            
+            "get_llamadas_abiertas_por_cuenta_realtime",            
+            "get_llamadas_abiertas_por_comercial_realtime",            
+            "get_llamadas_abiertas_por_gestor_realtime",            
+            "get_leads_abiertos_por_comercial_realtime",            
+            "get_leads_abiertos_por_gestor_realtime",            
+            "get_leads_abiertos_por_cuenta_realtime",  
+            "get_servicios_de_oportunidad_abierta_por_comercial_realtime",
+            "get_servicios_de_oportunidad_abierta_por_gestor_realtime",
+            "get_servicios_de_oportunidad_abierta_por_cuenta_realtime",
+            "get_get_citas_con_interes_futuro_por_comercial",
+            "get_get_citas_con_interes_futuro_por_gestor",
+            "get_get_citas_con_interes_futuro_por_cuenta",          
+            "get_ayudas_percibidas_bdns",
             "get_xml_queries_realtime",
             "run_xml_query_realtime",
         ],
@@ -169,415 +184,875 @@ async def run_extract_async(_request: Request) -> JSONResponse:
         logger.error(f"Error al iniciar la tarea {task_id}: {str(e)}")
         raise HTTPException(status_code=500, detail="Error interno al iniciar la extracción.")
     
-@mcp.resource("diccionario://sectores")
+@mcp.tool
 def obtener_diccionario() -> str:
-    """Carga y devuelve el diccionario de sectores FI y sectores GRANTS."""
+    """Devuelve el diccionario de sectores FI y sectores GRANTS."""
     return SECTORES
 
-@mcp.tool
-def get_citas_semanales(email: str, userType: str) -> list[dict]:
-    """
-    Reuniones abiertas o programadas cuyo propietario de la cita sea el usuario con fecha de celebración la semana en curso. Por cada cita retorna:
-    - NÚMERO_DE_CUENTA: Número identificador de la cuenta en CRM.
-    - NIF: NIF fiscal de la cuenta.
-    - NOMBRE_DE_LA_CUENTA: Nombre de la empresa o cuenta.
-    - SCORE_INICIAL: Puntuación inicial de la cuenta.
-    - GROUP_ALIAS: Alias del grupo comercial asignado.
-    - FECHA_DE_LA_CITA: Fecha y hora de inicio de la cita (ISO 8601).
-    - CONTACTO_PRINCIPAL: Nombre completo del contacto principal.
-    - CARGO_CONTACTO: Cargo o puesto del contacto principal.
-    - TELEFONO_CONTACTO: Teléfono del contacto principal.
-    - INDUSTRIA_FI: Industria FI asignada a la cuenta.
-    - SECTOR_FI: Sector FI asignado a la cuenta.
-    - SECTOR_GRANTS: Sector usado para buscar convocatorias/ayudas/subvenciones.
-    - COMENTARIOS: Comentarios o resultado de la cita.
-    - CUENTA_ID: GUID de la cuenta en Dataverse.
-    - COMERCIAL: Correo del comercial responsable de la cita.
-    Usa el siguiente formato para responder:
-        -	Día y hora de la cita
-        -	Nombre de cuenta, Alias group y score inicial.
-            o	Contacto, cargo y teléfono
-            o	Comentarios de la cita
-            o	Resumen del histórico de actividad
-            o	Industria FI y Ayudas presentadas
-            o	Competidor, fecha del registro y en qué servicio.
-            o	Noticias
-            o	Argumentos y estrategia/Encaje en ayudas.
-    Args:
-        email: Correo electrónico del usuario en sesión.
-        userType: Tipo de usuario en sesión. COMERCIAL o GESTOR.
-    Returns:
-        Lista de registros de citas de la semana en curso del usuario.
-    """
-    return SERVICE.read_by_email("CITAS SEMANALES", email=_normalize_email(email), column_name=userType)
 
+@mcp.tool(
+    description="""
+    Devuelve las convocatorias de subvenciones abiertas para el sector indicado.
 
-@mcp.tool
-def get_citas_12_semanas(email: str,  userType: str) -> list[dict]:
-    """
-    Reuniones completadas cuyo propietario de la cita sea el usuario con fecha de celebración 12 semanas atrás respecto a la semana en curso. Por cada cita retorna:
-    - NÚMERO_DE_CUENTA: Número identificador de la cuenta en CRM.
-    - NIF: NIF fiscal de la cuenta.
-    - NOMBRE_DE_LA_CUENTA: Nombre de la empresa o cuenta.
-    - SCORE_INICIAL: Puntuación inicial de la cuenta.
-    - GROUP_ALIAS: Alias del grupo comercial asignado.
-    - FECHA_DE_LA_CITA: Fecha y hora de inicio de la cita (ISO 8601).
-    - CONTACTO_PRINCIPAL: Nombre completo del contacto principal.
-    - CARGO_CONTACTO: Cargo o puesto del contacto principal.
-    - TELEFONO_CONTACTO: Teléfono del contacto principal.
-    - INDUSTRIA_FI: Industria FI asignada a la cuenta.
-    - SECTOR_FI: Sector FI asignado a la cuenta.
-    - COMENTARIOS: Comentarios o resultado de la cita.
-    - CUENTA_ID: GUID de la cuenta en Dataverse.
-    - COMERCIAL: Correo del comercial responsable de la cita.
-    Usa el siguiente formato para responder:
-        -	Día y hora de la cita
-        -	Nombre de cuenta, Alias group y score inicial.
-            o	Contacto, cargo y teléfono
-            o	Comentarios de la cita
-            o	Resumen del histórico de actividad
-            o	Industria FI y Ayudas presentadas
-            o	Competidor, fecha del registro y en qué servicio.
-            o	Noticias
-            o	Argumentos y estrategia/Encaje en ayudas.
-    Args:
-        email: Correo electrónico del usuario en sesión.
-        userType: Tipo de usuario en sesión. COMERCIAL o GESTOR.
-    Returns:
-        Lista de citas de la doceava semana anterior del usuario.
-    """
-    return SERVICE.read_by_email("CITAS 12 SEMANAS ATRAS", email=_normalize_email(email), column_name=userType)
+    ⚠️ IMPORTANTE — NORMALIZACIÓN DEL SECTOR (obligatoria antes de llamar al método):
 
+    1. El parámetro `sector_grants` recibido del usuario PUEDE estar en inglés, español o cualquier idioma,
+       y puede ser una descripción coloquial, abreviada o no reconocida exactamente.
 
-@mcp.tool
-def get_historico_citas(email: str, userType: str) -> list[dict]:
-    """
-    Resumen de las citas en base a las reuniones celebradas en los 3 últimos años. Por cada cita retorna:
-    - NOMBRE_DE_LA_CUENTA: Nombre de la empresa o cuenta.
-    - ASUNTO: Asunto o título de la cita.
-    - FECHA_DE_LA_CITA: Fecha y hora de inicio de la cita (ISO 8601).
-    - CONTACTO_PRINCIPAL: Nombre completo del contacto principal.
-    - ASISTENTES: Nombres de los asistentes a la cita.
-    - COMENTARIOS: Comentarios o resultado de la cita.
-    - COMERCIAL: Correo del comercial responsable de las cita.
-    Usa el siguiente formato para responder:
-    -	Fecha de celebración de la cita
-    -	Nombre de cuenta, Alias group y score inicial.
-        o	Contacto, cargo y teléfono
-        o	Comentarios de la cita
-    Args:
-        email: Correo electrónico del usuario en sesión.
-        userType: Tipo de usuario en sesión. COMERCIAL o GESTOR.
-    Returns:
-        Lista de registros históricos de citas del usuario.
-    """
-    return SERVICE.read_by_email("HISTORICO DE CITAS", email=_normalize_email(email), column_name=userType)
+    2. Para normalizar el sector, DEBES realizar los siguientes pasos:
 
+       a) Obtén el diccionario de sectores invocando el recurso: resource://obtener-diccionario
+          Este diccionario tiene dos columnas: CRM (nombre original del sector) y GRANTS (nombre normalizado).
 
-@mcp.tool
-def get_historico_llamadas(email: str, userType: str) -> list[dict]:
-    """
-    Resumen de las llamadas en base a los 3 últimos años. Por cada llamada retorna:
-    - NOMBRE_DE_LA_CUENTA: Nombre de la empresa o cuenta.
-    - REFERENTE_A: Entidad u oportunidad a la que hace referencia la llamada.
-    - NÚMERO_TELÉFONO: Número de teléfono marcado.
-    - ASUNTO: Asunto o motivo de la llamada.
-    - FECHA_FIN_REAL: Fecha y hora de finalización real de la llamada (ISO 8601).
-    - TIPO: Tipo de llamada (entrante / saliente).
-    - RESULTADO: Resultado registrado de la llamada.
-    - COMERCIAL: Correo del comercial responsable de la llamada.
-    Args:
-        email: Correo electrónico del usuario en sesión.
-        userType: Tipo de usuario en sesión. COMERCIAL o GESTOR.
-    Returns:
-        Lista de registros históricos de llamadas del usuario.
-    """
-    return SERVICE.read_by_email("HISTORICO DE LLAMADAS", email=_normalize_email(email), column_name=userType)
+       b) Busca un MATCH EXACTO comparando el input contra la columna CRM:
+          - Si encuentra match → usa el valor correspondiente de la columna GRANTS como parámetro final.
 
+       c) Si NO hay match exacto, busca el nombre CRM MÁS SEMEJANTE/ASEMEJADO al input del usuario:
+          - Considera similitud textual, traducciones aproximadas, variaciones de mayúsculas/minúsculas,
+            caracteres especiales, o nombres alternativos del mismo sector.
+          - Usa el valor GRANTS asociado al CRM más parecido.
 
-@mcp.tool
-def get_historico_opps(email: str, userType: str) -> list[dict]:
-    """
-    Resumen de las ofertas lanzadas, las oportunidades 'Inactivas'/'Activas' deben ser retornadas como 'Perdidas'/'En curso' respectivamente. Por cada oferta retorna:
-    - NOMBRE_DE_LA_CUENTA: Nombre de la empresa o cuenta.
-    - SERVICIO: Tipo de servicio de la oportunidad.
-    - FECHA: Fecha de creación del servicio (ISO 8601).
-    - RAZÓN_DEL_ESTADO: Razón del estado actual del servicio.
-    - ESTADO: Estado actual del servicio (activo / inactivo).
-    - OPORTUNIDAD: Nombre de la oportunidad asociada.
-    - PROBABILIDAD: Probabilidad de éxito estimada.
-    - COMPETIDOR: Nombre del competidor identificado.
-    - FECHA_DE_CREACIÓN_COMPETENCIA: Fecha de registro del competidor (ISO 8601).
-    - ÁREA: Área de servicio FI.
-    - COMERCIAL: Correo del comercial responsable de la oferta.
-    Args:
-        email: Correo electrónico del usuario en sesión.
-        userType: Tipo de usuario en sesión. COMERCIAL o GESTOR.
-    Returns:
-        Lista de registros históricos de oportunidades del usuario.          
-    """
-    return SERVICE.read_by_email("HISTORICO DE OPPS", email=_normalize_email(email), column_name=userType)
+       d) Como fallback FINAL, si no hay semejanza clara posible → usa el valor `sector_grants` tal cual llegó.
 
+    3. Con el sector NORMALIZADO resultante, ejecuta la consulta SQL de convocatorias abiertas.
 
-@mcp.tool
-def get_llamadas_abiertas(email: str, userType: str) -> list[dict]:
-    """
-    Llamadas abiertas o no realizadas aún cuyo propietario sea el usuario. Por cada llamada retorna:
-    - NOMBRE_DE_LA_CUENTA: Nombre de la empresa o cuenta.
-    - SCORE_INICIAL: Puntuación inicial de la cuenta.
-    - GROUP_ALIAS: Alias del grupo comercial asignado.
-    - ÚLTIMO_CONTACTO: Fecha del último contacto registrado (ISO 8601).
-    - INDUSTRIA_FI: Industria FI asignada a la cuenta.
-    - DESCRIPCIÓN: Descripción o notas de la llamada.
-    - COMERCIAL: Correo del comercial responsable de la llamada.
-    Args:
-        email: Correo electrónico del usuario en sesión.
-        userType: Tipo de usuario en sesión. COMERCIAL o GESTOR.
-    Returns:
-        Lista de registros de llamadas abiertas del usuario.          
-    """
-    return SERVICE.read_by_email("LLAMADAS ABIERTAS", email=_normalize_email(email), column_name=userType)
+Por cada convocatoria retorna:
+- SECTOR: Sector al que aplica la convocatoria.
+- TÍTULO: Título o nombre de la convocatoria de subvención.
 
+Args:
+    sector_grants: Nombre del sector ingresado por el usuario (puede estar en inglés, español,
+                   abreviado, o no reconocido). Ejemplos válidos: "Aeroespacial", "aerospace",
+                   "Aeronautical - Space", "Espacio", "Energy", etc.
 
-@mcp.tool
-def get_leads_abiertos(email: str, userType: str) -> list[dict]:
-    """
-    Leads abiertos cuyo propietario sea el usuario. Por cada lead retorna:
-    - NOMBRE_DE_LA_CUENTA: Nombre de la empresa o cuenta.
-    - SCORE_INICIAL: Puntuación inicial de la cuenta.
-    - GROUP_ALIAS: Alias del grupo comercial asignado.
-    - ÚLTIMO_CONTACTO: Fecha del último contacto registrado (ISO 8601).
-    - INDUSTRIA_FI: Industria FI asignada a la cuenta.
-    - SOURCE_CHANNEL: Canal de origen del lead.
-    - CAMPAÑA_DE_ORIGEN: Nombre de la campaña que originó el lead.
-    - COMENTARIOS_DE_LEAD: Comentarios internos sobre el lead.
-    - CREADO: Fecha de creación del lead (ISO 8601).
-    - COMERCIAL: Correo del comercial responsable del lead.
-    Usa el siguiente formato para responder:
-    -	Nombre de cuenta, Alias group y score inicial.
-        o	Contacto principal, cargo y teléfono
-        o	Resumen del histórico de actividad de CRM
-        o	Industria FI – Top sectorial
-        o	Fecha de último contacto
-        o	Source Channel
-        o	Campaña de origen
-        o	Comentarios del lead
-    Args:
-        email: Correo electrónico del usuario en sesión.
-        userType: Tipo de usuario en sesión. COMERCIAL o GESTOR.
-    Returns:
-        Lista de registros de leads abiertos del usuario.      
-    """
-    return SERVICE.read_by_email("LEADS ABIERTOS", email=_normalize_email(email), column_name=userType)
+Returns:
+    Lista de convocatorias abiertas que coinciden con el sector normalizado.
 
-
-@mcp.tool
-def get_oportunidades_abiertas(email: str, userType: str) -> list[dict]:
-    """
-    Servicios de oportunidad abiertos cuyo propietario sea el usuario. Por cada servicio retorna:
-    - NOMBRE_DE_LA_CUENTA: Nombre de la empresa o cuenta.
-    - TIPO_DE_SERVICIO: Tipo de servicio de la oportunidad.
-    - ÁREA_DE_SERVICIO: Área de servicio FI.
-    - TIPO_DE_CONTRATO: Modalidad de contrato (fijo, porcentaje, etc.).
-    - PREVISIÓN_DE_HONORARIOS: Honorarios previstos para FI.
-    - FECHA_DE_CREACIÓN: Fecha de creación de la oportunidad (ISO 8601).
-    - PROBABILIDAD: Probabilidad de éxito estimada.
-    - SECTOR_FI: Sector FI asignado a la cuenta.
-    - COMERCIAL: Correo del comercial responsable del servicio.
-    Usa el siguiente formato de respuesta:
-    -	Nombre de cuenta y fecha de creación de la oferta y probabilidad.
-        o	Tipo de servicio y área del servicio
-        o	Tipo de contrato y previsión de honorarios
-    Args:
-        email: Correo electrónico del usuario en sesión.
-        userType: Tipo de usuario en sesión. COMERCIAL o GESTOR.
-    Returns:
-        Lista de servicios de oportunidades abiertas del usuario.
-    """
-    return SERVICE.read_by_email("OPORTUNIDADES ABIERTAS", email=_normalize_email(email), column_name=userType)
-
-
-@mcp.tool
-def get_ofertas_pendientes(email: str, userType: str) -> list[dict]:
-    """
-    Reuniones completadas con resultado “interés en el futuro”. Por cada reunión retorna:
-    - NOMBRE_DE_LA_CUENTA: Nombre de la empresa o cuenta.
-    - FECHA_DE_ÚLTIMA_REUNIÓN: Fecha de la última reunión (ISO 8601).
-    - COMENTARIOS: Comentarios o resultado de la última cita.
-    - CONTACTO_PRINCIPAL: Nombre completo del contacto principal.
-    - COMERCIAL: Correo del comercial responsable de la oferta.
-    Usa el siguiente formato de respuesta:
-    -	Nombre de cuenta
-        o	Contacto principal, cargo y teléfono de última reunión.
-        o	Fecha de última reunión
-        o	Comentarios de última reunión
-    Args:
-        email: Correo electrónico del usuario en sesión.
-        userType: Tipo de usuario en sesión. COMERCIAL o GESTOR.
-    Returns:
-        Lista de registros de ofertas pendientes del usuario.          
-    """
-    return SERVICE.read_by_email("OFERTAS PENDIENTES", email=_normalize_email(email), column_name=userType)
-
-
-@mcp.tool
+Use este recurso cuando el usuario/comercial/gestor de cuenta quiera consultar las convocatorias
+en las que una cuenta puede encajar según su sector. SIEMPRE normaliza el sector mediante el
+diccionario antes de ejecutar la consulta.
+"""
+)
 def get_convocatorias_abiertas(sector_grants: str) -> list[dict]:
-    """
-    Devuelve las convocatorias de subvenciones abiertas para el sector indicado. Los sectores están en ingles, así que haz la respectiva traducción. Puedes usar el diccionario de sectores para saber a que sector se hace referencia. Por cada convocatoria retorna:
-    - SECTOR: Sector al que aplica la convocatoria.
-    - TÍTULO: Título o nombre de la convocatoria de subvención.
-    Args:
-        sector_grants: Valor del sector en formato GRANTS (columna SECTOR_GRANTS de CITAS SEMANALES).
-
-    Returns:
-        Lista de convocatorias abiertas que coinciden con el sector.
-    """
-    return SERVICE.read_by_sector(sector_grants)
+    return SQL_SERVICE.get_convocatorias_abiertas(sector_grants)
 
 
-@mcp.tool
-def get_subvenciones_bdns(nif: str) -> list[dict]:
-    """
-    Ayudas o subvenciones percibidas los 3 últimos años según el NIF de la cuenta. Por cada Ayuda retorna:
-    - NIF: NIF fiscal del beneficiario.
-    - BENEFICIARIO: Nombre del beneficiario de la subvención.
-    - ORGANISMO: Organismo público concedente.
-    - FONDOS_A_PRESTAMO: Importe concedido en forma de préstamo.
-    - FONDOS_A_SUBVENCIÓN: Importe concedido en forma de subvención directa.
-    Args:
-        nif: NIF de la cuenta (columna NIF de CITAS SEMANALES).
-    Returns:
-        Lista de registros BDNS correspondientes al NIF.
-    """
-    return SERVICE.read_by_nif(nif)
+@mcp.tool(
+    description="""
+    Busca noticias en internet acerca de una cuenta específica. 
 
+    Argumentos de entrada:
+    - nombre_cuenta (string): Nombre de cuenta en el CRM.
 
-@mcp.tool
+    Consulta en internet noticias asociadas a la cuenta mencionada. Extrae eltTítulo, la fuente, Fecha de publicación, URL de la noticia, y su contenido.
+
+    Utiliza este recurso cuando el usuario/comercial/gestor de cuenta  pregunte por artículos, noticias o información relevante que le ayude a preparar su estrategía comercial.
+    """ 
+)
 def get_resumen_noticias(nombre_cuenta: str) -> list[dict]:
+    return fetch_news_for_account(account_name=nombre_cuenta)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las cuentas llamadas en el año en curso. Por cada cuenta retorna:
+    - NÚMERO_DE_CUENTA: Número identificador de la cuenta en CRM.   
+    - NOMBRE DE CUENTA: Nombre de la cuenta en CRM.        
     """
-    Noticias de actualidad de las compañías con las que el comercial se va a reunir esa semana. Por cada noticia retorna:
-    - NOMBRE_DE_LA_CUENTA: Nombre de la empresa o cuenta.
-    - Título: Titular de la noticia.
-    - Fuente: Medio o fuente de la noticia.
-    - Fecha: Fecha de publicación de la noticia.
-    - URL: Enlace a la noticia original.
-    - Contenido: Texto extraído del artículo.
-    - Resumen: Resumen generado por el LLM a partir del contenido.
+)
+def get_cuentas_llamadas_ano_en_curso() -> list[dict]:
+    return REALTIME_SERVICE.get_cuentas_llamadas_ano_en_curso()
 
-    Args:
-        nombre_cuenta: Nombre de la cuenta (columna NOMBRE_DE_LA_CUENTA de CITAS SEMANALES).
 
-    Returns:
-        Lista de registros de noticias resumidas correspondientes a la cuenta.
+@mcp.tool(
+    description="""
+    Obtiene el listado completo de cuentas asignadas a un gestor de cuenta específico
+    según el plan de cuentas oficial.
+
+    Argumentos de entrada:
+    - nombre_usuario (string): Correo electrónico o nombre del gestor de cuenta a filtrar.
+
+    Por cada cuenta retorna:
+    - Datos de la cuenta (Nº, nombre, sector, etc.).
+    - Gestor de Cuenta asignado.
+    - Comercial asignado.
+
+    Utiliza este recurso cuando el usuario necesite consultar su cartera oficial de cuentas
+    asignadas según el plan de cuentas.
     """
-    return SERVICE.read_by_cuenta(nombre_cuenta)
+)
+def get_cuentas_por_gestor_plan_cuentas(nombre_usuario: str) -> list[dict]:
+    return PLAN_CUENTAS_SERVICE.get_cuentas_por_gestor(nombre_usuario)
 
 
-@mcp.tool
-def get_cuentas_sin_llamar(nombre_usuario: str) -> list[dict]:
+@mcp.tool(
+    description="""
+    Herramienta que compara las cuentas asignadas a un gestor basandose en su nombre según el plan de cuentas oficial
+    con las cuentas que ya han sido llamadas en el año actual, y retorna únicamente
+    las cuentas **pendientes de llamar**.
+
+    Argumentos de entrada:
+    - nombre_gestor (string, requerido): Nombre del gestor de cuenta cuyo listado 
+      de cuentas pendientes se desea obtener.
+
+    Información retornada por cada cuenta pendiente:
+    - NIF
+    - Número de cuenta
+    - Nombre de la cuenta
+    - Group Alias
+    - Sector FI
+    - Gasto anual I+D+i
+    - Gestor de Cuenta asignado
+
+    Instrucciones de uso:
+    - Invoca esta herramienta inmediatamente cuando el usuario/gestor/comercial necesite identificar
+      qué cuentas de su cartera aún no ha llamado este año.
+    - Requiere obligatoriamente el nombre del gestor. Si no está presente en 
+      el contexto o en el prompt inicial, preguntalo.
+
+    Ejemplo de trigger: "¿Qué cuentas me faltan por llamar este año?"
     """
-    Devuelve el resumen de las cuentas sin llamar en el año en curso provenientes del plan estrategico para el usuario. Por cada cuenta retorna:
-    - NÚMERO_DE_CUENTA: Número identificador de la cuenta en CRM.
-    - NIF: NIF fiscal de la cuenta.
-    - NOMBRE_DE_LA_CUENTA: Nombre de la empresa o cuenta.
-    - SCORE_INICIAL: Puntuación inicial de la cuenta.
-    - GROUP_ALIAS: Alias del grupo comercial asignado.
-    - Gasto anual I+D+i: Gasto Anual en I+D+i.
-    - TELEFONO_CONTACTO: Teléfono del contacto principal.
-    - INDUSTRIA_FI: Industria FI asignada a la cuenta.
-    - SECTOR_FI: Sector FI asignado a la cuenta.
-    - SECTOR_GRANTS: Sector usado para buscar convocatorias/ayudas/subvenciones.
-    - FECHA DE ÚLTIMO CONTACTO: Fecha de último contacto con la cuenta.
-    - COMERCIAL: Correo del comercial responsable de la cuenta.
-    Usa el siguiente formato para responder:
-    -	Nombre de cuenta, Alias group y score inicial.
-        o	Contacto, cargo y teléfono
-        o	Resumen del histórico de actividad de CRM
-        o	Industria FI + TOP Sectorial
-        o	Noticias
-        o	Argumentos y estrategia/Encaje en ayudas 
-
-    Args:
-        nombre_usuario: Nombre del usuario en sesion.
-    Returns:
-        Lista de registros de cuentas sin llamar.          
+)
+def get_cuentas_pendientes_de_llamar(nombre_gestor: str) -> list[dict]:
     """
-    return SERVICE.read_by_cuenta_without_calls(nombre_usuario)
+    Busca las cuentas asignadas a un gestor basandose en su nombtre y retorna las cuentas asignadas que aún no han sido llamadas este año.
+    Compara el plan de cuentas oficial contra las llamadas registradas en el año en curso.
+    """
+    if not nombre_gestor or not nombre_gestor.strip():
+        raise ValueError("El parámetro 'gestor' es obligatorio.")
+    
+    return PLAN_CUENTAS_SERVICE.get_cuentas_pendientes_de_llamar(
+        gestor=nombre_gestor.strip(),
+        dataverse_service=REALTIME_SERVICE
+    )
 
 
-@mcp.tool
-def get_citas_semanales_realtime() -> list[dict]:
-    """Consulta en tiempo real las citas de la semana en curso."""
-    return REALTIME_SERVICE.get_citas_semana_en_curso()
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales abiertas o programadas para la semana en curso de un usuario/comercial específico. 
 
+    Argumentos de entrada:
+    - email (string): Correo del comercial en el CRM.
 
-@mcp.tool
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+    5. Historial: Resumen acumulado de la actividad previa en el CRM.
+    6. Contexto Técnico: Industria FI y el catálogo de Ayudas ya presentadas.
+    7. Competencia: Competidor detectado, fecha de registro y servicio asociado.
+    8. Actualidad: Noticias relevantes de la cuenta.
+    9. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
+
+    Utiliza este recurso cuando el usuario/comercial pregunte por la agenda, el calendario, las reuniones semanales o necesite preparar los antecedentes y la estrategia de sus visitas de la semana actual.
+    """    
+)
 def get_citas_por_comercial_semana_en_curso_realtime(email: str) -> list[dict]:
-    """Consulta en tiempo real las citas de semana en curso por comercial."""
-    return REALTIME_SERVICE.get_citas_por_comercial_semana_en_curso(_normalize_email(email))
+    return REALTIME_SERVICE.get_citas_por_comercial_semana_en_curso(email)
 
 
-@mcp.tool
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales abiertas o programadas para la decimo segunda semana anterior a la semana en curso de un usuario/comercial específico. 
+
+    Argumentos de entrada:
+    - email (string): Correo del comercial en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+    5. Historial: Resumen acumulado de la actividad previa en el CRM.
+    6. Contexto Técnico: Industria FI y el catálogo de Ayudas ya presentadas.
+    7. Competencia: Competidor detectado, fecha de registro y servicio asociado.
+    8. Actualidad: Noticias relevantes de la cuenta.
+    9. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
+
+    Utiliza este recurso cuando el usuario/comercial pregunte por la agenda, el calendario, las reuniones de la docimo segunda semana anterior a la semana en curso o necesite recordar los antecedentes y la estrategia de sus visitas de la doceava semana anterior.
+    """    
+)
+def get_citas_por_comercial_12va_semana_atras_realtime(email: str) -> list[dict]:
+    start_week, end_week = get_week_range(12)
+    return REALTIME_SERVICE.get_citas_por_comercial_12va_semana_atras(str(start_week)+"T00:00:00Z", str(end_week)+"T23:59:59Z", email)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales abiertas o programadas para la semana en curso de un usuario/gestor de cuenta específico. 
+
+    Argumentos de entrada:
+    - email (string): Correo del gestor en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+    5. Historial: Resumen acumulado de la actividad previa en el CRM.
+    6. Contexto Técnico: Industria FI y el catálogo de Ayudas ya presentadas.
+    7. Competencia: Competidor detectado, fecha de registro y servicio asociado.
+    8. Actualidad: Noticias relevantes de la cuenta.
+    9. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
+
+    Utiliza este recurso cuando el usuario/gestor de cuenta pregunte por la agenda, el calendario, las reuniones semanales o necesite preparar los antecedentes y la estrategia de sus cuentas de la semana actual.
+    """    
+)
 def get_citas_por_gestor_semana_en_curso_realtime(email: str) -> list[dict]:
-    """Consulta en tiempo real las citas de semana en curso por gestor."""
-    return REALTIME_SERVICE.get_citas_por_gestor_semana_en_curso(_normalize_email(email))
+    return REALTIME_SERVICE.get_citas_por_gestor_semana_en_curso(email)
 
 
-@mcp.tool
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales abiertas o programadas para la decimo segunda semana anterior a la semana en curso de un usuario/gestor de cuenta específico. 
+
+    Argumentos de entrada:
+    - email (string): Correo del gestor en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+
+    Utiliza este recurso cuando el usuario/gestor de cuenta pregunte por la agenda, el calendario, las reuniones semanales o necesite preparar los antecedentes y la estrategia de sus cuentas de la doceava semana anterior.
+    """    
+)
+def get_citas_por_gestor_12va_semana_atras_realtime(email: str) -> list[dict]:
+    start_week, end_week = get_week_range(12)
+    return REALTIME_SERVICE.get_citas_por_gestor_12va_semana_atras(str(start_week)+"T00:00:00Z", str(end_week)+"T23:59:59Z", email)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales abiertas o programadas de un usuario/comercial específico.
+
+    Argumentos de entrada:
+    - email (string): Correo del comercial en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+
+    Utiliza este recurso cuando el usuario/comercial pregunte por la agenda, el calendario, las reuniones o necesite preparar los antecedentes y la estrategia de sus visitas.
+    """    
+)
 def get_citas_por_comercial_realtime(email: str) -> list[dict]:
-    """Consulta en tiempo real las citas por comercial."""
-    return REALTIME_SERVICE.get_citas_por_comercial(_normalize_email(email))
+    return REALTIME_SERVICE.get_citas_por_comercial(email)
 
 
-@mcp.tool
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales abiertas o programadas de un usuario/gestor de cuenta específico. 
+
+    Argumentos de entrada:
+    - email (string): Correo del gestor en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+
+    Utiliza este recurso cuando el usuario/gestor de cuenta pregunte por la agenda, el calendario, las reuniones semanales o necesite preparar los antecedentes y la estrategia de sus cuentas.
+    """    
+)
 def get_citas_por_gestor_realtime(email: str) -> list[dict]:
-    """Consulta en tiempo real las citas por gestor."""
-    return REALTIME_SERVICE.get_citas_por_gestor(_normalize_email(email))
+    return REALTIME_SERVICE.get_citas_por_gestor(email)
 
 
-@mcp.tool
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales abiertas o programadas de una cuenta específica. 
+
+    Argumentos de entrada:
+    - nombre_cuenta (string): Nombre de la cuenta en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+
+    Utiliza este recurso cuando el usuario/comercial/gestor de cuenta pregunte por la agenda, el calendario, las reuniones o necesite preparar los antecedentes y la estrategia para la cuenta.
+    """    
+)
 def get_citas_por_cuenta_realtime(nombre_cuenta: str) -> list[dict]:
-    """Consulta en tiempo real las citas por nombre de cuenta."""
     return REALTIME_SERVICE.get_citas_por_cuenta(nombre_cuenta)
 
 
-@mcp.tool
-def get_llamadas_semanales_realtime() -> list[dict]:
-    """Consulta en tiempo real las llamadas de la semana en curso."""
-    return REALTIME_SERVICE.get_llamadas_semana_en_curso()
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las llamadas comerciales abiertas o programadas para la semana en curso de un usuario/comercial específico. 
 
+    Argumentos de entrada:
+    - email (string): Correo del comercial en el CRM.
 
-@mcp.tool
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada llamada:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la llamada actual.
+    5. Historial: Resumen acumulado de la actividad previa en el CRM.
+    6. Contexto Técnico: Industria FI y el catálogo de Ayudas ya presentadas.
+    7. Actualidad: Noticias relevantes de la cuenta.
+    8. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
+
+    Utiliza este recurso cuando el usuario/comercial pregunte por la agenda, el calendario, las llamadas semanales o necesite preparar los antecedentes y la estrategia de sus llamadas de la semana actual.
+    """    
+)
 def get_llamadas_por_comercial_semana_en_curso_realtime(email: str) -> list[dict]:
-    """Consulta en tiempo real las llamadas de semana en curso por comercial."""
-    return REALTIME_SERVICE.get_llamadas_por_comercial_semana_en_curso(_normalize_email(email))
+    return REALTIME_SERVICE.get_llamadas_por_comercial_semana_en_curso(email)
 
 
-@mcp.tool
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las llamadas comerciales abiertas o programadas para la semana en curso de un usuario/gestor de cuenta específico. 
+
+    Argumentos de entrada:
+    - email (string): Correo del gestor en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada llamada:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la llamada actual.
+    5. Historial: Resumen acumulado de la actividad previa en el CRM.
+    6. Contexto Técnico: Industria FI y el catálogo de Ayudas ya presentadas.
+    7. Actualidad: Noticias relevantes de la cuenta.
+    8. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
+
+    Utiliza este recurso cuando el usuario/gestor de cuenta pregunte por la agenda, el calendario, las llamadas semanales o necesite preparar los antecedentes y la estrategia de sus cuentas de la semana actual.
+    """    
+)
 def get_llamadas_por_gestor_semana_en_curso_realtime(email: str) -> list[dict]:
-    """Consulta en tiempo real las llamadas de semana en curso por gestor."""
-    return REALTIME_SERVICE.get_llamadas_por_gestor_semana_en_curso(_normalize_email(email))
+    return REALTIME_SERVICE.get_llamadas_por_gestor_semana_en_curso(email)
 
 
-@mcp.tool
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las llamadas comerciales abiertas o programadas de un usuario/comercial específico.
+
+    Argumentos de entrada:
+    - email (string): Correo del comercial en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada llamada:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la llamada actual.
+
+    Utiliza este recurso cuando el usuario/comercial pregunte por la agenda, el calendario, las llamadas o necesite preparar los antecedentes y la estrategia de sus llamadas.
+    """    
+)
 def get_llamadas_por_comercial_realtime(email: str) -> list[dict]:
-    """Consulta en tiempo real las llamadas por comercial."""
-    return REALTIME_SERVICE.get_llamadas_por_comercial(_normalize_email(email))
+    return REALTIME_SERVICE.get_llamadas_por_comercial(email)
 
 
-@mcp.tool
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las llamadas comerciales abiertas o programadas de un usuario/gestor de cuenta específico. 
+
+    Argumentos de entrada:
+    - email (string): Correo del gestor en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada llamada:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la llamada actual.
+
+    Utiliza este recurso cuando el usuario/gestor de cuenta pregunte por la agenda, el calendario, las llamadas semanales o necesite preparar los antecedentes y la estrategia de sus cuentas.
+    """    
+)
 def get_llamadas_por_gestor_realtime(email: str) -> list[dict]:
-    """Consulta en tiempo real las llamadas por gestor."""
-    return REALTIME_SERVICE.get_llamadas_por_gestor(_normalize_email(email))
+    return REALTIME_SERVICE.get_llamadas_por_gestor(email)
 
 
-@mcp.tool
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las llamadas comerciales abiertas o programadas de una cuenta específica. 
+
+    Argumentos de entrada:
+    - nombre_cuenta (string): Nombre de la cuenta en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la llamada actual.
+
+    Utiliza este recurso cuando el usuario/comercial/gestor de cuenta pregunte por la agenda, el calendario, las llamadas o necesite preparar los antecedentes y la estrategia para la cuenta.
+    """    
+)
 def get_llamadas_por_cuenta_realtime(nombre_cuenta: str) -> list[dict]:
-    """Consulta en tiempo real las llamadas por nombre de cuenta."""
     return REALTIME_SERVICE.get_llamadas_por_cuenta(nombre_cuenta)
 
 
-@mcp.tool
+@mcp.tool(
+    description= """
+    Obtiene el listado completo de los servicios de oportunidad ofrecidos por un asesor comercial específico a partir de su correo electrónico.
+
+    Argumentos de entrada:
+    - email (string, requerido): Dirección de correo electrónico institucional del asesor comercial registrado en el CRM.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada servicio de oportunidad, la herramienta devuelve un objeto estructurado en tres niveles:
+    1. Datos de la Oferta y Cuenta:
+    - Nombre de cuenta: Razón social o nombre de la empresa cliente vinculada.
+    - Fecha de creación de la oferta: Fecha en la que se registró la propuesta comercial en el CRM.
+    - Probabilidad: Porcentaje o nivel estimado de éxito comercial para ganar este servicio.
+    2. Clasificación del Negocio:
+    - Tipo de servicio: Categoría o modalidad específica del servicio ofertado.
+    - Área del servicio: División, sector o departamento de negocio asignado.
+    3. Condiciones Financieras:
+    - Tipo de contrato: Formato legal o modelo contractual propuesto para el servicio.
+    - Previsión de honorarios: Estimación económica o ingresos proyectados para este negocio.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/comercial pregunte por sus servicios ofertados, propuestas en curso y probabilidades de sus oportunidades activas.
+    - Requiere obligatoriamente el correo electrónico del comercial. Si no está presente en el contexto o en el prompt inicial, solicítalo amablemente al usuario antes de ejecutar la herramienta.
+    """    
+)
+def get_servicios_de_oportunidad_por_comercial_realtime(email: str) -> list[dict]:
+    return REALTIME_SERVICE.get_servicios_de_oportunidad_por_comercial(email)
+
+
+@mcp.tool(
+    description= """
+    Obtiene el listado completo de los servicios de oportunidad gestionados por un gestor de cuenta específico a partir de su correo electrónico.
+
+    Argumentos de entrada:
+    - email (string, requerido): Dirección de correo electrónico institucional del gestor de cuenta registrado en el CRM.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada servicio de oportunidad, la herramienta devuelve un objeto estructurado en tres niveles:
+    1. Datos de la Oferta y Cuenta:
+    - Nombre de cuenta: Razón social o nombre de la empresa cliente vinculada.
+    - Fecha de creación de la oferta: Fecha en la que se registró la propuesta comercial en el CRM.
+    - Probabilidad: Porcentaje o nivel estimado de éxito comercial para ganar este servicio.
+    2. Clasificación del Negocio:
+    - Tipo de servicio: Categoría o modalidad específica del servicio ofertado.
+    - Área del servicio: División, sector o departamento de negocio asignado.
+    3. Condiciones Financieras:
+    - Tipo de contrato: Formato legal o modelo contractual propuesto para el servicio.
+    - Previsión de honorarios: Estimación económica o ingresos proyectados para este negocio.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/gestor pregunte por los servicios ofertados, propuestas en curso y probabilidades de las oportunidades de sus cuentas activas.
+    - Requiere obligatoriamente el correo electrónico del gestor. Si no está presente en el contexto o en el prompt inicial, solicítalo amablemente al usuario antes de ejecutar la herramienta.
+    """  
+)
+def get_servicios_de_oportunidad_por_gestor_realtime(email: str) -> list[dict]:
+    return REALTIME_SERVICE.get_servicios_de_oportunidad_por_gestor(email)
+
+
+@mcp.tool(
+    description= """
+    Obtiene el listado completo de los servicios de oportunidad ofrecidos a una cuenta especifica.
+
+    Argumentos de entrada:
+    - nombre_cuenta (string, requerido): Nombre de la cuenta registrado en el CRM.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada servicio de oportunidad, la herramienta devuelve un objeto estructurado en tres niveles:
+    1. Datos de la Oferta y Cuenta:
+    - Nombre de cuenta: Razón social o nombre de la empresa cliente vinculada.
+    - Fecha de creación de la oferta: Fecha en la que se registró la propuesta comercial en el CRM.
+    - Probabilidad: Porcentaje o nivel estimado de éxito comercial para ganar este servicio.
+    2. Clasificación del Negocio:
+    - Tipo de servicio: Categoría o modalidad específica del servicio ofertado.
+    - Área del servicio: División, sector o departamento de negocio asignado.
+    3. Condiciones Financieras:
+    - Tipo de contrato: Formato legal o modelo contractual propuesto para el servicio.
+    - Previsión de honorarios: Estimación económica o ingresos proyectados para este negocio.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/comercial/gestor pregunte por los servicios ofertados, propuestas en curso y probabilidades de las oportunidades de una cuenta especifica.
+    - Requiere obligatoriamente el nombre de la cuenta a consultar. Si no está presente en el contexto o en el prompt inicial, solicítalo amablemente al usuario antes de ejecutar la herramienta.
+    """  
+)
+def get_servicios_de_oportunidad_por_cuenta_realtime(nombre_cuenta: str) -> list[dict]:
+    return REALTIME_SERVICE.get_servicios_de_oportunidad_por_cuenta(nombre_cuenta)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo de las llamadas abiertas registradas en CRM.
+    """
+)
+def get_llamadas_abiertas_realtime() -> list[dict]:
+    current_date = get_current_date()
+    return REALTIME_SERVICE.get_llamadas_abiertas(current_date)
+
+
+@mcp.tool(
+    description= """
+    Obtiene el listado completo de las llamadas abiertas registradas para una cuenta especifica en CRM.
+
+    Argumentos de entrada:
+    - nombre_cuenta (string, requerido): Nombre de la cuenta para filtrar los resultados.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada llamada abierta, la herramienta devuelve un objeto estructurado en tres niveles con las siguientes propiedades:
+    1. Datos de la Cuenta y Priorización:
+    - Nombre de la cuenta (NOMBRE_DE_LA_CUENTA): Razón social o nombre de la empresa cliente vinculada.
+    - Score inicial (SCORE_INICIAL): Puntuación o calificación inicial asignada a la cuenta en el CRM.
+    - Grupo (GROUP_ALIAS): Alias o nombre del grupo empresarial al que pertenece la cuenta.
+    2. Estado de la Relación y Contexto:
+    - Último contacto (ÚLTIMO_CONTACTO): Fecha de la última interacción o comunicación registrada con la cuenta.
+    - Industria FI (INDUSTRIA_FI): Sector industrial o categoría financiera de la cuenta.
+    - Descripción (DESCRIPCIÓN): Detalle, notas o contexto específico sobre el estado de la llamada abierta.
+    3. Asignación del Equipo:
+    - Comercial (COMERCIAL): Nombre de dominio del usuario comercial encargado de la cuenta.
+    - Gestor (GESTOR): Nombre de dominio del usuario gestor responsable del seguimiento.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/comercial/gestor pregunte por llamadas pendientes, actividades abiertas, interacciones pendientes de una cuenta en especifico.
+    - Si el usuario solicita el reporte general de llamadas abiertas sin especificar una cuenta, ejecuta la herramienta de inmediato para traer el listado completo. Si menciona un nombre ambiguo, solicita amablemente la aclaración del nombre de cuenta antes de realizar la consulta.
+    """    
+)
+def get_llamadas_abiertas_por_cuenta_realtime(nombre_cuenta: str) -> list[dict]:
+    current_date = get_current_date()
+    return REALTIME_SERVICE.get_llamadas_abiertas_por_cuenta(nombre_cuenta, current_date)
+
+
+@mcp.tool(
+    description= """
+    Obtiene el listado completo de las llamadas abiertas registradas para un usuario comercial en el CRM.
+
+    Argumentos de entrada:
+    - email (string, requerido): Email del comercial asignado para filtrar los resultados.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada llamada abierta, la herramienta devuelve un objeto estructurado en tres niveles con las siguientes propiedades:
+    1. Datos de la Cuenta y Priorización:
+    - Nombre de la cuenta (NOMBRE_DE_LA_CUENTA): Razón social o nombre de la empresa cliente vinculada.
+    - Score inicial (SCORE_INICIAL): Puntuación o calificación inicial asignada a la cuenta en el CRM.
+    - Grupo (GROUP_ALIAS): Alias o nombre del grupo empresarial al que pertenece la cuenta.
+    2. Estado de la Relación y Contexto:
+    - Último contacto (ÚLTIMO_CONTACTO): Fecha de la última interacción o comunicación registrada con la cuenta.
+    - Industria FI (INDUSTRIA_FI): Sector industrial o categoría financiera de la cuenta.
+    - Descripción (DESCRIPCIÓN): Detalle, notas o contexto específico sobre el estado de la llamada abierta.
+    3. Asignación del Equipo:
+    - Comercial (COMERCIAL): Nombre de dominio del usuario comercial encargado de la cuenta.
+    - Gestor (GESTOR): Nombre de dominio del usuario gestor responsable del seguimiento.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/comercial pregunte por llamadas pendientes, actividades abiertas, interacciones pendientes de un usuario/comercial específico.
+    - Si el usuario solicita el reporte general de llamadas abiertas sin especificar un comercial, ejecuta la herramienta de inmediato para traer el listado completo. Si menciona un nombre ambiguo, solicita amablemente la aclaración del dominio del comercial antes de realizar la consulta.
+    """
+)
+def get_llamadas_abiertas_por_comercial_realtime(email: str) -> list[dict]:
+    current_date = get_current_date()
+    return REALTIME_SERVICE.get_llamadas_abiertas_por_comercial(email, current_date)
+
+
+@mcp.tool(
+    description= """
+    Obtiene el listado completo de las llamadas abiertas registradas para las cuentas de un gestor de cuenta especifico en CRM.
+
+    Argumentos de entrada:
+    - email (string, requerido): Email del gestor asignado para filtrar los resultados.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada llamada abierta, la herramienta devuelve un objeto estructurado en tres niveles con las siguientes propiedades:
+    1. Datos de la Cuenta y Priorización:
+    - Nombre de la cuenta (NOMBRE_DE_LA_CUENTA): Razón social o nombre de la empresa cliente vinculada.
+    - Score inicial (SCORE_INICIAL): Puntuación o calificación inicial asignada a la cuenta en el CRM.
+    - Grupo (GROUP_ALIAS): Alias o nombre del grupo empresarial al que pertenece la cuenta.
+    2. Estado de la Relación y Contexto:
+    - Último contacto (ÚLTIMO_CONTACTO): Fecha de la última interacción o comunicación registrada con la cuenta.
+    - Industria FI (INDUSTRIA_FI): Sector industrial o categoría financiera de la cuenta.
+    - Descripción (DESCRIPCIÓN): Detalle, notas o contexto específico sobre el estado de la llamada abierta.
+    3. Asignación del Equipo:
+    - Comercial (COMERCIAL): Nombre de dominio del usuario comercial encargado de la cuenta.
+    - Gestor (GESTOR): Nombre de dominio del usuario gestor responsable del seguimiento.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/gestor pregunte por llamadas pendientes, actividades abiertas, interacciones pendientes de las cuentas que gestiona.
+    - Si el usuario solicita el reporte general de llamadas abiertas sin especificar un gestor, ejecuta la herramienta de inmediato para traer el listado completo. Si menciona un nombre ambiguo, solicita amablemente la aclaración del dominio del gestor antes de realizar la consulta.
+    """    
+)
+def get_llamadas_abiertas_por_gestor_realtime(email: str) -> list[dict]:
+    current_date = get_current_date()
+    return REALTIME_SERVICE.get_llamadas_abiertas_por_cuenta(email, current_date)
+
+
+@mcp.tool(
+    description= """
+    Obtiene el listado completo de los leads pendientes asignados a un usuario comercial en el CRM.
+
+    Argumentos de entrada:
+    - email (string, requerido): Email del comercial asignado para filtrar los resultados.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada registro de lead pendiente, la herramienta devuelve un objeto estructurado:
+    1. Datos de la Cuenta y Priorización:
+    - Nombre de la cuenta (NOMBRE_DE_LA_CUENTA): Razón social o nombre de la empresa cliente vinculada.
+    - Score inicial (SCORE_INICIAL): Puntuación o calificación inicial asignada a la cuenta en el CRM.
+    - Grupo (GROUP_ALIAS): Alias o nombre del grupo empresarial al que pertenece la cuenta.
+    2. Estado de la Relación y Contexto de Origen:
+    - Último contacto (ÚLTIMO_CONTACTO): Fecha de la última interacción o comunicación registrada con la cuenta.
+    - Industria FI (INDUSTRIA_FI): Sector industrial o categoría financiera de la cuenta.
+    - Canal de origen (SOURCE_CHANNEL): Medio o canal a través del cual se captó el lead.
+    - Campaña de origen (CAMPAÑA_DE_ORIGEN): Nombre de la campaña de marketing vinculada al lead.
+    - Comentarios de lead (COMENTARIOS_DE_LEAD): Detalle, notas o contexto específico de comentarios para la gestión del lead.
+    - Fecha de creación (CREADO): Fecha de registro y alta del lead en el sistema CRM.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/comercial pregunte por sus leads pendientes, prospectos asignados, oportunidades sin resolver o tareas de captación pendientes de un usuario/comercial específico.
+    - Si el usuario solicita el reporte de leads pendientes sin especificar un comercial, ejecuta la herramienta de inmediato para traer el listado general. Si menciona un nombre de usuario ambiguo, solicita amablemente la aclaración de su correo electrónico o dominio antes de realizar la consulta.
+    """
+)
+def get_leads_abiertos_por_comercial_realtime(email: str) -> list[dict]:
+    return REALTIME_SERVICE.get_leads_abiertos_por_comercial(email)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo de los leads pendientes asignados a la cuenta de un usuario gestor en el CRM.
+
+    Argumentos de entrada:
+    - email (string, requerido): Email del gestor asignado a la cuenta del lead para filtrar los resultados.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada registro de lead pendiente, la herramienta devuelve un objeto estructurado:
+    1. Datos de la Cuenta y Priorización:
+    - Nombre de la cuenta (NOMBRE_DE_LA_CUENTA): Razón social o nombre de la empresa cliente vinculada.
+    - Score inicial (SCORE_INICIAL): Puntuación o calificación inicial asignada a la cuenta en el CRM.
+    - Grupo (GROUP_ALIAS): Alias o nombre del grupo empresarial al que pertenece la cuenta.
+    2. Estado de la Relación y Contexto de Origen:
+    - Último contacto (ÚLTIMO_CONTACTO): Fecha de la última interacción o comunicación registrada con la cuenta.
+    - Industria FI (INDUSTRIA_FI): Sector industrial o categoría financiera de la cuenta.
+    - Canal de origen (SOURCE_CHANNEL): Medio o canal a través del cual se captó el lead.
+    - Campaña de origen (CAMPAÑA_DE_ORIGEN): Nombre de la campaña de marketing vinculada al lead.
+    - Comentarios de lead (COMENTARIOS_DE_LEAD): Detalle, notas o contexto específico de comentarios para la gestión del lead.
+    - Fecha de creación (CREADO): Fecha de registro y alta del lead en el sistema CRM.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/gestor pregunte por sus leads pendientes, prospectos asignados, oportunidades sin resolver o tareas de captación pendientes de las cuentas que gestiona.
+    - Si el usuario solicita el reporte de leads pendientes sin especificar un comercial, ejecuta la herramienta de inmediato para traer el listado general. Si menciona un nombre de usuario ambiguo, solicita amablemente la aclaración de su correo electrónico o dominio antes de realizar la consulta.
+    """
+)
+def get_leads_abiertos_por_gestor_realtime(email: str) -> list[dict]:
+    return REALTIME_SERVICE.get_leads_abiertos_por_gestor(email)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo de los leads pendientes asignados a una cuenta en el CRM.
+
+    Argumentos de entrada:
+    - nombre_cuenta (string, requerido): Nombre de la cuenta del lead para filtrar los resultados.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada registro de lead pendiente, la herramienta devuelve un objeto estructurado:
+    1. Datos de la Cuenta y Priorización:
+    - Nombre de la cuenta (NOMBRE_DE_LA_CUENTA): Razón social o nombre de la empresa cliente vinculada.
+    - Score inicial (SCORE_INICIAL): Puntuación o calificación inicial asignada a la cuenta en el CRM.
+    - Grupo (GROUP_ALIAS): Alias o nombre del grupo empresarial al que pertenece la cuenta.
+    2. Estado de la Relación y Contexto de Origen:
+    - Último contacto (ÚLTIMO_CONTACTO): Fecha de la última interacción o comunicación registrada con la cuenta.
+    - Industria FI (INDUSTRIA_FI): Sector industrial o categoría financiera de la cuenta.
+    - Canal de origen (SOURCE_CHANNEL): Medio o canal a través del cual se captó el lead.
+    - Campaña de origen (CAMPAÑA_DE_ORIGEN): Nombre de la campaña de marketing vinculada al lead.
+    - Comentarios de lead (COMENTARIOS_DE_LEAD): Detalle, notas o contexto específico de comentarios para la gestión del lead.
+    - Fecha de creación (CREADO): Fecha de registro y alta del lead en el sistema CRM.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/comercial/gestor pregunte por leads pendientes, prospectos asignados, oportunidades sin resolver o tareas de captación pendientes asociados a una cuenta.
+    - Si el usuario solicita el reporte de leads pendientes sin especificar el nombre de la cuenta, ejecuta la herramienta de inmediato para traer el listado general. Si menciona un nombre de cuenta ambiguo, solicita amablemente la aclaración del nombre antes de realizar la consulta.
+    """
+)
+def get_leads_abiertos_por_cuenta_realtime(nombre_cuenta: str) -> list[dict]:
+    return REALTIME_SERVICE.get_leads_abiertos_por_cuenta(nombre_cuenta)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo de los servicios de oportunidad abiertos por un usuario/comercial específico a partir de su correo electrónico.
+
+    Argumentos de entrada:
+    - email (string, requerido): Email del comercial asignado al servicio de oportunidad para filtrar los resultados.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada registro de oportunidad abierta, la herramienta devuelve un objeto estructurado en tres niveles:
+    1. Datos de la Oferta y Cuenta:
+    - Nombre de la cuenta: Razón social o nombre de la empresa cliente vinculada.
+    - Fecha de creación: Fecha en la que se registró la propuesta comercial en el CRM (createdon).
+    - Probabilidad: Porcentaje o nivel estimado de éxito comercial para ganar este servicio.
+    2. Clasificación del Negocio:
+    - Tipo de servicio: Categoría o modalidad específica del servicio ofertado.
+    - Área de servicio: División o departamento de negocio asignado.
+    - Sector FI: Sector industrial o económico al que pertenece el cliente.
+    3. Condiciones Financieras:
+    - Tipo de contrato: Formato legal o modelo contractual propuesto para el servicio.
+    - Previsión de honorarios: Estimación económica o ingresos proyectados para este negocio.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/comercial pregunte por sus oportunidades abiertas, su cartera actual en seguimiento o el estado de sus negocios activos.
+    - Requiere obligatoriamente el correo electrónico del comercial. Si no está presente en el contexto o en el prompt inicial, solicítalo amablemente al usuario antes de ejecutar la herramienta.
+    """
+)
+def get_servicios_de_oportunidad_abierta_por_comercial_realtime(email: str) -> list[dict]:
+    """Consulta las servicios de oportunidad u ofertas ofrecidos a cuentas con oportunidades abiertas que ha creado el usuario."""
+    return REALTIME_SERVICE.get_servicios_de_oportunidad_abierta_por_comercial(email)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo de los servicios de oportunidad abiertos asignados a las cuentas de un usuario/gestor de cuenta específico a partir de su correo electrónico.
+
+    Argumentos de entrada:
+    - email (string, requerido): Email del usuario/gestor asignado al servicio de oportunidad para filtrar los resultados.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada registro de oportunidad abierta, la herramienta devuelve un objeto estructurado en tres niveles:
+    1. Datos de la Oferta y Cuenta:
+    - Nombre de la cuenta: Razón social o nombre de la empresa cliente vinculada.
+    - Fecha de creación: Fecha en la que se registró la propuesta comercial en el CRM (createdon).
+    - Probabilidad: Porcentaje o nivel estimado de éxito comercial para ganar este servicio.
+    2. Clasificación del Negocio:
+    - Tipo de servicio: Categoría o modalidad específica del servicio ofertado.
+    - Área de servicio: División o departamento de negocio asignado.
+    - Sector FI: Sector industrial o económico al que pertenece el cliente.
+    3. Condiciones Financieras:
+    - Tipo de contrato: Formato legal o modelo contractual propuesto para el servicio.
+    - Previsión de honorarios: Estimación económica o ingresos proyectados para este negocio.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/gestor pregunte por sus cuentas con oportunidades abiertas, su cartera actual en seguimiento o el estado de sus negocios activos.
+    - Requiere obligatoriamente el correo electrónico del gestor. Si no está presente en el contexto o en el prompt inicial, solicítalo amablemente al usuario antes de ejecutar la herramienta.
+    """
+)
+def get_servicios_de_oportunidad_abierta_por_gestor_realtime(email: str) -> list[dict]:
+    """Consulta las servicios de oportunidad u ofertas ofrecidos a cuentas con oportunidades abiertas que gestiona el usuario."""
+    return REALTIME_SERVICE.get_servicios_de_oportunidad_abierta_por_gestor(email)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo de los servicios de oportunidad abiertos asignados a una cuenta especifica.
+
+    Argumentos de entrada:
+    - nombre_cuenta (string, requerido): Nombre de la cuenta asociada al servicio de oportunidad para filtrar los resultados.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada registro de oportunidad abierta, la herramienta devuelve un objeto estructurado en tres niveles:
+    1. Datos de la Oferta y Cuenta:
+    - Nombre de la cuenta: Razón social o nombre de la empresa cliente vinculada.
+    - Fecha de creación: Fecha en la que se registró la propuesta comercial en el CRM (createdon).
+    - Probabilidad: Porcentaje o nivel estimado de éxito comercial para ganar este servicio.
+    2. Clasificación del Negocio:
+    - Tipo de servicio: Categoría o modalidad específica del servicio ofertado.
+    - Área de servicio: División o departamento de negocio asignado.
+    - Sector FI: Sector industrial o económico al que pertenece el cliente.
+    3. Condiciones Financieras:
+    - Tipo de contrato: Formato legal o modelo contractual propuesto para el servicio.
+    - Previsión de honorarios: Estimación económica o ingresos proyectados para este negocio.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/gestor pregunte por una cuenta con oportunidades abiertas.
+    - Requiere obligatoriamente el nombre de la cuenta. Si no está presente en el contexto o en el prompt inicial, solicítalo amablemente al usuario antes de ejecutar la herramienta.
+    """
+)
+def get_servicios_de_oportunidad_abierta_por_cuenta_realtime(nombre_cuenta: str) -> list[dict]:
+    return REALTIME_SERVICE.get_servicios_de_oportunidad_abierta_por_cuenta(nombre_cuenta)
+
+
+@mcp.tool(
+    description= """    
+    Obtiene el listado de reuniones comerciales pasadas cuyo resultado fue marcado como "interés en el futuro" para un usuario o comercial específico.
+
+    Argumentos de entrada:
+    - email (string): Correo del comercial en el CRM.
+
+    Este recurso consulta el CRM y extrae las cuentas con oportunidades latentes, detallando los siguientes campos clave de su última interacción:
+    1. NOMBRE_DE_LA_CUENTA: Nombre de la cuenta o empresa (`account.name`).
+    2. FECHA_DE_ÚLTIMA_REUNIÓN: Fecha y hora de finalización de la cita (`scheduledend`).
+    3. COMENTARIOS: Notas y comentarios sobre el resultado de la última reunión (`iav_resultcomments`).
+    4. CONTACTO_PRINCIPAL: Nombre completo, cargo y teléfono del contacto principal (`contact.fullname`).
+    5. COMERCIAL: Correo del comercial que generó o atendió la cita (`created_by.domainname`).
+    6. GESTOR: Correo del gestor asignado actualmente a la cuenta (`user.domainname`).
+
+    Utiliza este recurso cuando el comercial necesite hacer seguimiento a prospectos antiguos, rescatar leads con interés aplazado, o planificar campañas de re-impacto basadas en el histórico de reuniones con interés futuro.
+    """    
+)
+def get_get_citas_con_interes_futuro_por_comercial(email: str) -> list[dict]:
+    """Consulta las citas con resultado interés en el futuro que ha creado el usuario durante los últimos 3 meses."""
+    return REALTIME_SERVICE.get_servicios_de_oportunidad_abierta_por_comercial(email)
+
+
+@mcp.tool(
+    description= """    
+    Obtiene el listado de reuniones comerciales pasadas cuyo resultado fue marcado como "interés en el futuro" asociadas a las cuentas de un usuario/gestor de cuenta específico.
+
+    Argumentos de entrada:
+    - email (string): Correo del usuario/gestor de cuenta en el CRM.
+
+    Este recurso consulta el CRM y extrae las cuentas con oportunidades latentes, detallando los siguientes campos clave de su última interacción:
+    1. NOMBRE_DE_LA_CUENTA: Nombre de la cuenta o empresa (`account.name`).
+    2. FECHA_DE_ÚLTIMA_REUNIÓN: Fecha y hora de finalización de la cita (`scheduledend`).
+    3. COMENTARIOS: Notas y comentarios sobre el resultado de la última reunión (`iav_resultcomments`).
+    4. CONTACTO_PRINCIPAL: Nombre completo, cargo y teléfono del contacto principal (`contact.fullname`).
+    5. COMERCIAL: Correo del comercial que generó o atendió la cita (`created_by.domainname`).
+    6. GESTOR: Correo del gestor asignado actualmente a la cuenta (`user.domainname`).
+
+    Utiliza este recurso cuando el usuario/gestor de cuenta necesite hacer seguimiento a prospectos antiguos, rescatar leads con interés aplazado, o planificar campañas de re-impacto basadas en el histórico de reuniones con interés futuro.
+    """    
+)
+def get_get_citas_con_interes_futuro_por_gestor(email: str) -> list[dict]:
+    """Consulta las citas con resultado interés en el futuro que se han creado para cuentas que gestiona el usuario durante los últimos 3 meses."""
+    return REALTIME_SERVICE.get_servicios_de_oportunidad_abierta_por_gestor(email)
+
+
+@mcp.tool(
+    description= """    
+    Obtiene el listado de reuniones comerciales pasadas cuyo resultado fue marcado como "interés en el futuro" asociadas a una cuenta específica.
+
+    Argumentos de entrada:
+    - nombre_cuenta (string): Nombre de la cuenta en el CRM.
+
+    Este recurso consulta el CRM y extrae las cuentas con oportunidades latentes, detallando los siguientes campos clave de su última interacción:
+    1. NOMBRE_DE_LA_CUENTA: Nombre de la cuenta o empresa (`account.name`).
+    2. FECHA_DE_ÚLTIMA_REUNIÓN: Fecha y hora de finalización de la cita (`scheduledend`).
+    3. COMENTARIOS: Notas y comentarios sobre el resultado de la última reunión (`iav_resultcomments`).
+    4. CONTACTO_PRINCIPAL: Nombre completo, cargo y teléfono del contacto principal (`contact.fullname`).
+    5. COMERCIAL: Correo del comercial que generó o atendió la cita (`created_by.domainname`).
+    6. GESTOR: Correo del gestor asignado actualmente a la cuenta (`user.domainname`).
+
+    Utiliza este recurso cuando el usuario/comercial/gestor de cuenta necesite hacer seguimiento a prospectos antiguos, rescatar leads con interés aplazado, o planificar campañas de re-impacto basadas en el histórico de reuniones con interés futuro de una cuenta específica.
+    """    
+)
+def get_get_citas_con_interes_futuro_por_cuenta(nombre_cuenta: str) -> list[dict]:
+    """Consulta las citas con resultado interés en el futuro por cuenta durante los últimos 3 meses."""
+    return REALTIME_SERVICE.get_servicios_de_oportunidad_abierta_por_cuenta(nombre_cuenta)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las ayudas o subvenciones percibidas los tres últimos años para una cuenta específica según su NIF. 
+
+    Args:
+        nif (str): NIF fiscal de la cuenta.
+
+    Returns:
+        Lista de dict con claves:
+        - NIF: Código fiscal del beneficiario
+        - BENEFICIARIO: Nombre del beneficiario
+        - ORGANISMO: Organismo concedente
+        - FONDOS_A_PRESTAMO: Importe en préstamos
+        - FONDOS_A_SUBVENCIÓN: Importe en subvenciones
+    """
+)
+def get_ayudas_percibidas_bdns(nif: str) -> list[dict]:
+    return SQL_SERVICE.get_detalle_ayudas(nif.strip().upper())
+
+@mcp.tool(description="Devuelve el listado de query keys XML disponibles para ejecución realtime.")
 def get_xml_queries_realtime() -> list[str]:
     """Devuelve el listado de query keys XML disponibles para ejecución realtime."""
     return sorted(REALTIME_SERVICE.catalog.keys())
@@ -592,7 +1067,7 @@ def run_xml_query_realtime(
     """Ejecuta una query XML realtime por clave con parámetros opcionales."""
     params: dict[str, str] = {}
     if email:
-        params["email"] = _normalize_email(email)
+        params["email"] = email
     if nombre_cuenta:
         params["nombre_cuenta"] = nombre_cuenta
     return REALTIME_SERVICE.execute_query(query_key, **params)

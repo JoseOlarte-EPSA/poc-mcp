@@ -38,6 +38,7 @@ COLUMNS_HISTORICO_LLAMADAS = {
     "FECHA_FIN_REAL": "actualend",
     "TIPO": "iav_type@OData.Community.Display.V1.FormattedValue",
     "RESULTADO": "iav_result@OData.Community.Display.V1.FormattedValue",
+    "DESCRIPCION": "description",
     "COMERCIAL": "created_by.domainname",
     "GESTOR": "user.domainname"
 }
@@ -113,6 +114,11 @@ COLUMNS_OFERTAS_PENDIENTES = {
 COLUMNS_LLAMADAS_ENTRE_FECHAS = {
     "NÚMERO_DE_CUENTA": "account.accountnumber",
     "CUENTA_ID": "account.accountid",
+}
+
+COLUMNS_CUENTAS_LLAMADAS_ANO_EN_CURSO = {
+    "NÚMERO_DE_CUENTA": "accountnumber",
+    "NOMBRE_DE_CUENTA": "name",
 }
 
 # Diccionario con el mapeo de columnas para las cuentas en BDNS

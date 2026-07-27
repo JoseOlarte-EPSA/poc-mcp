@@ -1,6 +1,6 @@
 import json
 import re
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import pandas as pd
 from scripts.config.columns import COLUMNS
@@ -94,6 +94,16 @@ def get_week_range(weeks_ago: int) -> tuple[datetime.date, datetime.date]:
     start_of_week = target_date - timedelta(days=target_date.weekday())
     end_of_week = start_of_week + timedelta(days=6)
     return start_of_week, end_of_week
+
+
+def get_current_date() -> str:
+    """
+    Retorna la fecha y hora actual en formato UTC YYYY-mm-DDTHH:MM:SSZ.
+
+    Returns:
+        str: Fecha y hora actual en formato UTC.
+    """
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def chunk_array(array, chunk_size: int):
