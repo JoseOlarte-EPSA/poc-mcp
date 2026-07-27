@@ -124,3 +124,39 @@ LEADS_ABIERTOS_POR_CUENTA = """<fetch top="50">
         </filter>
     </entity>
 </fetch>"""
+
+LEADS_ABIERTOS_POR_NIF = """<fetch top="50">
+    <entity name="lead">
+        <attribute name="fin_leadcomments" />
+        <attribute name="createdon" />
+        <link-entity name="account" from="accountid" to="parentaccountid" alias="account" link-type="inner">
+            <attribute name="name" />
+            <attribute name="iav_initialscore" />            
+            <attribute name="axz_lastcontactdate" />
+            <link-entity name="fin_group" from="fin_groupid" to="fin_groupaliasid" alias="group_alias" link-type="outer">
+                <attribute name="fin_name" />
+            </link-entity>
+            <link-entity name="fig_industriafi" from="fig_industriafiid" to="fig_industriafi" alias="industria_fi" link-type="outer">
+                <attribute name="fig_name" />
+            </link-entity>
+            <link-entity name="systemuser" from="systemuserid" to="iav_accountmanager" alias="user" link-type="inner">
+                <attribute name="domainname" />
+            </link-entity>
+            <filter type="and">               
+                <condition attribute="iav_nif" operator="eq" value="{NIF}" />          
+            </filter> 
+        </link-entity>
+        <link-entity name="fin_leadchannel" from="fin_leadchannelid" to="fin_leadchannelid" alias="source_channel" link-type="outer">
+            <attribute name="fin_name" />
+        </link-entity>
+        <link-entity name="campaign" from="campaignid" to="campaignid" alias="campaign" link-type="outer">
+            <attribute name="name" />
+        </link-entity>
+        <link-entity name="systemuser" from="systemuserid" to="ownerid" alias="created_by" link-type="inner">
+            <attribute name="domainname" />
+        </link-entity>
+        <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+        </filter>
+    </entity>
+</fetch>"""

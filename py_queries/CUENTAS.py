@@ -1,6 +1,7 @@
 CUENTAS_LLAMADAS_ANO_EN_CURSO = """<fetch distinct='true'>
     <entity name="account">
         <attribute name="accountnumber" />
+        <attribute name="iav_nif" />
         <attribute name="name" />
         <order attribute="name" descending="false" />
         <link-entity name="phonecall" from="iav_accountid" to="accountid" alias="pc" link-type="inner">

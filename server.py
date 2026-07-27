@@ -69,14 +69,12 @@ def _capabilities() -> dict[str, Any]:
         "transport": settings.transport,
         "auth_mode": settings.auth_mode,
         "tools": [
-            "get_ofertas_pendientes",
+            "obtener_diccionario",
             "get_convocatorias_abiertas",
-            "get_subvenciones_bdns",
             "get_resumen_noticias",
-            "get_cuentas_sin_llamar",
+            "get_cuentas_llamadas_ano_en_curso",
+            "get_cuentas_por_gestor_plan_cuentas",
             "get_cuentas_pendientes_de_llamar",
-            "get_citas_semanales_realtime",
-            "get_citas_12va_semana_atras_realtime",
             "get_citas_por_comercial_semana_en_curso_realtime",
             "get_citas_por_comercial_12va_semana_atras_realtime",
             "get_citas_por_gestor_semana_en_curso_realtime",
@@ -84,31 +82,35 @@ def _capabilities() -> dict[str, Any]:
             "get_citas_por_comercial_realtime",
             "get_citas_por_gestor_realtime",
             "get_citas_por_cuenta_realtime",
-            "get_llamadas_semanales_realtime",
+            "get_citas_por_nif_realtime",
             "get_llamadas_por_comercial_semana_en_curso_realtime",
             "get_llamadas_por_gestor_semana_en_curso_realtime",
             "get_llamadas_por_comercial_realtime",
             "get_llamadas_por_gestor_realtime",
-            "get_llamadas_por_cuenta_realtime",            
-            "get_servicios_de_oportunidad_por_comercial_realtime",            
+            "get_llamadas_por_cuenta_realtime",
+            "get_llamadas_por_nif_realtime",
+            "get_servicios_de_oportunidad_por_comercial_realtime",
             "get_servicios_de_oportunidad_por_gestor_realtime",
-            "get_servicios_de_oportunidad_por_cuenta_realtime",            
-            "get_llamadas_abiertas_realtime",            
-            "get_llamadas_abiertas_por_cuenta_realtime",            
-            "get_llamadas_abiertas_por_comercial_realtime",            
-            "get_llamadas_abiertas_por_gestor_realtime",            
-            "get_leads_abiertos_por_comercial_realtime",            
-            "get_leads_abiertos_por_gestor_realtime",            
-            "get_leads_abiertos_por_cuenta_realtime",  
+            "get_servicios_de_oportunidad_por_cuenta_realtime",
+            "get_servicios_de_oportunidad_por_nif_realtime",
+            "get_llamadas_abiertas_realtime",
+            "get_llamadas_abiertas_por_cuenta_realtime",
+            "get_llamadas_abiertas_por_nif_realtime",
+            "get_llamadas_abiertas_por_comercial_realtime",
+            "get_llamadas_abiertas_por_gestor_realtime",
+            "get_leads_abiertos_por_comercial_realtime",
+            "get_leads_abiertos_por_gestor_realtime",
+            "get_leads_abiertos_por_cuenta_realtime",
+            "get_leads_abiertos_por_nif_realtime",
             "get_servicios_de_oportunidad_abierta_por_comercial_realtime",
             "get_servicios_de_oportunidad_abierta_por_gestor_realtime",
             "get_servicios_de_oportunidad_abierta_por_cuenta_realtime",
-            "get_get_citas_con_interes_futuro_por_comercial",
-            "get_get_citas_con_interes_futuro_por_gestor",
-            "get_get_citas_con_interes_futuro_por_cuenta",          
+            "get_servicios_de_oportunidad_abierta_por_nif_realtime",
+            "get_citas_con_interes_futuro_por_comercial",
+            "get_citas_con_interes_futuro_por_gestor",
+            "get_citas_con_interes_futuro_por_cuenta",
+            "get_citas_con_interes_futuro_por_nif",
             "get_ayudas_percibidas_bdns",
-            "get_xml_queries_realtime",
-            "run_xml_query_realtime",
         ],
     }
 
@@ -486,6 +488,26 @@ def get_citas_por_cuenta_realtime(nombre_cuenta: str) -> list[dict]:
 
 @mcp.tool(
     description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales abiertas o programadas de una cuenta con NIF específico. 
+
+    Argumentos de entrada:
+    - nif (string): Código NIF de la cuenta en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+
+    Utiliza este recurso cuando el usuario/comercial/gestor de cuenta pregunte por la agenda, el calendario, las reuniones o necesite preparar los antecedentes y la estrategia para la cuenta según su NIF.
+    """    
+)
+def get_citas_por_nif_realtime(nif: str) -> list[dict]:
+    return REALTIME_SERVICE.get_citas_por_nif(nif)
+
+
+@mcp.tool(
+    description="""
     Obtiene el listado completo y detallado de las llamadas comerciales abiertas o programadas para la semana en curso de un usuario/comercial específico. 
 
     Argumentos de entrada:
@@ -593,6 +615,26 @@ def get_llamadas_por_cuenta_realtime(nombre_cuenta: str) -> list[dict]:
 
 
 @mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las llamadas comerciales abiertas o programadas de una cuenta específica según su NIF. 
+
+    Argumentos de entrada:
+    - nif (string): Código NIF de la cuenta en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la llamada actual.
+
+    Utiliza este recurso cuando el usuario/comercial/gestor de cuenta pregunte por la agenda, el calendario, las llamadas o necesite preparar los antecedentes y la estrategia para la cuenta según su NIF.
+    """    
+)
+def get_llamadas_por_nif_realtime(nif: str) -> list[dict]:
+    return REALTIME_SERVICE.get_llamadas_por_nif(nif)
+
+
+@mcp.tool(
     description= """
     Obtiene el listado completo de los servicios de oportunidad ofrecidos por un asesor comercial específico a partir de su correo electrónico.
 
@@ -680,6 +722,34 @@ def get_servicios_de_oportunidad_por_cuenta_realtime(nombre_cuenta: str) -> list
 
 
 @mcp.tool(
+    description= """
+    Obtiene el listado completo de los servicios de oportunidad ofrecidos a una cuenta especifica según su NIF.
+
+    Argumentos de entrada:
+    - nif (string, requerido): Código NIF de la cuenta registrado en el CRM.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada servicio de oportunidad, la herramienta devuelve un objeto estructurado en tres niveles:
+    1. Datos de la Oferta y Cuenta:
+    - Nombre de cuenta: Razón social o nombre de la empresa cliente vinculada.
+    - Fecha de creación de la oferta: Fecha en la que se registró la propuesta comercial en el CRM.
+    - Probabilidad: Porcentaje o nivel estimado de éxito comercial para ganar este servicio.
+    2. Clasificación del Negocio:
+    - Tipo de servicio: Categoría o modalidad específica del servicio ofertado.
+    - Área del servicio: División, sector o departamento de negocio asignado.
+    3. Condiciones Financieras:
+    - Tipo de contrato: Formato legal o modelo contractual propuesto para el servicio.
+    - Previsión de honorarios: Estimación económica o ingresos proyectados para este negocio.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/comercial/gestor pregunte por los servicios ofertados, propuestas en curso y probabilidades de las oportunidades de una cuenta especifica según su NIF.
+    """  
+)
+def get_servicios_de_oportunidad_por_nif_realtime(nif: str) -> list[dict]:
+    return REALTIME_SERVICE.get_servicios_de_oportunidad_por_nif(nif)
+
+
+@mcp.tool(
     description="""
     Obtiene el listado completo de las llamadas abiertas registradas en CRM.
     """
@@ -718,6 +788,36 @@ def get_llamadas_abiertas_realtime() -> list[dict]:
 def get_llamadas_abiertas_por_cuenta_realtime(nombre_cuenta: str) -> list[dict]:
     current_date = get_current_date()
     return REALTIME_SERVICE.get_llamadas_abiertas_por_cuenta(nombre_cuenta, current_date)
+
+
+@mcp.tool(
+    description= """
+    Obtiene el listado completo de las llamadas abiertas registradas para una cuenta especifica en CRM según su NIF.
+
+    Argumentos de entrada:
+    - nif (string, requerido): Código NIF de la cuenta para filtrar los resultados.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada llamada abierta, la herramienta devuelve un objeto estructurado en tres niveles con las siguientes propiedades:
+    1. Datos de la Cuenta y Priorización:
+    - Nombre de la cuenta (NOMBRE_DE_LA_CUENTA): Razón social o nombre de la empresa cliente vinculada.
+    - Score inicial (SCORE_INICIAL): Puntuación o calificación inicial asignada a la cuenta en el CRM.
+    - Grupo (GROUP_ALIAS): Alias o nombre del grupo empresarial al que pertenece la cuenta.
+    2. Estado de la Relación y Contexto:
+    - Último contacto (ÚLTIMO_CONTACTO): Fecha de la última interacción o comunicación registrada con la cuenta.
+    - Industria FI (INDUSTRIA_FI): Sector industrial o categoría financiera de la cuenta.
+    - Descripción (DESCRIPCIÓN): Detalle, notas o contexto específico sobre el estado de la llamada abierta.
+    3. Asignación del Equipo:
+    - Comercial (COMERCIAL): Nombre de dominio del usuario comercial encargado de la cuenta.
+    - Gestor (GESTOR): Nombre de dominio del usuario gestor responsable del seguimiento.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/comercial/gestor pregunte por llamadas pendientes, actividades abiertas, interacciones pendientes de una cuenta en especifico según su NIF.
+    """    
+)
+def get_llamadas_abiertas_por_nif_realtime(nif: str) -> list[dict]:
+    current_date = get_current_date()
+    return REALTIME_SERVICE.get_llamadas_abiertas_por_nif(nif, current_date)
 
 
 @mcp.tool(
@@ -865,7 +965,65 @@ def get_leads_abiertos_por_gestor_realtime(email: str) -> list[dict]:
 
     Instrucciones de uso para el modelo (Triggering):
     - Invoca este recurso inmediatamente cuando el usuario/comercial/gestor pregunte por leads pendientes, prospectos asignados, oportunidades sin resolver o tareas de captación pendientes asociados a una cuenta.
-    - Si el usuario solicita el reporte de leads pendientes sin especificar el nombre de la cuenta, ejecuta la herramienta de inmediato para traer el listado general. Si menciona un nombre de cuenta ambiguo, solicita amablemente la aclaración del nombre antes de realizar la consulta.
+    - Si menciona un nombre de cuenta ambiguo, solicita amablemente la aclaración del nombre antes de realizar la consulta.
+    """
+)
+def get_leads_abiertos_por_cuenta_realtime(nombre_cuenta: str) -> list[dict]:
+    return REALTIME_SERVICE.get_leads_abiertos_por_cuenta(nombre_cuenta)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo de los leads pendientes asignados a una cuenta en el CRM según su NIF.
+
+    Argumentos de entrada:
+    - nif (string, requerido): Código NIF de la cuenta del lead para filtrar los resultados.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada registro de lead pendiente, la herramienta devuelve un objeto estructurado:
+    1. Datos de la Cuenta y Priorización:
+    - Nombre de la cuenta (NOMBRE_DE_LA_CUENTA): Razón social o nombre de la empresa cliente vinculada.
+    - Score inicial (SCORE_INICIAL): Puntuación o calificación inicial asignada a la cuenta en el CRM.
+    - Grupo (GROUP_ALIAS): Alias o nombre del grupo empresarial al que pertenece la cuenta.
+    2. Estado de la Relación y Contexto de Origen:
+    - Último contacto (ÚLTIMO_CONTACTO): Fecha de la última interacción o comunicación registrada con la cuenta.
+    - Industria FI (INDUSTRIA_FI): Sector industrial o categoría financiera de la cuenta.
+    - Canal de origen (SOURCE_CHANNEL): Medio o canal a través del cual se captó el lead.
+    - Campaña de origen (CAMPAÑA_DE_ORIGEN): Nombre de la campaña de marketing vinculada al lead.
+    - Comentarios de lead (COMENTARIOS_DE_LEAD): Detalle, notas o contexto específico de comentarios para la gestión del lead.
+    - Fecha de creación (CREADO): Fecha de registro y alta del lead en el sistema CRM.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/comercial/gestor pregunte por leads pendientes, prospectos asignados, oportunidades sin resolver o tareas de captación pendientes asociados a una cuenta según su NIF.
+    """
+)
+def get_leads_abiertos_por_nif_realtime(nif: str) -> list[dict]:
+    return REALTIME_SERVICE.get_leads_abiertos_por_nif(nif)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo de los leads pendientes asignados a una cuenta en el CRM según su NIF.
+
+    Argumentos de entrada:
+    - nif (string, requerido): Código NIF de la cuenta del lead para filtrar los resultados.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada registro de lead pendiente, la herramienta devuelve un objeto estructurado:
+    1. Datos de la Cuenta y Priorización:
+    - Nombre de la cuenta (NOMBRE_DE_LA_CUENTA): Razón social o nombre de la empresa cliente vinculada.
+    - Score inicial (SCORE_INICIAL): Puntuación o calificación inicial asignada a la cuenta en el CRM.
+    - Grupo (GROUP_ALIAS): Alias o nombre del grupo empresarial al que pertenece la cuenta.
+    2. Estado de la Relación y Contexto de Origen:
+    - Último contacto (ÚLTIMO_CONTACTO): Fecha de la última interacción o comunicación registrada con la cuenta.
+    - Industria FI (INDUSTRIA_FI): Sector industrial o categoría financiera de la cuenta.
+    - Canal de origen (SOURCE_CHANNEL): Medio o canal a través del cual se captó el lead.
+    - Campaña de origen (CAMPAÑA_DE_ORIGEN): Nombre de la campaña de marketing vinculada al lead.
+    - Comentarios de lead (COMENTARIOS_DE_LEAD): Detalle, notas o contexto específico de comentarios para la gestión del lead.
+    - Fecha de creación (CREADO): Fecha de registro y alta del lead en el sistema CRM.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/comercial/gestor pregunte por leads pendientes, prospectos asignados, oportunidades sin resolver o tareas de captación pendientes asociados a una cuenta según si NIF.
     """
 )
 def get_leads_abiertos_por_cuenta_realtime(nombre_cuenta: str) -> list[dict]:
@@ -965,6 +1123,35 @@ def get_servicios_de_oportunidad_abierta_por_cuenta_realtime(nombre_cuenta: str)
 
 
 @mcp.tool(
+    description="""
+    Obtiene el listado completo de los servicios de oportunidad abiertos asignados a una cuenta especifica según su NIF.
+
+    Argumentos de entrada:
+    - nif (string, requerido): Código NIF de la cuenta asociada al servicio de oportunidad para filtrar los resultados.
+
+    Información que retorna la herramienta (Estructura de datos):
+    Para cada registro de oportunidad abierta, la herramienta devuelve un objeto estructurado en tres niveles:
+    1. Datos de la Oferta y Cuenta:
+    - Nombre de la cuenta: Razón social o nombre de la empresa cliente vinculada.
+    - Fecha de creación: Fecha en la que se registró la propuesta comercial en el CRM (createdon).
+    - Probabilidad: Porcentaje o nivel estimado de éxito comercial para ganar este servicio.
+    2. Clasificación del Negocio:
+    - Tipo de servicio: Categoría o modalidad específica del servicio ofertado.
+    - Área de servicio: División o departamento de negocio asignado.
+    - Sector FI: Sector industrial o económico al que pertenece el cliente.
+    3. Condiciones Financieras:
+    - Tipo de contrato: Formato legal o modelo contractual propuesto para el servicio.
+    - Previsión de honorarios: Estimación económica o ingresos proyectados para este negocio.
+
+    Instrucciones de uso para el modelo (Triggering):
+    - Invoca este recurso inmediatamente cuando el usuario/gestor pregunte por una cuenta con oportunidades abiertas según su NIF.
+    """
+)
+def get_servicios_de_oportunidad_abierta_por_nif_realtime(nif: str) -> list[dict]:
+    return REALTIME_SERVICE.get_servicios_de_oportunidad_abierta_por_nif(nif)
+
+
+@mcp.tool(
     description= """    
     Obtiene el listado de reuniones comerciales pasadas cuyo resultado fue marcado como "interés en el futuro" para un usuario o comercial específico.
 
@@ -982,9 +1169,9 @@ def get_servicios_de_oportunidad_abierta_por_cuenta_realtime(nombre_cuenta: str)
     Utiliza este recurso cuando el comercial necesite hacer seguimiento a prospectos antiguos, rescatar leads con interés aplazado, o planificar campañas de re-impacto basadas en el histórico de reuniones con interés futuro.
     """    
 )
-def get_get_citas_con_interes_futuro_por_comercial(email: str) -> list[dict]:
+def get_citas_con_interes_futuro_por_comercial(email: str) -> list[dict]:
     """Consulta las citas con resultado interés en el futuro que ha creado el usuario durante los últimos 3 meses."""
-    return REALTIME_SERVICE.get_servicios_de_oportunidad_abierta_por_comercial(email)
+    return REALTIME_SERVICE.get_citas_con_interes_futuro_por_comercial(email)
 
 
 @mcp.tool(
@@ -1005,9 +1192,9 @@ def get_get_citas_con_interes_futuro_por_comercial(email: str) -> list[dict]:
     Utiliza este recurso cuando el usuario/gestor de cuenta necesite hacer seguimiento a prospectos antiguos, rescatar leads con interés aplazado, o planificar campañas de re-impacto basadas en el histórico de reuniones con interés futuro.
     """    
 )
-def get_get_citas_con_interes_futuro_por_gestor(email: str) -> list[dict]:
+def get_citas_con_interes_futuro_por_gestor(email: str) -> list[dict]:
     """Consulta las citas con resultado interés en el futuro que se han creado para cuentas que gestiona el usuario durante los últimos 3 meses."""
-    return REALTIME_SERVICE.get_servicios_de_oportunidad_abierta_por_gestor(email)
+    return REALTIME_SERVICE.get_citas_con_interes_futuro_por_gestor(email)
 
 
 @mcp.tool(
@@ -1028,9 +1215,32 @@ def get_get_citas_con_interes_futuro_por_gestor(email: str) -> list[dict]:
     Utiliza este recurso cuando el usuario/comercial/gestor de cuenta necesite hacer seguimiento a prospectos antiguos, rescatar leads con interés aplazado, o planificar campañas de re-impacto basadas en el histórico de reuniones con interés futuro de una cuenta específica.
     """    
 )
-def get_get_citas_con_interes_futuro_por_cuenta(nombre_cuenta: str) -> list[dict]:
+def get_citas_con_interes_futuro_por_cuenta(nombre_cuenta: str) -> list[dict]:
     """Consulta las citas con resultado interés en el futuro por cuenta durante los últimos 3 meses."""
-    return REALTIME_SERVICE.get_servicios_de_oportunidad_abierta_por_cuenta(nombre_cuenta)
+    return REALTIME_SERVICE.get_citas_con_interes_futuro_por_cuenta(nombre_cuenta)
+
+
+@mcp.tool(
+    description= """    
+    Obtiene el listado de reuniones comerciales pasadas cuyo resultado fue marcado como "interés en el futuro" asociadas a una cuenta con NIF específico.
+
+    Argumentos de entrada:
+    - nif (string): Código NIF de la cuenta en el CRM.
+
+    Este recurso consulta el CRM y extrae las cuentas con oportunidades latentes, detallando los siguientes campos clave de su última interacción:
+    1. NOMBRE_DE_LA_CUENTA: Nombre de la cuenta o empresa (`account.name`).
+    2. FECHA_DE_ÚLTIMA_REUNIÓN: Fecha y hora de finalización de la cita (`scheduledend`).
+    3. COMENTARIOS: Notas y comentarios sobre el resultado de la última reunión (`iav_resultcomments`).
+    4. CONTACTO_PRINCIPAL: Nombre completo, cargo y teléfono del contacto principal (`contact.fullname`).
+    5. COMERCIAL: Correo del comercial que generó o atendió la cita (`created_by.domainname`).
+    6. GESTOR: Correo del gestor asignado actualmente a la cuenta (`user.domainname`).
+
+    Utiliza este recurso cuando el usuario/comercial/gestor de cuenta necesite hacer seguimiento a prospectos antiguos, rescatar leads con interés aplazado, o planificar campañas de re-impacto basadas en el histórico de reuniones con interés futuro de una cuenta por NIF específico.
+    """    
+)
+def get_citas_con_interes_futuro_por_nif(nif: str) -> list[dict]:
+    """Consulta las citas con resultado interés en el futuro por cuenta durante los últimos 3 meses."""
+    return REALTIME_SERVICE.get_citas_con_interes_futuro_por_nif(nif)
 
 
 @mcp.tool(
@@ -1052,25 +1262,6 @@ def get_get_citas_con_interes_futuro_por_cuenta(nombre_cuenta: str) -> list[dict
 def get_ayudas_percibidas_bdns(nif: str) -> list[dict]:
     return SQL_SERVICE.get_detalle_ayudas(nif.strip().upper())
 
-@mcp.tool(description="Devuelve el listado de query keys XML disponibles para ejecución realtime.")
-def get_xml_queries_realtime() -> list[str]:
-    """Devuelve el listado de query keys XML disponibles para ejecución realtime."""
-    return sorted(REALTIME_SERVICE.catalog.keys())
-
-
-@mcp.tool
-def run_xml_query_realtime(
-    query_key: str,
-    email: str | None = None,
-    nombre_cuenta: str | None = None,
-) -> list[dict]:
-    """Ejecuta una query XML realtime por clave con parámetros opcionales."""
-    params: dict[str, str] = {}
-    if email:
-        params["email"] = email
-    if nombre_cuenta:
-        params["nombre_cuenta"] = nombre_cuenta
-    return REALTIME_SERVICE.execute_query(query_key, **params)
 
 # ── App con middleware opcional ───────────────────────────────────────────────
 

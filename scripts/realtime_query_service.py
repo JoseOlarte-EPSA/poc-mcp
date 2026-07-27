@@ -24,6 +24,7 @@ from py_queries.CITAS import (
     CITAS_SEMANA_EN_CURSO,
     CITAS_12VA_SEMANA_ATRAS,
     CITAS_POR_CUENTA,
+    CITAS_POR_NIF,
     CITAS_POR_COMERCIAL,
     CITAS_POR_COMERCIAL_SEMANA_EN_CURSO,
     CITAS_POR_COMERCIAL_12VA_SEMANA_ATRAS,
@@ -33,10 +34,12 @@ from py_queries.CITAS import (
     CITAS_CON_INTERES_FUTURO_POR_COMERCIAL,
     CITAS_CON_INTERES_FUTURO_POR_GESTOR,
     CITAS_CON_INTERES_FUTURO_POR_CUENTA,
+    CITAS_CON_INTERES_FUTURO_POR_NIF,
 )
 from py_queries.LLAMADAS import (
     LLAMADAS_SEMANA_EN_CURSO,
     LLAMADAS_POR_CUENTA,
+    LLAMADAS_POR_NIF,
     LLAMADAS_POR_COMERCIAL,
     LLAMADAS_POR_COMERCIAL_SEMANA_EN_CURSO,
     LLAMADAS_POR_GESTOR,
@@ -44,20 +47,24 @@ from py_queries.LLAMADAS import (
     LLAMADAS_ABIERTAS,
     LLAMADAS_ABIERTAS_POR_COMERCIAL,
     LLAMADAS_ABIERTAS_POR_CUENTA,
+    LLAMADAS_ABIERTAS_POR_NIF,
     LLAMADAS_ABIERTAS_POR_GESTOR,
 )
 from py_queries.OPORTUNIDADES import (
     SERVICIOS_DE_OPORTUNIDAD_POR_COMERCIAL,
     SERVICIOS_DE_OPORTUNIDAD_POR_GESTOR,
     SERVICIOS_DE_OPORTUNIDAD_POR_CUENTA,
+    SERVICIOS_DE_OPORTUNIDAD_POR_NIF,
     SERVICIOS_DE_OPORTUNIDAD_ABIERTA_POR_COMERCIAL,
     SERVICIOS_DE_OPORTUNIDAD_ABIERTA_POR_GESTOR,
     SERVICIOS_DE_OPORTUNIDAD_ABIERTA_POR_CUENTA,
+    SERVICIOS_DE_OPORTUNIDAD_ABIERTA_POR_NIF,
 )
 from py_queries.LEADS import (
     LEADS_ABIERTOS_POR_COMERCIAL,
     LEADS_ABIERTOS_POR_GESTOR,
     LEADS_ABIERTOS_POR_CUENTA,
+    LEADS_ABIERTOS_POR_NIF,
 )
 from py_queries.CUENTAS import (
     CUENTAS_LLAMADAS_ANO_EN_CURSO,
@@ -122,6 +129,11 @@ class DataverseRealtimeService:
                 "template": CITAS_POR_CUENTA,
                 "columns_map": COLUMNS,
             },
+            "citas_por_nif": {
+                "entity_name": "appointments",
+                "template": CITAS_POR_NIF,
+                "columns_map": COLUMNS,
+            },
             "llamadas_semana_en_curso": {
                 "entity_name": "phonecalls",
                 "template": LLAMADAS_SEMANA_EN_CURSO,
@@ -152,6 +164,11 @@ class DataverseRealtimeService:
                 "template": LLAMADAS_POR_CUENTA,
                 "columns_map": COLUMNS_HISTORICO_LLAMADAS,
             },
+            "llamadas_por_nif": {
+                "entity_name": "phonecalls",
+                "template": LLAMADAS_POR_NIF,
+                "columns_map": COLUMNS_HISTORICO_LLAMADAS,
+            },
             "servicios_de_oportunidad_por_comercial": {
                 "entity_name": "iav_opportunityservices",
                 "template": SERVICIOS_DE_OPORTUNIDAD_POR_COMERCIAL,
@@ -167,6 +184,11 @@ class DataverseRealtimeService:
                 "template": SERVICIOS_DE_OPORTUNIDAD_POR_CUENTA,
                 "columns_map": COLUMNS_HISTORICO_SERVICIOS,
             },
+            "servicios_de_oportunidad_por_nif": {
+                "entity_name": "iav_opportunityservices",
+                "template": SERVICIOS_DE_OPORTUNIDAD_POR_NIF,
+                "columns_map": COLUMNS_HISTORICO_SERVICIOS,
+            },
             "llamadas_abiertas": {
                 "entity_name": "phonecalls",
                 "template": LLAMADAS_ABIERTAS,
@@ -175,6 +197,11 @@ class DataverseRealtimeService:
             "llamadas_abiertas_por_cuenta": {
                 "entity_name": "phonecalls",
                 "template": LLAMADAS_ABIERTAS_POR_CUENTA,
+                "columns_map": COLUMNS_LLAMADAS_ESTADO_CALIENTE,
+            },
+            "llamadas_abiertas_por_nif": {
+                "entity_name": "phonecalls",
+                "template": LLAMADAS_ABIERTAS_POR_NIF,
                 "columns_map": COLUMNS_LLAMADAS_ESTADO_CALIENTE,
             },
             "llamadas_abiertas_por_comercial": {
@@ -202,6 +229,11 @@ class DataverseRealtimeService:
                 "template": LEADS_ABIERTOS_POR_CUENTA,
                 "columns_map": COLUMNS_LEADS,
             },
+            "leads_abiertos_por_nif": {
+                "entity_name": "leads",
+                "template": LEADS_ABIERTOS_POR_NIF,
+                "columns_map": COLUMNS_LEADS,
+            },
             "servicios_de_oportunidad_abierta_por_comercial": {
                 "entity_name": "iav_opportunityservices",
                 "template": SERVICIOS_DE_OPORTUNIDAD_ABIERTA_POR_COMERCIAL,
@@ -217,6 +249,11 @@ class DataverseRealtimeService:
                 "template": SERVICIOS_DE_OPORTUNIDAD_ABIERTA_POR_CUENTA,
                 "columns_map": COLUMNS_OPORTUNIDADES_ABIERTAS,
             },
+            "servicios_de_oportunidad_abierta_por_nif": {
+                "entity_name": "iav_opportunityservices",
+                "template": SERVICIOS_DE_OPORTUNIDAD_ABIERTA_POR_NIF,
+                "columns_map": COLUMNS_OPORTUNIDADES_ABIERTAS,
+            },
             "citas_con_interes_futuro_por_comercial": {
                 "entity_name": "appointments",
                 "template": CITAS_CON_INTERES_FUTURO_POR_COMERCIAL,
@@ -230,6 +267,11 @@ class DataverseRealtimeService:
             "citas_con_interes_futuro_por_cuenta": {
                 "entity_name": "appointments",
                 "template": CITAS_CON_INTERES_FUTURO_POR_CUENTA,
+                "columns_map": COLUMNS_OFERTAS_PENDIENTES,
+            },
+            "citas_con_interes_futuro_por_nif": {
+                "entity_name": "appointments",
+                "template": CITAS_CON_INTERES_FUTURO_POR_NIF,
                 "columns_map": COLUMNS_OFERTAS_PENDIENTES,
             },
             "cuentas_llamadas_ano_en_curso": {
@@ -282,6 +324,9 @@ class DataverseRealtimeService:
 
     def get_citas_por_cuenta(self, NOMBRE_DE_CUENTA: str) -> list[dict]:
         return self.execute_query("citas_por_cuenta", NOMBRE_DE_CUENTA=NOMBRE_DE_CUENTA)
+    
+    def get_citas_por_nif(self, NIF: str) -> list[dict]:
+        return self.execute_query("citas_por_nif", NIF=NIF)
 
     def get_llamadas_semana_en_curso(self) -> list[dict]:
         return self.execute_query("llamadas_semana_en_curso")
@@ -301,6 +346,9 @@ class DataverseRealtimeService:
     def get_llamadas_por_cuenta(self, NOMBRE_DE_CUENTA: str) -> list[dict]:
         return self.execute_query("llamadas_por_cuenta", NOMBRE_DE_CUENTA=NOMBRE_DE_CUENTA)
 
+    def get_llamadas_por_nif(self, NIF: str) -> list[dict]:
+        return self.execute_query("llamadas_por_nif", NIF=NIF)
+
     def get_servicios_de_oportunidad_por_comercial(self, EMAIL_USUARIO: str) -> list[dict]:
         return self.execute_query("servicios_de_oportunidad_por_comercial", EMAIL_USUARIO=EMAIL_USUARIO)
     
@@ -309,12 +357,18 @@ class DataverseRealtimeService:
 
     def get_servicios_de_oportunidad_por_cuenta(self, NOMBRE_DE_CUENTA: str) -> list[dict]:
         return self.execute_query("servicios_de_oportunidad_por_cuenta", NOMBRE_DE_CUENTA=NOMBRE_DE_CUENTA)
+
+    def get_servicios_de_oportunidad_por_nif(self, NIF: str) -> list[dict]:
+        return self.execute_query("servicios_de_oportunidad_por_nif", NIF=NIF)
     
     def get_llamadas_abiertas(self, CURRENT_DATE: str) -> list[dict]:
         return self.execute_query("llamadas_abiertas", CURRENT_DATE=CURRENT_DATE)
     
     def get_llamadas_abiertas_por_cuenta(self, NOMBRE_DE_CUENTA: str, CURRENT_DATE: str) -> list[dict]:
         return self.execute_query("llamadas_abiertas_por_cuenta", NOMBRE_DE_CUENTA=NOMBRE_DE_CUENTA, CURRENT_DATE=CURRENT_DATE)
+    
+    def get_llamadas_abiertas_por_nif(self, NIF: str, CURRENT_DATE: str) -> list[dict]:
+        return self.execute_query("llamadas_abiertas_por_nif", NIF=NIF, CURRENT_DATE=CURRENT_DATE)
     
     def get_llamadas_abiertas_por_comercial(self, EMAIL_USUARIO: str, CURRENT_DATE: str) -> list[dict]:
         return self.execute_query("llamadas_abiertas_por_comercial", EMAIL_USUARIO=EMAIL_USUARIO, CURRENT_DATE=CURRENT_DATE)
@@ -331,17 +385,20 @@ class DataverseRealtimeService:
     def get_leads_abiertos_por_cuenta(self, NOMBRE_DE_CUENTA: str) -> list[dict]:
         return self.execute_query("leads_abiertos_por_cuenta", NOMBRE_DE_CUENTA=NOMBRE_DE_CUENTA)
     
-    def get_leads_abiertos_por_comercial(self, EMAIL_USUARIO: str) -> list[dict]:
-        return self.execute_query("leads_abiertos_por_comercial", EMAIL_USUARIO=EMAIL_USUARIO)
+    def get_leads_abiertos_por_nif(self, NIF: str) -> list[dict]:
+        return self.execute_query("leads_abiertos_por_nif", NIF=NIF)
     
     def get_servicios_de_oportunidad_abierta_por_gestor(self, EMAIL_USUARIO: str) -> list[dict]:
-        return self.execute_query("servicios_de_oportunidad_abierta_por_comercial", EMAIL_USUARIO=EMAIL_USUARIO)
+        return self.execute_query("servicios_de_oportunidad_abierta_por_gestor", EMAIL_USUARIO=EMAIL_USUARIO)
     
     def get_servicios_de_oportunidad_abierta_por_comercial(self, EMAIL_USUARIO: str) -> list[dict]:
-        return self.execute_query("servicios_de_oportunidad_abierta_por_gestor", EMAIL_USUARIO=EMAIL_USUARIO)
+        return self.execute_query("servicios_de_oportunidad_abierta_por_comercial", EMAIL_USUARIO=EMAIL_USUARIO)
     
     def get_servicios_de_oportunidad_abierta_por_cuenta(self, NOMBRE_DE_CUENTA: str) -> list[dict]:
         return self.execute_query("servicios_de_oportunidad_abierta_por_cuenta", NOMBRE_DE_CUENTA=NOMBRE_DE_CUENTA)
+    
+    def get_servicios_de_oportunidad_abierta_por_nif(self, NIF: str) -> list[dict]:
+        return self.execute_query("servicios_de_oportunidad_abierta_por_nif", NIF=NIF)
     
     def get_citas_con_interes_futuro_por_comercial(self, EMAIL_USUARIO: str) -> list[dict]:
         return self.execute_query("citas_con_interes_futuro_por_comercial", EMAIL_USUARIO=EMAIL_USUARIO)
@@ -351,6 +408,9 @@ class DataverseRealtimeService:
     
     def get_citas_con_interes_futuro_por_cuenta(self, NOMBRE_DE_CUENTA: str) -> list[dict]:
         return self.execute_query("citas_con_interes_futuro_por_cuenta", NOMBRE_DE_CUENTA=NOMBRE_DE_CUENTA)
+    
+    def get_citas_con_interes_futuro_por_nif(self, NIF: str) -> list[dict]:
+        return self.execute_query("citas_con_interes_futuro_por_nif", NIF=NIF)
     
     def get_cuentas_llamadas_ano_en_curso(self) -> list[dict]:
         return self.execute_query("cuentas_llamadas_ano_en_curso")

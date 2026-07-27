@@ -74,6 +74,7 @@ COLUMNS_LLAMADAS_ESTADO_CALIENTE = {
 # Diccionario con el mapeo de columnas para leads abiertos
 COLUMNS_LEADS = {
     "NOMBRE_DE_LA_CUENTA": "account.name",
+    "NIF": "account.iav_nif",
     "SCORE_INICIAL": "account.iav_initialscore@OData.Community.Display.V1.FormattedValue",
     "GROUP_ALIAS": "group_alias.fin_name",
     "ÚLTIMO_CONTACTO": "account.axz_lastcontactdate",
@@ -118,6 +119,7 @@ COLUMNS_LLAMADAS_ENTRE_FECHAS = {
 
 COLUMNS_CUENTAS_LLAMADAS_ANO_EN_CURSO = {
     "NÚMERO_DE_CUENTA": "accountnumber",
+    "NIF_DE_CUENTA": "iav_nif",
     "NOMBRE_DE_CUENTA": "name",
 }
 
