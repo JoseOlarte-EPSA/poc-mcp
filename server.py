@@ -443,7 +443,7 @@ def get_citas_por_gestor_12va_semana_atras_realtime(email: str) -> list[dict]:
     """    
 )
 def get_citas_por_comercial_realtime(email: str) -> list[dict]:
-    return REALTIME_SERVICE.get_citas_por_comercial(email)
+    return REALTIME_SERVICE.get_citas_por_comercial(email)[:50]
 
 
 @mcp.tool(
@@ -463,7 +463,7 @@ def get_citas_por_comercial_realtime(email: str) -> list[dict]:
     """    
 )
 def get_citas_por_gestor_realtime(email: str) -> list[dict]:
-    return REALTIME_SERVICE.get_citas_por_gestor(email)
+    return REALTIME_SERVICE.get_citas_por_gestor(email)[:50]
 
 
 @mcp.tool(
@@ -1003,35 +1003,6 @@ def get_leads_abiertos_por_nif_realtime(nif: str) -> list[dict]:
 
 @mcp.tool(
     description="""
-    Obtiene el listado completo de los leads pendientes asignados a una cuenta en el CRM según su NIF.
-
-    Argumentos de entrada:
-    - nif (string, requerido): Código NIF de la cuenta del lead para filtrar los resultados.
-
-    Información que retorna la herramienta (Estructura de datos):
-    Para cada registro de lead pendiente, la herramienta devuelve un objeto estructurado:
-    1. Datos de la Cuenta y Priorización:
-    - Nombre de la cuenta (NOMBRE_DE_LA_CUENTA): Razón social o nombre de la empresa cliente vinculada.
-    - Score inicial (SCORE_INICIAL): Puntuación o calificación inicial asignada a la cuenta en el CRM.
-    - Grupo (GROUP_ALIAS): Alias o nombre del grupo empresarial al que pertenece la cuenta.
-    2. Estado de la Relación y Contexto de Origen:
-    - Último contacto (ÚLTIMO_CONTACTO): Fecha de la última interacción o comunicación registrada con la cuenta.
-    - Industria FI (INDUSTRIA_FI): Sector industrial o categoría financiera de la cuenta.
-    - Canal de origen (SOURCE_CHANNEL): Medio o canal a través del cual se captó el lead.
-    - Campaña de origen (CAMPAÑA_DE_ORIGEN): Nombre de la campaña de marketing vinculada al lead.
-    - Comentarios de lead (COMENTARIOS_DE_LEAD): Detalle, notas o contexto específico de comentarios para la gestión del lead.
-    - Fecha de creación (CREADO): Fecha de registro y alta del lead en el sistema CRM.
-
-    Instrucciones de uso para el modelo (Triggering):
-    - Invoca este recurso inmediatamente cuando el usuario/comercial/gestor pregunte por leads pendientes, prospectos asignados, oportunidades sin resolver o tareas de captación pendientes asociados a una cuenta según si NIF.
-    """
-)
-def get_leads_abiertos_por_cuenta_realtime(nombre_cuenta: str) -> list[dict]:
-    return REALTIME_SERVICE.get_leads_abiertos_por_cuenta(nombre_cuenta)
-
-
-@mcp.tool(
-    description="""
     Obtiene el listado completo de los servicios de oportunidad abiertos por un usuario/comercial específico a partir de su correo electrónico.
 
     Argumentos de entrada:
@@ -1171,7 +1142,7 @@ def get_servicios_de_oportunidad_abierta_por_nif_realtime(nif: str) -> list[dict
 )
 def get_citas_con_interes_futuro_por_comercial(email: str) -> list[dict]:
     """Consulta las citas con resultado interés en el futuro que ha creado el usuario durante los últimos 3 meses."""
-    return REALTIME_SERVICE.get_citas_con_interes_futuro_por_comercial(email)
+    return REALTIME_SERVICE.get_citas_con_interes_futuro_por_comercial(email)[:50]
 
 
 @mcp.tool(
@@ -1194,7 +1165,7 @@ def get_citas_con_interes_futuro_por_comercial(email: str) -> list[dict]:
 )
 def get_citas_con_interes_futuro_por_gestor(email: str) -> list[dict]:
     """Consulta las citas con resultado interés en el futuro que se han creado para cuentas que gestiona el usuario durante los últimos 3 meses."""
-    return REALTIME_SERVICE.get_citas_con_interes_futuro_por_gestor(email)
+    return REALTIME_SERVICE.get_citas_con_interes_futuro_por_gestor(email)[:50]
 
 
 @mcp.tool(
@@ -1263,6 +1234,204 @@ def get_ayudas_percibidas_bdns(nif: str) -> list[dict]:
     return SQL_SERVICE.get_detalle_ayudas(nif.strip().upper())
 
 
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales abiertas o programadas no realizadas para la semana en curso de un usuario/comercial específico. 
+
+    Argumentos de entrada:
+    - email (string): Correo del comercial en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+    5. Historial: Resumen acumulado de la actividad previa en el CRM.
+    6. Contexto Técnico: Industria FI y el catálogo de Ayudas ya presentadas.
+    7. Competencia: Competidor detectado, fecha de registro y servicio asociado.
+    8. Actualidad: Noticias relevantes de la cuenta.
+    9. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
+
+    Utiliza este recurso cuando el usuario/comercial pregunte por la agenda, el calendario, las reuniones semanales no realizadas o necesite preparar los antecedentes y la estrategia de sus próximas visitas de la semana actual.
+    """    
+)
+def get_citas_abiertas_por_comercial_semana_en_curso_realtime(email: str) -> list[dict]:
+    return REALTIME_SERVICE.get_citas_abiertas_por_comercial_semana_en_curso(email)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales abiertas o programadas no realizadas para la semana en curso de un usuario/gestor de cuenta específico. 
+
+    Argumentos de entrada:
+    - email (string): Correo del gestor en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+    5. Historial: Resumen acumulado de la actividad previa en el CRM.
+    6. Contexto Técnico: Industria FI y el catálogo de Ayudas ya presentadas.
+    7. Competencia: Competidor detectado, fecha de registro y servicio asociado.
+    8. Actualidad: Noticias relevantes de la cuenta.
+    9. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
+
+    Utiliza este recurso cuando el usuario/gestor de cuenta pregunte por la agenda, el calendario, las reuniones semanales no realizadas o necesite preparar los antecedentes y la estrategia de sus cuentas de la semana actual.
+    """    
+)
+def get_citas_abiertas_por_gestor_semana_en_curso_realtime(email: str) -> list[dict]:
+    return REALTIME_SERVICE.get_citas_por_gestor_semana_en_curso(email)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales canceladas para el año curso de un usuario/comercial específico. 
+
+    Argumentos de entrada:
+    - email (string): Correo del comercial en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+    5. Historial: Resumen acumulado de la actividad previa en el CRM.
+    6. Contexto Técnico: Industria FI y el catálogo de Ayudas ya presentadas.
+    7. Competencia: Competidor detectado, fecha de registro y servicio asociado.
+    8. Actualidad: Noticias relevantes de la cuenta.
+    9. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
+
+    Utiliza este recurso cuando el usuario/comercial pregunte por la agenda, el calendario, las reuniones canceladas durante el año en curso o necesite preparar los antecedentes y la estrategia de sus próximas visitas.
+    """    
+)
+def get_citas_canceladas_por_comercial_ano_en_curso_realtime(email: str) -> list[dict]:
+    return REALTIME_SERVICE.get_citas_canceladas_por_comercial_ano_en_curso(email)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales canceladas para el año curso de un usuario/gestor de cuenta específico. 
+
+    Argumentos de entrada:
+    - email (string): Correo del gestor en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+    5. Historial: Resumen acumulado de la actividad previa en el CRM.
+    6. Contexto Técnico: Industria FI y el catálogo de Ayudas ya presentadas.
+    7. Competencia: Competidor detectado, fecha de registro y servicio asociado.
+    8. Actualidad: Noticias relevantes de la cuenta.
+    9. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
+
+    Utiliza este recurso cuando el usuario/gestor de cuenta pregunte por la agenda, el calendario, las reuniones canceladas durante el año en curso o necesite preparar los antecedentes y la estrategia de sus cuentas.
+    """    
+)
+def get_citas_canceladas_por_gestor_ano_en_curso_realtime(email: str) -> list[dict]:
+    return REALTIME_SERVICE.get_citas_canceladas_por_gestor_ano_en_curso(email)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales canceladas para el año curso de una cuenta específica. 
+
+    Argumentos de entrada:
+    - nombre_cuenta (string): Nombre de la cuenta en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+    5. Historial: Resumen acumulado de la actividad previa en el CRM.
+    6. Contexto Técnico: Industria FI y el catálogo de Ayudas ya presentadas.
+    7. Competencia: Competidor detectado, fecha de registro y servicio asociado.
+    8. Actualidad: Noticias relevantes de la cuenta.
+    9. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
+
+    Utiliza este recurso cuando el usuario/comercial/gestor de cuenta pregunte por la agenda, el calendario, las reuniones canceladas durante el año en curso o necesite preparar los antecedentes y la estrategia de sus cuentas.
+    """    
+)
+def get_citas_canceladas_por_cuenta_ano_en_curso_realtime(nombre_cuenta: str) -> list[dict]:
+    return REALTIME_SERVICE.get_citas_canceladas_por_cuenta_ano_en_curso(nombre_cuenta)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales canceladas para el año curso de una cuenta específica según su NIF. 
+
+    Argumentos de entrada:
+    - nif (string): Código NIF de la cuenta en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+    5. Historial: Resumen acumulado de la actividad previa en el CRM.
+    6. Contexto Técnico: Industria FI y el catálogo de Ayudas ya presentadas.
+    7. Competencia: Competidor detectado, fecha de registro y servicio asociado.
+    8. Actualidad: Noticias relevantes de la cuenta.
+    9. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
+
+    Utiliza este recurso cuando el usuario/comercial/gestor de cuenta pregunte por la agenda, el calendario, las reuniones canceladas durante el año en curso o necesite preparar los antecedentes y la estrategia de sus cuentas según su NIF.
+    """    
+)
+def get_citas_canceladas_por_nif_ano_en_curso_realtime(nif: str) -> list[dict]:
+    return REALTIME_SERVICE.get_citas_canceladas_por_nif_ano_en_curso(nif)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales realizadas con cuentas que no se han contactado por más de 6 meses. 
+
+    Argumentos de entrada:
+    - email (string): Correo del comercial en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+    5. Historial: Resumen acumulado de la actividad previa en el CRM.
+    6. Contexto Técnico: Industria FI y el catálogo de Ayudas ya presentadas.
+    7. Competencia: Competidor detectado, fecha de registro y servicio asociado.
+    8. Actualidad: Noticias relevantes de la cuenta.
+    9. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
+
+    Utiliza este recurso cuando el comercial pregunte por el historico de las reuniones realizadas  a cuentas que no se han contactado por más de 6 meses.
+    """    
+)
+def get_citas_por_comercial_sin_llamada_posterior_6_meses_realtime(email: str) -> list[dict]:
+    return REALTIME_SERVICE.get_citas_por_comercial_sin_llamada_posterior_6_meses(email)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las reuniones realizadas con cuentas que gestiona el usuario y que no se han contactado por más de 6 meses. 
+
+    Argumentos de entrada:
+    - email (string): Correo del gestor de cuenta en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+    5. Historial: Resumen acumulado de la actividad previa en el CRM.
+    6. Contexto Técnico: Industria FI y el catálogo de Ayudas ya presentadas.
+    7. Competencia: Competidor detectado, fecha de registro y servicio asociado.
+    8. Actualidad: Noticias relevantes de la cuenta.
+    9. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
+
+    Utiliza este recurso cuando el comercial pregunte por el historico de las reuniones realizadas a cuentas que gestiona el usuario y que no se han contactado por más de 6 meses.
+    """    
+)
+def get_citas_por_gestor_sin_llamada_posterior_6_meses_realtime(email: str) -> list[dict]:
+    return REALTIME_SERVICE.get_citas_por_gestor_sin_llamada_posterior_6_meses(email)
 # ── App con middleware opcional ───────────────────────────────────────────────
 
 middleware = []
