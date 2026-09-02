@@ -1411,7 +1411,7 @@ def get_citas_por_comercial_sin_llamada_posterior_6_meses_realtime(email: str) -
 
 @mcp.tool(
     description="""
-    Obtiene el listado completo y detallado de las reuniones realizadas con cuentas que gestiona el usuario y que no se han contactado por más de 6 meses. 
+    Obtiene el listado completo y detallado de las reuniones realizadas con cuentas que gestiona el usuario/gestor y que no se han contactado por más de 6 meses. 
 
     Argumentos de entrada:
     - email (string): Correo del gestor de cuenta en el CRM.
@@ -1427,7 +1427,7 @@ def get_citas_por_comercial_sin_llamada_posterior_6_meses_realtime(email: str) -
     8. Actualidad: Noticias relevantes de la cuenta.
     9. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
 
-    Utiliza este recurso cuando el comercial pregunte por el historico de las reuniones realizadas a cuentas que gestiona el usuario y que no se han contactado por más de 6 meses.
+    Utiliza este recurso cuando el comercial pregunte por el historico de las reuniones realizadas a cuentas que gestiona el usuario/gestor y que no se han contactado por más de 6 meses.
     """    
 )
 def get_citas_por_gestor_sin_llamada_posterior_6_meses_realtime(email: str) -> list[dict]:
