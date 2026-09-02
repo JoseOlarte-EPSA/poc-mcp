@@ -877,6 +877,7 @@ CITAS_POR_COMERCIAL_SIN_LLAMADA_POSTERIOR_6_MESES = """<fetch>
             <filter type="and">
                 <condition attribute="axz_lastcontactdate" operator="olderthan-x-months" value="6" />                
             </filter>
+            <order attribute="axz_lastcontactdate" descending="true" />
         </link-entity>        
         <link-entity name="systemuser" from="systemuserid" to="ownerid" alias="owner" link-type="inner">            
             <attribute name="domainname" />            
@@ -933,6 +934,7 @@ CITAS_POR_GESTOR_SIN_LLAMADA_POSTERIOR_6_MESES = """<fetch>
                     </condition>
                 </filter>
             </link-entity>
+            <order attribute="axz_lastcontactdate" descending="true" />
             <filter type="and">
                 <condition attribute="axz_lastcontactdate" operator="olderthan-x-months" value="6" />                
             </filter>
