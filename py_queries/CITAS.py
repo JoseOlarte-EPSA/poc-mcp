@@ -673,7 +673,7 @@ CITAS_CANCELADAS_POR_COMERCIAL_ANO_EN_CURSO = """<fetch>
         <order attribute="scheduledstart" descending="false" />      
         <filter type="and">            
             <condition attribute="statecode" operator="eq" value="2" />     
-            <condition attribute="createdon" operator="this-year" />     
+            <condition attribute="scheduledstart" operator="this-year" />     
         </filter>   
         <link-entity name="contact" from="contactid" to="fin_mainmeetingcontactid" alias="contact" link-type="outer">            
             <attribute name="fullname" />            
@@ -721,7 +721,7 @@ CITAS_CANCELADAS_POR_GESTOR_ANO_EN_CURSO = """<fetch>
         <order attribute="scheduledstart" descending="false" />      
         <filter type="and">            
             <condition attribute="statecode" operator="eq" value="2" />     
-            <condition attribute="createdon" operator="this-year" />     
+            <condition attribute="scheduledstart" operator="this-year" />     
         </filter>   
         <link-entity name="contact" from="contactid" to="fin_mainmeetingcontactid" alias="contact" link-type="outer">            
             <attribute name="fullname" />            
@@ -769,7 +769,7 @@ CITAS_CANCELADAS_POR_CUENTA_ANO_EN_CURSO = """<fetch>
         <order attribute="scheduledstart" descending="false" />      
         <filter type="and">            
             <condition attribute="statecode" operator="eq" value="2" />     
-            <condition attribute="createdon" operator="this-year" />     
+            <condition attribute="scheduledstart" operator="this-year" />     
         </filter>   
         <link-entity name="contact" from="contactid" to="fin_mainmeetingcontactid" alias="contact" link-type="outer">            
             <attribute name="fullname" />            
@@ -811,7 +811,7 @@ CITAS_CANCELADAS_POR_NIF_ANO_EN_CURSO = """<fetch>
         <order attribute="scheduledstart" descending="false" />      
         <filter type="and">            
             <condition attribute="statecode" operator="eq" value="2" />     
-            <condition attribute="createdon" operator="this-year" />     
+            <condition attribute="scheduledstart" operator="this-year" />     
         </filter>   
         <link-entity name="contact" from="contactid" to="fin_mainmeetingcontactid" alias="contact" link-type="outer">            
             <attribute name="fullname" />            
