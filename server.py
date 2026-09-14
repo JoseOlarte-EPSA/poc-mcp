@@ -382,7 +382,7 @@ def get_citas_por_comercial_12va_semana_atras_realtime(email: str) -> list[dict]
 
 @mcp.tool(
     description="""
-    Obtiene el listado completo y detallado de las reuniones comerciales abiertas o programadas para la semana en curso de un usuario con rol autor específico. 
+    Obtiene el listado completo y detallado de las reuniones comerciales abiertas o programadas para la semana en curso de un usuario con rol autor específico para realizar confirmación. 
 
     Argumentos de entrada:
     - email (string): Correo del usuario con rol autor en el CRM.
@@ -398,7 +398,7 @@ def get_citas_por_comercial_12va_semana_atras_realtime(email: str) -> list[dict]
     8. Actualidad: Noticias relevantes de la cuenta.
     9. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
 
-    Utiliza este recurso cuando el usuariocon rol autor pregunte por la agenda, el calendario, las reuniones semanales o necesite preparar los antecedentes y la estrategia de las visitas de la semana actual.
+    Utiliza este recurso cuando el usuario con rol autor pregunte por la agenda, el calendario, las reuniones semanales o necesite preparar la confirmación de las visitas de la semana actual.
     """    
 )
 def get_citas_por_autor_semana_en_curso_realtime(email: str) -> list[dict]:
