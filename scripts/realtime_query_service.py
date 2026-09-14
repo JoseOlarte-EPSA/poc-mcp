@@ -31,6 +31,7 @@ from py_queries.CITAS import (
     CITAS_POR_GESTOR,
     CITAS_POR_GESTOR_SEMANA_EN_CURSO,
     CITAS_POR_GESTOR_12VA_SEMANA_ATRAS,
+    CITAS_POR_AUTOR_SEMANA_EN_CURSO,
     CITAS_CON_INTERES_FUTURO_POR_COMERCIAL,
     CITAS_CON_INTERES_FUTURO_POR_GESTOR,
     CITAS_CON_INTERES_FUTURO_POR_CUENTA,
@@ -39,10 +40,12 @@ from py_queries.CITAS import (
     CITAS_ABIERTAS_POR_GESTOR_SEMANA_EN_CURSO,
     CITAS_CANCELADAS_POR_COMERCIAL_ANO_EN_CURSO,
     CITAS_CANCELADAS_POR_GESTOR_ANO_EN_CURSO,
+    CITAS_CANCELADAS_POR_AUTOR_ANO_EN_CURSO,
     CITAS_CANCELADAS_POR_CUENTA_ANO_EN_CURSO,
     CITAS_CANCELADAS_POR_NIF_ANO_EN_CURSO,
     CITAS_POR_COMERCIAL_SIN_LLAMADA_POSTERIOR_6_MESES,
     CITAS_POR_GESTOR_SIN_LLAMADA_POSTERIOR_6_MESES,
+    CITAS_POR_AUTOR_SIN_LLAMADA_POSTERIOR_6_MESES,
 )
 from py_queries.LLAMADAS import (
     LLAMADAS_SEMANA_EN_CURSO,
@@ -120,6 +123,11 @@ class DataverseRealtimeService:
             "citas_por_gestor_semana_en_curso": {
                 "entity_name": "appointments",
                 "template": CITAS_POR_GESTOR_SEMANA_EN_CURSO,
+                "columns_map": COLUMNS,
+            },
+            "citas_por_autor_semana_en_curso": {
+                "entity_name": "appointments",
+                "template": CITAS_POR_AUTOR_SEMANA_EN_CURSO,
                 "columns_map": COLUMNS,
             },
             "citas_por_comercial": {
@@ -307,6 +315,11 @@ class DataverseRealtimeService:
                 "template": CITAS_CANCELADAS_POR_GESTOR_ANO_EN_CURSO,
                 "columns_map": COLUMNS,
             },
+            "citas_canceladas_por_autor_ano_en_curso": {
+                "entity_name": "appointments",
+                "template": CITAS_CANCELADAS_POR_AUTOR_ANO_EN_CURSO,
+                "columns_map": COLUMNS,
+            },
             "citas_canceladas_por_cuenta_ano_en_curso": {
                 "entity_name": "appointments",
                 "template": CITAS_CANCELADAS_POR_CUENTA_ANO_EN_CURSO,
@@ -325,6 +338,11 @@ class DataverseRealtimeService:
             "citas_por_gestor_sin_llamada_posterior_6_meses": {
                 "entity_name": "appointments",
                 "template": CITAS_POR_GESTOR_SIN_LLAMADA_POSTERIOR_6_MESES,
+                "columns_map": COLUMNS,
+            },
+            "citas_por_autor_sin_llamada_posterior_6_meses": {
+                "entity_name": "appointments",
+                "template": CITAS_POR_AUTOR_SIN_LLAMADA_POSTERIOR_6_MESES,
                 "columns_map": COLUMNS,
             },
         }
@@ -354,6 +372,9 @@ class DataverseRealtimeService:
 
     def get_citas_por_comercial_semana_en_curso(self, EMAIL_USUARIO: str) -> list[dict]:
         return self.execute_query("citas_por_comercial_semana_en_curso", EMAIL_USUARIO=EMAIL_USUARIO)
+
+    def get_citas_por_autor_semana_en_curso(self, EMAIL_USUARIO: str) -> list[dict]:
+        return self.execute_query("citas_por_autor_semana_en_curso", EMAIL_USUARIO=EMAIL_USUARIO)
 
     def get_citas_por_gestor_semana_en_curso(self, EMAIL_USUARIO: str) -> list[dict]:
         return self.execute_query("citas_por_gestor_semana_en_curso", EMAIL_USUARIO=EMAIL_USUARIO)
@@ -475,6 +496,9 @@ class DataverseRealtimeService:
     def get_citas_canceladas_por_gestor_ano_en_curso(self, EMAIL_USUARIO: str) -> list[dict]:
         return self.execute_query("citas_canceladas_por_gestor_ano_en_curso", EMAIL_USUARIO=EMAIL_USUARIO)
     
+    def get_citas_canceladas_por_autor_ano_en_curso(self, EMAIL_USUARIO: str) -> list[dict]:
+        return self.execute_query("citas_canceladas_por_autor_ano_en_curso", EMAIL_USUARIO=EMAIL_USUARIO)
+    
     def get_citas_canceladas_por_cuenta_ano_en_curso(self, NOMBRE_DE_CUENTA: str) -> list[dict]:
         return self.execute_query("citas_canceladas_por_cuenta_ano_en_curso", NOMBRE_DE_CUENTA=NOMBRE_DE_CUENTA)
     
@@ -485,7 +509,10 @@ class DataverseRealtimeService:
         return self.execute_query("citas_por_comercial_sin_llamada_posterior_6_meses", EMAIL_USUARIO=EMAIL_USUARIO)
     
     def get_citas_por_gestor_sin_llamada_posterior_6_meses(self, EMAIL_USUARIO: str) -> list[dict]:
-        return self.execute_query("citas_por_comercial_sin_llamada_posterior_6_meses", EMAIL_USUARIO=EMAIL_USUARIO)
+        return self.execute_query("citas_por_gestor_sin_llamada_posterior_6_meses", EMAIL_USUARIO=EMAIL_USUARIO)
+    
+    def get_citas_por_autor_sin_llamada_posterior_6_meses(self, EMAIL_USUARIO: str) -> list[dict]:
+        return self.execute_query("citas_por_autor_sin_llamada_posterior_6_meses", EMAIL_USUARIO=EMAIL_USUARIO)
 
 
 class SQLRealtimeService:

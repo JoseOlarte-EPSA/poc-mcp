@@ -311,6 +311,56 @@ CITAS_POR_COMERCIAL_12VA_SEMANA_ATRAS = """<fetch>
     </entity>
 </fetch>"""
 
+CITAS_POR_AUTOR_SEMANA_EN_CURSO = """<fetch>    
+    <entity name="appointment">        
+        <attribute name="scheduledstart" />        
+        <attribute name="iav_resultcomments" />   
+        <order attribute="scheduledstart" descending="true" />      
+        <filter type="and">            
+            <condition attribute="scheduledstart" operator="this-week" />        
+        </filter>   
+        <link-entity name="contact" from="contactid" to="fin_mainmeetingcontactid" alias="contact" link-type="outer">            
+            <attribute name="fullname" />            
+            <attribute name="jobtitle" />            
+            <attribute name="telephone1" />        
+        </link-entity>        
+        <link-entity name="account" from="accountid" to="iav_accountid" alias="account" link-type="inner">            
+            <attribute name="accountid" />            
+            <attribute name="accountnumber" />            
+            <attribute name="name" />            
+            <attribute name="iav_initialscore" />            
+            <attribute name="iav_nif" />            
+            <link-entity name="fig_industriafi" from="fig_industriafiid" to="fig_industriafi" alias="industria_fi" link-type="outer">                
+                <attribute name="fig_name" />            
+            </link-entity>            
+            <link-entity name="fin_group" from="fin_groupid" to="fin_groupaliasid" alias="group" link-type="outer">                
+                <attribute name="fin_name" />            
+            </link-entity>            
+            <link-entity name="fin_majorsector" from="fin_majorsectorid" to="fin_fisectorid" alias="sector" link-type="inner">                
+                <attribute name="fin_name" />            
+            </link-entity>            
+            <link-entity name="systemuser" from="systemuserid" to="iav_accountmanager" alias="user" link-type="inner">                
+                <attribute name="domainname" />        
+            </link-entity>        
+        </link-entity>     
+        <link-entity name="systemuser" from="systemuserid" to="ownerid" alias="owner" link-type="inner">            
+            <attribute name="domainname" />       
+        </link-entity>  
+        <link-entity name="systemuser" from="systemuserid" to="createdby" alias="author" link-type="inner">            
+            <attribute name="domainname" />       
+            <filter type="and">               
+                <condition attribute="domainname" operator="eq" value="{EMAIL_USUARIO}" />  
+                <condition attribute="businessunitid" operator="eq" value="2bf0da8a-6fbc-e611-80ea-c4346badc0e4" />                
+                <condition attribute="isdisabled" operator="eq" value="0" />                
+                <condition attribute="fig_managementunitid" operator="in">                    
+                    <value>10b7dd31-74b6-f011-bbd3-7c1e5211af47</value>                    
+                    <value>2d40813e-74b6-f011-bbd3-7c1e5211af47</value>                
+                </condition>            
+            </filter> 
+        </link-entity>    
+    </entity>
+</fetch>"""
+
 CITAS_POR_GESTOR = """<fetch>    
     <entity name="appointment">        
         <attribute name="scheduledstart" />        
@@ -762,6 +812,57 @@ CITAS_CANCELADAS_POR_GESTOR_ANO_EN_CURSO = """<fetch>
     </entity>
 </fetch>"""
 
+CITAS_CANCELADAS_POR_AUTOR_ANO_EN_CURSO = """<fetch>    
+    <entity name="appointment">        
+        <attribute name="scheduledstart" />        
+        <attribute name="iav_resultcomments" />   
+        <order attribute="scheduledstart" descending="false" />      
+        <filter type="and">            
+            <condition attribute="statecode" operator="eq" value="2" />     
+            <condition attribute="scheduledstart" operator="this-year" />     
+        </filter>   
+        <link-entity name="contact" from="contactid" to="fin_mainmeetingcontactid" alias="contact" link-type="outer">            
+            <attribute name="fullname" />            
+            <attribute name="jobtitle" />            
+            <attribute name="telephone1" />        
+        </link-entity>        
+        <link-entity name="account" from="accountid" to="iav_accountid" alias="account" link-type="inner">            
+            <attribute name="accountid" />            
+            <attribute name="accountnumber" />            
+            <attribute name="name" />            
+            <attribute name="iav_initialscore" />            
+            <attribute name="iav_nif" />            
+            <link-entity name="fig_industriafi" from="fig_industriafiid" to="fig_industriafi" alias="industria_fi" link-type="outer">                
+                <attribute name="fig_name" />            
+            </link-entity>            
+            <link-entity name="fin_group" from="fin_groupid" to="fin_groupaliasid" alias="group" link-type="outer">                
+                <attribute name="fin_name" />            
+            </link-entity>            
+            <link-entity name="fin_majorsector" from="fin_majorsectorid" to="fin_fisectorid" alias="sector" link-type="inner">                
+                <attribute name="fin_name" />            
+            </link-entity>            
+            <link-entity name="systemuser" from="systemuserid" to="iav_accountmanager" alias="user" link-type="inner">                
+                <attribute name="domainname" />        
+            </link-entity>        
+        </link-entity>        
+        <link-entity name="systemuser" from="systemuserid" to="ownerid" alias="owner" link-type="inner">            
+            <attribute name="domainname" />
+        </link-entity>
+        <link-entity name="systemuser" from="systemuserid" to="createdby" alias="author" link-type="inner">            
+            <attribute name="domainname" />       
+            <filter type="and">               
+                <condition attribute="domainname" operator="eq" value="{EMAIL_USUARIO}" />  
+                <condition attribute="businessunitid" operator="eq" value="2bf0da8a-6fbc-e611-80ea-c4346badc0e4" />                
+                <condition attribute="isdisabled" operator="eq" value="0" />                
+                <condition attribute="fig_managementunitid" operator="in">                    
+                    <value>10b7dd31-74b6-f011-bbd3-7c1e5211af47</value>                    
+                    <value>2d40813e-74b6-f011-bbd3-7c1e5211af47</value>                
+                </condition>            
+            </filter> 
+        </link-entity>  
+    </entity>
+</fetch>"""
+
 CITAS_CANCELADAS_POR_CUENTA_ANO_EN_CURSO = """<fetch>    
     <entity name="appointment">        
         <attribute name="scheduledstart" />        
@@ -942,5 +1043,56 @@ CITAS_POR_GESTOR_SIN_LLAMADA_POSTERIOR_6_MESES = """<fetch>
         <link-entity name="systemuser" from="systemuserid" to="ownerid" alias="owner" link-type="inner">            
             <attribute name="domainname" />      
         </link-entity>    
+    </entity>
+</fetch>"""
+
+CITAS_POR_AUTOR_SIN_LLAMADA_POSTERIOR_6_MESES = """<fetch>    
+    <entity name="appointment">        
+        <attribute name="scheduledstart" />        
+        <attribute name="iav_resultcomments" />
+        <order attribute="scheduledstart" descending="true" />
+        <link-entity name="contact" from="contactid" to="fin_mainmeetingcontactid" alias="contact" link-type="outer">            
+            <attribute name="fullname" />            
+            <attribute name="jobtitle" />            
+            <attribute name="telephone1" />        
+        </link-entity>        
+        <link-entity name="account" from="accountid" to="iav_accountid" alias="account" link-type="inner">            
+            <attribute name="accountid" />            
+            <attribute name="accountnumber" />            
+            <attribute name="name" />            
+            <attribute name="iav_initialscore" />            
+            <attribute name="iav_nif" />            
+            <link-entity name="fig_industriafi" from="fig_industriafiid" to="fig_industriafi" alias="industria_fi" link-type="outer">                
+                <attribute name="fig_name" />            
+            </link-entity>            
+            <link-entity name="fin_group" from="fin_groupid" to="fin_groupaliasid" alias="group" link-type="outer">                
+                <attribute name="fin_name" />            
+            </link-entity>            
+            <link-entity name="fin_majorsector" from="fin_majorsectorid" to="fin_fisectorid" alias="sector" link-type="inner">                
+                <attribute name="fin_name" />            
+            </link-entity>            
+            <link-entity name="systemuser" from="systemuserid" to="iav_accountmanager" alias="user" link-type="inner">                
+                <attribute name="domainname" />           
+            </link-entity>
+            <filter type="and">
+                <condition attribute="axz_lastcontactdate" operator="olderthan-x-months" value="6" />                
+            </filter>
+            <order attribute="axz_lastcontactdate" descending="true" />
+        </link-entity>        
+        <link-entity name="systemuser" from="systemuserid" to="ownerid" alias="owner" link-type="inner">            
+            <attribute name="domainname" />
+        </link-entity>   
+        <link-entity name="systemuser" from="systemuserid" to="createdby" alias="author" link-type="inner">            
+            <attribute name="domainname" />       
+            <filter type="and">               
+                <condition attribute="domainname" operator="eq" value="{EMAIL_USUARIO}" />  
+                <condition attribute="businessunitid" operator="eq" value="2bf0da8a-6fbc-e611-80ea-c4346badc0e4" />                
+                <condition attribute="isdisabled" operator="eq" value="0" />                
+                <condition attribute="fig_managementunitid" operator="in">                    
+                    <value>10b7dd31-74b6-f011-bbd3-7c1e5211af47</value>                    
+                    <value>2d40813e-74b6-f011-bbd3-7c1e5211af47</value>                
+                </condition>            
+            </filter> 
+        </link-entity>  
     </entity>
 </fetch>"""

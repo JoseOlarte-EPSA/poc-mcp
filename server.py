@@ -382,6 +382,31 @@ def get_citas_por_comercial_12va_semana_atras_realtime(email: str) -> list[dict]
 
 @mcp.tool(
     description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales abiertas o programadas para la semana en curso de un usuario con rol autor específico. 
+
+    Argumentos de entrada:
+    - email (string): Correo del usuario con rol autor en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+    5. Historial: Resumen acumulado de la actividad previa en el CRM.
+    6. Contexto Técnico: Industria FI y el catálogo de Ayudas ya presentadas.
+    7. Competencia: Competidor detectado, fecha de registro y servicio asociado.
+    8. Actualidad: Noticias relevantes de la cuenta.
+    9. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
+
+    Utiliza este recurso cuando el usuariocon rol autor pregunte por la agenda, el calendario, las reuniones semanales o necesite preparar los antecedentes y la estrategia de las visitas de la semana actual.
+    """    
+)
+def get_citas_por_autor_semana_en_curso_realtime(email: str) -> list[dict]:
+    return REALTIME_SERVICE.get_citas_por_autor_semana_en_curso(email)
+
+
+@mcp.tool(
+    description="""
     Obtiene el listado completo y detallado de las reuniones comerciales abiertas o programadas para la semana en curso de un usuario/gestor de cuenta específico. 
 
     Argumentos de entrada:
@@ -1336,6 +1361,31 @@ def get_citas_canceladas_por_gestor_ano_en_curso_realtime(email: str) -> list[di
 
 @mcp.tool(
     description="""
+    Obtiene el listado completo y detallado de las reuniones comerciales canceladas para el año curso de un usuario autor específico. 
+
+    Argumentos de entrada:
+    - email (string): Correo del usuario autor en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+    5. Historial: Resumen acumulado de la actividad previa en el CRM.
+    6. Contexto Técnico: Industria FI y el catálogo de Ayudas ya presentadas.
+    7. Competencia: Competidor detectado, fecha de registro y servicio asociado.
+    8. Actualidad: Noticias relevantes de la cuenta.
+    9. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
+
+    Utiliza este recurso cuando el usuario autor pregunte por la agenda, el calendario, las reuniones canceladas durante el año en curso o necesite preparar los antecedentes y la estrategia de sus cuentas.
+    """    
+)
+def get_citas_canceladas_por_autor_ano_en_curso_realtime(email: str) -> list[dict]:
+    return REALTIME_SERVICE.get_citas_canceladas_por_autor_ano_en_curso(email)
+
+
+@mcp.tool(
+    description="""
     Obtiene el listado completo y detallado de las reuniones comerciales canceladas para el año curso de una cuenta específica. 
 
     Argumentos de entrada:
@@ -1432,6 +1482,32 @@ def get_citas_por_comercial_sin_llamada_posterior_6_meses_realtime(email: str) -
 )
 def get_citas_por_gestor_sin_llamada_posterior_6_meses_realtime(email: str) -> list[dict]:
     return REALTIME_SERVICE.get_citas_por_gestor_sin_llamada_posterior_6_meses(email)
+
+
+@mcp.tool(
+    description="""
+    Obtiene el listado completo y detallado de las reuniones realizadas con cuentas de un usuario autor y que no se han contactado por más de 6 meses. 
+
+    Argumentos de entrada:
+    - email (string): Correo del del usuario autor de cuenta en el CRM.
+
+    Este recurso consulta el CRM y extrae cronológicamente los siguientes datos clave para cada cita:
+    1. Sincronización: Día y hora exacta de inicio de la celebración.
+    2. Cliente: Nombre de la cuenta, Alias Group y su Score Inicial de negocio.
+    3. Interlocutor: Nombre del contacto, cargo y teléfono directo.
+    4. Notas: Comentarios específicos registrados para la cita actual.
+    5. Historial: Resumen acumulado de la actividad previa en el CRM.
+    6. Contexto Técnico: Industria FI y el catálogo de Ayudas ya presentadas.
+    7. Competencia: Competidor detectado, fecha de registro y servicio asociado.
+    8. Actualidad: Noticias relevantes de la cuenta.
+    9. Preparación: Argumentos de venta y la estrategia/encaje específico en ayudas para la reunión.
+
+    Utiliza este recurso cuando el de un usuarion autor pregunte por el historico de las reuniones realizadas a cuentas y que no se han contactado por más de 6 meses.
+    """    
+)
+def get_citas_por_autor_sin_llamada_posterior_6_meses_realtime(email: str) -> list[dict]:
+    return REALTIME_SERVICE.get_citas_por_autor_sin_llamada_posterior_6_meses(email)
+
 # ── App con middleware opcional ───────────────────────────────────────────────
 
 middleware = []
