@@ -10,7 +10,6 @@ from scripts.clients.grants_client import GRANTSClient
 from scripts.clients.dataverse import DataverseClient
 from scripts.config.columns import (
     COLUMNS,
-    COLUMNS_HISTORICO_BDNS,
     COLUMNS_HISTORICO_LLAMADAS,
     COLUMNS_HISTORICO_SERVICIOS,
     COLUMNS_LLAMADAS_ESTADO_CALIENTE,
@@ -525,7 +524,14 @@ class SQLRealtimeService:
         self.catalog: dict[str, dict[str, Any]] = {
             "detalle_ayudas": {
                 "template": DETALLE_DE_AYUDAS,
-                "columns_map": COLUMNS_HISTORICO_BDNS,
+                "columns_map": {
+                    "NIF": "NIF",
+                    "BENEFICIARIO": "Account",
+                    "ANUNCIO": "AnnouncementDescription",
+                    "ORGANISMO": "Organism",
+                    "FONDOS_A_PRESTAMO": "TotalPrestamo",
+                    "FONDOS_A_SUBVENCIÓN": "TotalSubvencion",
+                },
                 "client_type": "bdns",
             },
             "convocatorias_abiertas": {

@@ -125,11 +125,10 @@ COLUMNS_CUENTAS_LLAMADAS_ANO_EN_CURSO = {
 
 # Diccionario con el mapeo de columnas para las cuentas en BDNS
 COLUMNS_HISTORICO_BDNS = {
-  "NIF": "Beneficiary_NIF",
-  "BENEFICIARIO": "Beneficiary_Name",
-  "ORGANISMO": "Organism",
-  "FONDOS_A_PRESTAMO": "Total_Prestamo",
-  "FONDOS_A_SUBVENCIÓN": "Total_Subvencion"
+  "NIF": "NIF",
+  "BENEFICIARIO": "Account",  "ANUNCIO": "AnnouncementDescription",  "ORGANISMO": "Organism",
+  "FONDOS_A_PRESTAMO": "TotalPrestamo",
+  "FONDOS_A_SUBVENCIÓN": "TotalSubvencion"
 }
 
 # Diccionario con el mapeo de columnas para GRANTS

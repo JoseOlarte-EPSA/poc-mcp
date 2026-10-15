@@ -1241,7 +1241,7 @@ def get_citas_con_interes_futuro_por_nif(nif: str) -> list[dict]:
 
 @mcp.tool(
     description="""
-    Obtiene el listado completo y detallado de las ayudas o subvenciones percibidas los tres últimos años para una cuenta específica según su NIF. 
+    Obtiene el listado completo y detallado de las ayudas o subvenciones percibidas por una cuenta específica según su NIF (histórico completo disponible en BDNS).
 
     Args:
         nif (str): NIF fiscal de la cuenta.
@@ -1250,6 +1250,7 @@ def get_citas_con_interes_futuro_por_nif(nif: str) -> list[dict]:
         Lista de dict con claves:
         - NIF: Código fiscal del beneficiario
         - BENEFICIARIO: Nombre del beneficiario
+        - ANUNCIO: Descripción de la convocatoria/subvención
         - ORGANISMO: Organismo concedente
         - FONDOS_A_PRESTAMO: Importe en préstamos
         - FONDOS_A_SUBVENCIÓN: Importe en subvenciones

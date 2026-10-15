@@ -377,27 +377,24 @@ QUERIES = {
     """,
     # Detalle de las ayudas
     "Detalle de las Ayudas": """SELECT 
-  fbnds.Beneficiary_NIF
-  ,fbnds.Beneficiary_Name
-  ,gr_grants.Announcement_Description
-  ,gr_grants.Organism
-  ,SUM(CASE WHEN dinst.Instrument = 'PRÉSTAMO' THEN fbnds.Total_Amount_Concession ELSE 0 END) AS Total_Prestamo
-  ,SUM(CASE WHEN dinst.Instrument = 'SUBVENCIÓN y ENTREGA DINERARIA SIN CONTRAPRESTACIÓN' THEN fbnds.Total_Amount_Concession ELSE 0 END) AS Total_Subvencion
+  fbnds.BeneficiaryNif AS NIF
+  ,fbnds.BeneficiaryName AS Account
+  ,gr_grants.AnnouncementDescription AS AnnouncementDescription
+  ,gr_grants.Organism AS "Organism"
+  ,SUM(CASE WHEN dinst.Instrument = 'PRÉSTAMO' THEN fbnds.TotalAmountConcession ELSE 0 END) AS TotalPrestamo
+  ,SUM(CASE WHEN dinst.Instrument = 'SUBVENCIÓN y ENTREGA DINERARIA SIN CONTRAPRESTACIÓN' THEN fbnds.TotalAmountConcession ELSE 0 END) AS TotalSubvencion
 FROM 
-  gold.Fact_BDNS_GS fbnds
+  bdns.FactBdnsGs fbnds
 INNER JOIN 
-  gold.Dim_Grants_Searcher gr_grants ON gr_grants.Grants_Searcher_Id = fbnds.Grants_Searcher_Id
+  bdns.DimGrantsSearcher gr_grants ON gr_grants.Id = fbnds.IdGrantsSearcher
 LEFT JOIN
-  gold.Dim_Calendar_Reception_Announcement cal_reception ON cal_reception.Date_Id = fbnds.Reception_Announcement_Date_Id
-LEFT JOIN
-  gold.Dim_Instrument dinst ON dinst.Instrument_Id = fbnds.Instrument_Id
-WHERE
-  fbnds.Beneficiary_NIF IN ({nifs})
-  AND cal_reception.Date BETWEEN DATEADD(YEAR, -3, GETDATE()) AND GETDATE()
+  bdns.DimInstrument dinst ON dinst.Id = fbnds.IdInstrument
+WHERE 
+  fbnds.BeneficiaryNif IN ({nifs})
 GROUP BY
-  fbnds.Beneficiary_NIF
-  ,fbnds.Beneficiary_Name
-  ,gr_grants.Announcement_Description
+  fbnds.BeneficiaryNif
+  ,fbnds.BeneficiaryName
+  ,gr_grants.AnnouncementDescription
   ,gr_grants.Organism
 ;""",
     #Propuesta de llamadas
